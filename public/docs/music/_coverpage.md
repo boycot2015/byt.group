@@ -7,7 +7,7 @@
 - 更完善的文档
 
 
-[GitHub](https://github.com/Binaryify/NeteaseCloudMusicApi)
+[GitHub](https://github.com/boycot2015/music-api)
 [Get Started](#neteasecloudmusicapi)
 
-![color](#ffffff)
+<!-- ![color](#ffffff) -->

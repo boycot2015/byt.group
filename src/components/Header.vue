@@ -1,20 +1,21 @@
 <script setup>
 import { ref } from 'vue';
-import { ElButton } from 'element-plus';
+import { ElButton, ElLink, ElMessage } from 'element-plus';
 import packageJson from '../../package.json';
-const btnText = ref(`更新版本`)
+const btnText = ref(`检查更新版本`)
 const version = ref(packageJson.dependencies.astro);
 const onUpdate = () => {
+	ElMessage.success('已是最新版本！')
 }
 </script>
 <style lang="less">
     img {
-        width: 40px;
-        height: 40px;
+        width: 220px;
+        height: 220px;
     }
 	.astro-a {
 		position: absolute;
-		top: -32px;
+		top: 22px;
 		left: 50%;
 		transform: translatex(-50%);
 		width: 220px;
@@ -37,12 +38,15 @@ const onUpdate = () => {
 	}
 </style>
 <template>
-    <img alt="Logo" src="/logo.svg" />
-    <div>
-        <h1 >
-            Welcome to <span class="text-gradient">Astro</span><span><sup>{{ version }}</sup></span>
+	<div>
+		<a href="/" class="astro-a">
+			<img alt="Logo" src="/logo.svg" />
+		</a>
+        <h1>
+            <span class="text-gradient">Astro</span><span><sup>{{ version }}</sup></span>
             <div style="text-align: right;">
-                <ElButton type="primary" @click.stop="onUpdate()">{{btnText}}</ElButton>
+				<!-- <ElLink type="primary" class="mr-5" href="/docs/astro#/" target="_blank">查看文档</ElLink> -->
+                <ElButton type="warning" @click.stop="onUpdate()">{{btnText}}</ElButton>
             </div>
         </h1>
     </div>

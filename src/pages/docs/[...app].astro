@@ -1,0 +1,277 @@
+---
+// // 1. 为每个集合条目生成一个新路径
+export async function getStaticPaths() {
+  const commDocsify = {
+    auto2top: true,
+    loadNavbar: true,
+    mergeNavbar: true,
+    mergeSidebar: true,
+    autoHeader: true,
+    loadSidebar: true,
+    subMaxLevel: 3,
+    // relativePath: true,
+    coverpage: true,
+    // search: 'auto',
+    search: {
+      maxAge: 86400000, // Expiration time, the default one day
+      paths: 'auto', // or []
+      placeholder: '搜索',
+      noData: '找不到结果!',
+      // Headline depth, 1 - 6
+      depth: 2,
+    },
+    // routerMode: 'history',
+    // onlyCover: true,
+    // 字数统计
+    count:{
+      countable: true,
+      position: 'top',
+      margin: '10px',
+      float: 'right',
+      fontsize:'0.9em',
+      color:'rgb(90,90,90)',
+      language:'chinese',
+      localization: {
+        words: "",
+        minute: ""
+      },
+      isExpected: true
+    },
+    // 页脚
+    footer: {
+      copy: '<span>Copyright &copy; 2021 &nbsp 💖 &nbsp</span>',
+      auth: ' <strong><a href="https://github.com/boycot2015" target="_blank">Boycot</a></strong>',
+      pre: '<hr/>',
+      style: 'font-size: 18px; text-align: center;',
+    },
+    plugins: [
+      function footer (hook:any, vm:any) {
+        // let userOptions = vm.config.footer;
+        let copy = vm.config.footer && vm.config.footer.copy ? vm.config.footer.copy : '<span>&copy; 2019.</span>';
+        let auth = vm.config.footer && vm.config.footer.auth
+            ? vm.config.footer.auth
+            : '<span>Published with <a href="https://github.com/docsifyjs/docsify" target="_blank" rel="noreferrer" rel="noopener">docsify</a>.</span>';
+        let style = vm.config.footer && vm.config.footer.style ? `style="${vm.config.footer.style}"` : '';
+        let clazz = vm.config.footer && vm.config.footer.class ? `class="${vm.config.footer.class}"` : '';
+        let pre = vm.config.footer && vm.config.footer.pre ? `${vm.config.footer.pre}` : '';
+        var footer = `${pre}<footer ${style} ${clazz}>${copy} ${auth}</footer>`;
+
+        hook.afterEach(function (html:any) {
+          return html + footer;
+        })
+      },
+      function count(hook:any, vm:any) {
+        var defaultOptions = {
+          countable: true,
+          position: "top",
+          margin: "10px",
+          float: "right",
+          fontsize: "0.9em",
+          color: "rgb(90,90,90)",
+          language: "english",
+          localization: {
+              words: "",
+              minute: "",
+          },
+          isExpected: true,
+        }
+        if (!defaultOptions.countable) {
+            return
+        }
+        let wordsCount:any
+        hook.beforeEach(function (content:any) {
+            // Match regex every time you start parsing .md
+            wordsCount = content.match(
+                /([\u0800-\u4e00]+?|[\u4e00-\u9fa5]+?|[a-zA-Z0-9]+)/g
+            ).length
+            return content
+        })
+        hook.afterEach(function (html:any, next:any) {
+            // Support localization
+            let str = wordsCount + " words"
+            let readTime = Math.ceil(wordsCount / 400) + " min"
+            if (defaultOptions.language === "chinese") {
+                str = wordsCount + " 字"
+                readTime = Math.ceil(wordsCount / 400) + " 分钟"
+            } else if (
+                defaultOptions.localization.words.length !== 0 &&
+                defaultOptions.localization.minute.length !== 0
+            ) {
+                str = wordsCount + defaultOptions.localization.words
+                readTime =
+                    Math.ceil(wordsCount / 400) + defaultOptions.localization.minute
+            }
+
+            //add html string
+            next(
+                `
+            ${defaultOptions.position === "bottom" ? html : ""}
+            <div style="margin-${defaultOptions.position ? "bottom" : "top"}: ${
+                    defaultOptions.margin
+                };">
+                <span style="
+                      float: ${defaultOptions.float === "right" ? "right" : "left"};
+                      font-size: ${defaultOptions.fontsize};
+                      color:${defaultOptions.color};">
+                ${str}
+                ${defaultOptions.isExpected ? `&nbsp; | &nbsp;${readTime}` : ""}
+                </span>
+                <div style="clear: both"></div>
+            </div>
+            ${defaultOptions.position !== "bottom" ? html : ""}
+            `
+            )
+        })
+      }
+    ]
+  }
+  const pages = [
+    {
+      app: 'sw.js'
+    },
+    {
+      app: '_coverpage.md'
+    },
+    {
+      app: '_navbar.md'
+    },
+    {
+      app: '_sidebar.md'
+    },
+    {
+      app: 'favicon.ico'
+    },
+    {
+      app: 'astro',
+      title: "Astro 文档",
+      text: "Astro 文档 node.js",
+      docsify: {
+        ...commDocsify,
+        search: {
+          ...commDocsify.search,
+          namespace: 'astro/*'
+        },
+        name: 'astro',
+        nameLink: '/docs/astro#/',
+        themeColor: '#3D50F5',
+        repo: 'https://github.com/withastro/astro',
+        basePath: `/docs/astro/`,
+      },
+    },
+    {
+      app: 'music',
+      title: "网易云音乐 NodeJS 版 API",
+      text: "网易云音乐,网易云音乐 api,网易云音乐 nodejs,网易云音乐 node.js",
+      docsify: {
+        ...commDocsify,
+        search: {
+          ...commDocsify.search,
+          namespace: 'music/*'
+        },
+        name: '网易云音乐 API',
+        nameLink: '/docs/music#/',
+        themeColor: '#42b983',
+        repo: 'https://github.com/2015/music-api',
+        basePath: `/docs/music/`,
+      },
+    },
+  ];
+  return pages.map(({ app, title, text, docsify }) => {
+    return {
+      params: { app },
+      props: { title, text, docsify },
+    };
+  });
+}
+const { title, text, docsify } = Astro.props;
+const { app } = Astro.params;
+---
+
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="KEYWords" content={title}>
+  <meta name="description" content={text}>
+  <title>{title}</title>
+  <link rel="icon" href="favicon.ico">
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="referrer" content="never">
+  <link rel="stylesheet" href="https://unpkg.com/docsify/lib/themes/vue.css">
+</head>
+<body class={app}>
+  <!-- <div id="sitetime"></div> -->
+  <div id="app"></div>
+  <data-component data-props={JSON.stringify({ app, title, text, docsify })}></data-component>
+</body>
+<script async>
+  class AstroDataComponent extends HTMLElement {
+      constructor() {
+        super();
+        // 从 data（数据）属性中读取消息。
+        const props = JSON.parse(this.dataset.props);
+        // console.log(props, 'props');
+        window.$docsify = props.docsify || {}
+      }
+  }
+  customElements.define('data-component', AstroDataComponent);
+</script>
+  <!-- 离线模式 -->
+<script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+</script>
+<script>
+  function siteTime() {
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth() + 1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+
+      /* 建站时间 */
+      var t1 = Date.UTC(2021, 0o3, 0o1, 0o0, 0o0, 0o0); 
+      var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+      var diff = t2 - t1;
+      var diffYears = Math.floor(diff / years);
+      var diffDays = Math.floor((diff / days) - diffYears * 365);
+      var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+      var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+      var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+      if (document.getElementById("sitetime")) {
+        document.getElementById("sitetime").innerHTML = " 本站已安全运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分 " + diffSeconds + " 秒 ";
+      }
+  }
+  siteTime();
+</script>
+<script is:inline src="//unpkg.com/docsify@4.11.3/lib/docsify.min.js"></script>
+<script is:inline src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+</html>
+<style lang="less" is:global>
+  body.astro {
+    section.cover ul {
+      max-width: 540px !important;
+      text-align: justify;
+      li {
+        line-height: 28px;
+      }
+    }
+  }
+</style>

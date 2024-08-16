@@ -1,16 +1,26 @@
 import { useState } from 'react';
-import { Button } from 'antd';
-import './desc.less'
+import { Button, message } from 'antd';
+import './desc.less';
+const words = [
+    `若黯夜终临 吾必立于万万人前 横刀向渊 血染苍穹。 ---守夜人·赵空城`,
+    `人只有走出来的美丽，没有等出来的辉煌。 ---《美丽人生》`,
+    `遇事不决，可问春风 ---剑来`,
+    `岁岁平，岁岁安，岁岁平安 ---陈平安`,
+    `死亡并不可怕，可怕的是死后被人遗忘 ---`,
+    `尽人事，听天命 ---无名`,
+]
 export default function Desc (props: any): JSX.Element|any {
     const [state, setState] = useState({
-        code: 'src/pages'
+        code: words[Math.floor(Math.random() * words.length)]
     })
-    const onClick = () => {
-        setState({ code: state.code === 'src/pages' ? 'src/views' : 'src/pages' })
+    const onClick = async () => {
+        setState({ code: words[Math.floor(Math.random() * words.length)] })
+        // message.success('successfully! current directory is：' + code)
     }
     return (<div className='instructions'>
-        To get started, open the directory <code>{state.code}</code> in your project.<br />
-        <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-        <Button type='primary' onClick={() => onClick()}>click me to change directory</Button>
+        <p className='all:transition-400'>{state.code}</p>
+        <div className='text-right'>
+            <Button type='primary' onClick={() => onClick()}>更换名场面</Button>
+        </div>
     </div>)
 }

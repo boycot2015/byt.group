@@ -7,13 +7,13 @@ import Header from '@components/Header.vue';
 import Footer from '@components/Footer.svelte';
 
 const items = [
-	{ href: 'https://docs.astro.build/', title: 'Documentation', body: 'Learn how Astro works and explore the official API docs.' },
-	{ href: 'https://astro.build/integrations/', title: 'Integrations', body: 'Supercharge your project with new frameworks and libraries.' },
-	{ href: 'https://astro.build/themes/', title: 'Themes', body: 'Explore a galaxy of community-built starter themes.' },
-	{ href: 'https://astro.build/chat/', title: 'Community', body: 'Come say hi to our amazing Discord community. ❤️' }
+	{ href: '/docs/astro#/', title: 'Astro 文档', body: 'Astro 是一个集多功能于一体的 Web 框架。' },
+	{ href: '/docs/music', title: 'Music Api Docs', body: '网易云音乐 NodeJS 版 API.' },
+	{ href: 'https://blog-api.boycot.top/api-docs', title: '后台管理', body: 'Nestjs 全栈项目-后台管理API' },
+	{ href: 'https://api.boycot.top/api-docs', title: '人网站api', body: '个人网站api接口文档' }
 ];
 ---
-<Layout title="Welcome to Astro.">
+<Layout title="Astro 文档">
 	<main>
 		<Header client:load />
 		<Desc client:load />
@@ -24,7 +24,7 @@ const items = [
 				body={el.body}
 			/>)}
 		</ul>
-		<Footer client:load />
+		<Footer client:visible />
 	</main>
 </Layout>
 
