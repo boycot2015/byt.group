@@ -171,7 +171,7 @@ export async function getStaticPaths() {
         name: '网易云音乐 API',
         nameLink: '/docs/music#/',
         themeColor: '#42b983',
-        repo: 'https://github.com/2015/music-api',
+        repo: 'https://github.com/boycot2015/music-api',
         basePath: `/docs/music/`,
       },
     },
@@ -200,7 +200,6 @@ const { app } = Astro.params;
   <link rel="stylesheet" href="https://unpkg.com/docsify/lib/themes/vue.css">
 </head>
 <body class={app}>
-  <!-- <div id="sitetime"></div> -->
   <div id="app"></div>
   <data-component data-props={JSON.stringify({ app, title, text, docsify })}></data-component>
 </body>
