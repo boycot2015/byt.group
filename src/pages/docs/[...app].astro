@@ -1,4 +1,5 @@
 ---
+import { KIcon } from '@ikun-ui/icon';
 // // 1. 为每个集合条目生成一个新路径
 export async function getStaticPaths() {
   const commDocsify = {
@@ -28,7 +29,7 @@ export async function getStaticPaths() {
       position: 'top',
       margin: '10px',
       float: 'right',
-      fontsize:'0.9em',
+      fontsize:'1em',
       color:'rgb(90,90,90)',
       language:'chinese',
       localization: {
@@ -44,86 +45,7 @@ export async function getStaticPaths() {
       pre: '<hr/>',
       style: 'font-size: 18px; text-align: center;',
     },
-    plugins: [
-      function footer (hook:any, vm:any) {
-        // let userOptions = vm.config.footer;
-        let copy = vm.config.footer && vm.config.footer.copy ? vm.config.footer.copy : '<span>&copy; 2019.</span>';
-        let auth = vm.config.footer && vm.config.footer.auth
-            ? vm.config.footer.auth
-            : '<span>Published with <a href="https://github.com/docsifyjs/docsify" target="_blank" rel="noreferrer" rel="noopener">docsify</a>.</span>';
-        let style = vm.config.footer && vm.config.footer.style ? `style="${vm.config.footer.style}"` : '';
-        let clazz = vm.config.footer && vm.config.footer.class ? `class="${vm.config.footer.class}"` : '';
-        let pre = vm.config.footer && vm.config.footer.pre ? `${vm.config.footer.pre}` : '';
-        var footer = `${pre}<footer ${style} ${clazz}>${copy} ${auth}</footer>`;
-
-        hook.afterEach(function (html:any) {
-          return html + footer;
-        })
-      },
-      function count(hook:any, vm:any) {
-        var defaultOptions = {
-          countable: true,
-          position: "top",
-          margin: "10px",
-          float: "right",
-          fontsize: "0.9em",
-          color: "rgb(90,90,90)",
-          language: "english",
-          localization: {
-              words: "",
-              minute: "",
-          },
-          isExpected: true,
-        }
-        if (!defaultOptions.countable) {
-            return
-        }
-        let wordsCount:any
-        hook.beforeEach(function (content:any) {
-            // Match regex every time you start parsing .md
-            wordsCount = content.match(
-                /([\u0800-\u4e00]+?|[\u4e00-\u9fa5]+?|[a-zA-Z0-9]+)/g
-            ).length
-            return content
-        })
-        hook.afterEach(function (html:any, next:any) {
-            // Support localization
-            let str = wordsCount + " words"
-            let readTime = Math.ceil(wordsCount / 400) + " min"
-            if (defaultOptions.language === "chinese") {
-                str = wordsCount + " 字"
-                readTime = Math.ceil(wordsCount / 400) + " 分钟"
-            } else if (
-                defaultOptions.localization.words.length !== 0 &&
-                defaultOptions.localization.minute.length !== 0
-            ) {
-                str = wordsCount + defaultOptions.localization.words
-                readTime =
-                    Math.ceil(wordsCount / 400) + defaultOptions.localization.minute
-            }
-
-            //add html string
-            next(
-                `
-            ${defaultOptions.position === "bottom" ? html : ""}
-            <div style="margin-${defaultOptions.position ? "bottom" : "top"}: ${
-                    defaultOptions.margin
-                };">
-                <span style="
-                      float: ${defaultOptions.float === "right" ? "right" : "left"};
-                      font-size: ${defaultOptions.fontsize};
-                      color:${defaultOptions.color};">
-                ${str}
-                ${defaultOptions.isExpected ? `&nbsp; | &nbsp;${readTime}` : ""}
-                </span>
-                <div style="clear: both"></div>
-            </div>
-            ${defaultOptions.position !== "bottom" ? html : ""}
-            `
-            )
-        })
-      }
-    ]
+    plugins: []
   }
   const pages = [
     {
@@ -201,19 +123,92 @@ const { app } = Astro.params;
 </head>
 <body class={app}>
   <div id="app"></div>
-  <data-component data-props={JSON.stringify({ app, title, text, docsify })}></data-component>
+  <div id="scroll-to-top" title="回到顶部"><KIcon icon="i-carbon-rocket" /></div>
 </body>
-<script async>
-  class AstroDataComponent extends HTMLElement {
-      constructor() {
-        super();
-        // 从 data（数据）属性中读取消息。
-        const props = JSON.parse(this.dataset.props);
-        // console.log(props, 'props');
-        window.$docsify = props.docsify || {}
-      }
-  }
-  customElements.define('data-component', AstroDataComponent);
+<script async define:vars={{ docsify }}>
+    window.$docsify = docsify || {}
+    $docsify.plugins = [].concat([
+      function footer (hook, vm) {
+        // let userOptions = vm.config.footer;
+        let copy = vm.config.footer && vm.config.footer.copy ? vm.config.footer.copy : '<span>&copy; 2019.</span>';
+        let auth = vm.config.footer && vm.config.footer.auth
+            ? vm.config.footer.auth
+            : '<span>Published with <a href="https://github.com/docsifyjs/docsify" target="_blank" rel="noreferrer" rel="noopener">docsify</a>.</span>';
+        let style = vm.config.footer && vm.config.footer.style ? `style="${vm.config.footer.style}"` : '';
+        let clazz = vm.config.footer && vm.config.footer.class ? `class="${vm.config.footer.class}"` : '';
+        let pre = vm.config.footer && vm.config.footer.pre ? `${vm.config.footer.pre}` : '';
+        var footer = `${pre}<footer ${style} ${clazz}>${copy} ${auth}</footer>`;
+
+        hook.afterEach(function (html) {
+          return html + footer;
+        })
+      },
+      function count(hook, vm) {
+        let userOptions = vm.config.count;
+        var defaultOptions = {
+          countable: true,
+          position: "top",
+          margin: "10px",
+          float: "right",
+          fontsize: "0.9em",
+          language: "english",
+          localization: {
+            words: "",
+            minute: "",
+          },
+          isExpected: true,
+          ...userOptions,
+          color: docsify?.themeColor
+        }
+        if (!defaultOptions.countable) {
+            return
+        }
+        let wordsCount
+        hook.beforeEach(function (content) {
+            // Match regex every time you start parsing .md
+            wordsCount = content.match(
+                /([\u0800-\u4e00]+?|[\u4e00-\u9fa5]+?|[a-zA-Z0-9]+)/g
+            ).length
+            return content
+        })
+        hook.afterEach(function (html, next) {
+            // Support localization
+            let str = wordsCount + " words"
+            let readTime = Math.ceil(wordsCount / 400) + " min"
+            if (defaultOptions.language === "chinese") {
+                str = wordsCount
+                readTime = Math.ceil(wordsCount / 400)
+            } else if (
+                defaultOptions.localization.words.length !== 0 &&
+                defaultOptions.localization.minute.length !== 0
+            ) {
+                str = wordsCount + defaultOptions.localization.words
+                readTime =
+                    Math.ceil(wordsCount / 400) + defaultOptions.localization.minute
+            }
+            
+            //add html string
+            
+            next(
+                `
+            ${defaultOptions.position === "bottom" ? html : ""}
+            <div style="margin-${defaultOptions.position ? "bottom" : "top"}: ${
+                    defaultOptions.margin
+                };">
+                <span style="
+                      float: ${defaultOptions.float === "right" ? "right" : "left"};
+                      font-size: ${defaultOptions.fontsize};
+                      color:${defaultOptions.color};">
+                共&nbsp;${str}&nbsp;字
+                ${defaultOptions.isExpected ? `&nbsp; | &nbsp;阅读时长&nbsp;${readTime}&nbsp;分钟` : ""}
+                </span>
+                <div style="clear: both"></div>
+            </div>
+            ${defaultOptions.position !== "bottom" ? html : ""}
+            `
+            )
+        })
+    }], $docsify.plugins || []);
 </script>
   <!-- 离线模式 -->
 <script>
@@ -221,7 +216,7 @@ const { app } = Astro.params;
       navigator.serviceWorker.register('sw.js')
     }
 </script>
-<script>
+<script is:inline>
   function siteTime() {
       window.setTimeout("siteTime()", 1000);
       var seconds = 1000;
@@ -259,11 +254,46 @@ const { app } = Astro.params;
       }
   }
   siteTime();
+  document.querySelector('#scroll-to-top')?.addEventListener('click', () => {
+    scrollToTop()
+  })
+  function scrollToTop () {
+    const cubic = value => Math.pow(value, 3)
+    const easeInOutCubic = value => value < 0.5
+    ? cubic(value * 2) / 2
+    : 1 - cubic((1 - value) * 2) / 2
+    const el = document.documentElement
+    const beginTime = Date.now()
+    const beginValue = el.scrollTop
+    const rAF = window.requestAnimationFrame || (func => setTimeout(func, 16))
+    const frameFunc = () => {
+        const progress = (Date.now() - beginTime) / 500
+        if (progress < 1) {
+            el.scrollTop = beginValue * (1 - easeInOutCubic(progress))
+            rAF(frameFunc)
+        } else {
+            el.scrollTop = 0
+        }
+    };
+    rAF(frameFunc)
+  }
 </script>
 <script is:inline src="//unpkg.com/docsify@4.11.3/lib/docsify.min.js"></script>
 <script is:inline src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </html>
-<style lang="less" is:global>
+<style lang="less" is:global define:vars={{themeColor: docsify?.themeColor}}>
+  #scroll-to-top {
+    position: fixed;
+    right: 20px;
+    bottom: 60px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #fff;
+    box-shadow: 0 0 10px #ccc;
+    background: linear-gradient(to right, #999, var(--themeColor));
+    padding: 8px;
+  }
   body.astro {
     section.cover ul {
       max-width: 540px !important;

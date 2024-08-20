@@ -5,9 +5,9 @@
     // let messageInstance: NotifyComponent | null | undefined = null;
     const onClick = () => {
         KMsgBox.confirm({
-            title: '🎤 🐔 ikun-ui！！！',
+            title: '🎤 🐔 svelte for ikun-ui！',
             emoType: 'success',
-            content: '这里啥也没有！只有svelte 陪伴 ikun-ui',
+            content: '别想了，这里啥也没有！',
             cancelBtnText: '取消',
             confirmBtnText: '确认',
             onCancel: () => {

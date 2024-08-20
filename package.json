@@ -16,6 +16,7 @@
     "@astrojs/svelte": "^5.7.0",
     "@astrojs/vue": "^4.5.0",
     "@ikun-ui/core": "^0.2.6",
+    "@ikun-ui/icon": "^0.2.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "antd": "^5.20.1",

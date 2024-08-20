@@ -1,5 +1,3 @@
-# UI无关
-
 你可以在无需舍弃你所喜欢的组件框架的情况下使用 Astro 构建站点。而是可以任意选择的 UI 框架来创建 Astro [群岛](/zh-cn/concepts/islands/)。
 
 ## 官方的 UI 框架集成
