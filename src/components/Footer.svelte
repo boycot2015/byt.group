@@ -5,9 +5,9 @@
     // let messageInstance: NotifyComponent | null | undefined = null;
     const onClick = () => {
         KMsgBox.confirm({
-            title: '🎤 🐔 svelte for ikun-ui！',
+            title: '🎤 🐔 ikun-ui！',
             emoType: 'success',
-            content: '别想了，这里啥也没有！',
+            content: '这里啥也没有！',
             cancelBtnText: '取消',
             confirmBtnText: '确认',
             onCancel: () => {
@@ -29,6 +29,11 @@
         })
     }
 </script>
+<style>
+    .footer {
+        margin-top: 50px;
+    }
+</style>
 <div class="footer flex justify-between">
     <p class="text-center flex-1 m-0">{copyright}</p>
     <div class="link"><KButton on:click={() => onClick()}>点我有惊喜</KButton></div>

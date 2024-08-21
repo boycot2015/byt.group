@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { ElButton, ElLink, ElMessage } from 'element-plus';
 import packageJson from '../../package.json';
-const btnText = ref(`检查更新版本`)
+const btnText = ref(`检查版本更新`)
 const version = ref(packageJson.dependencies.astro);
 const onUpdate = () => {
 	ElMessage.success('已是最新版本！')

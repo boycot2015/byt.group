@@ -1,19 +1,23 @@
 ---
+import 'element-plus/dist/index.css';
+import '@assets/less/index.less';
+
 interface Props {
 	title: string;
-	generator: string;
 }
 
-const { title, generator } = Astro.props as Props;
+const { title } = Astro.props;
 ---
+
 <!doctype html>
 <html lang="zh-cn">
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="utf-8" />
 		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="generator" content={Astro.generator} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={generator} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{title}</title>
 	</head>
 	<body>
@@ -21,4 +25,19 @@ const { title, generator } = Astro.props as Props;
 	</body>
 </html>
 <style is:global>
+	html {
+		font-family: system-ui, sans-serif;
+		background: var(--bg-dark);
+	}
+	code {
+		font-family:
+			Menlo,
+			Monaco,
+			Lucida Console,
+			Liberation Mono,
+			DejaVu Sans Mono,
+			Bitstream Vera Sans Mono,
+			Courier New,
+			monospace;
+	}
 </style>

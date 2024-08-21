@@ -18,7 +18,7 @@ export default function Desc (props: any): JSX.Element|any {
         // message.success('successfully! current directory is：' + code)
     }
     return (<div className='instructions'>
-        <p className='all:transition-400'>{state.code}</p>
+        <p>{state.code}</p>
         <div className='text-right'>
             <Button type='primary' onClick={() => onClick()}>更换名场面</Button>
         </div>
