@@ -1,10 +1,12 @@
 ---
-import Music from './music/[type]/index.astro';
+import Music from './[type]/index.astro';
 import 'element-plus/dist/index.css';
 import '@assets/less/index.less';
+// const { redirect } = Astro;
+// redirect('/music/netease')
 ---
 <main>
-	<Music title="首页"></Music>
+	<Music></Music>
 </main>
 
 <style>

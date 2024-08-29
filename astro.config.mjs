@@ -27,7 +27,7 @@ export default defineConfig({
                 presetAttributify({}),
                 presetUno(),
                 presetIcons(),
-                presetIkun()
+                presetIkun('@ikun-ui/preset', '#1677ff')
             ],
             safelist: [...getSafeList()],
             preflights: [

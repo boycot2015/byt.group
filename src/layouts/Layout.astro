@@ -1,13 +1,20 @@
 ---
+import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KSkeletonInput } from '@ikun-ui/core';
+import { KIcon } from '@ikun-ui/icon';
+import Aside from './Aside.vue';
+import Search from '@/components/music/Search/index.tsx'
+import 'virtual:uno.css';
 import 'element-plus/dist/index.css';
-import '@assets/less/index.less';
 interface Props {
-	title: string;
+	title: string
 }
-
+interface Params {
+	[key:string]: string
+}
 const { title } = Astro.props;
+const { type } = Astro.params;
+const { url } = Astro;
 ---
-
 <!doctype html>
 <html lang="zh-cn">
 	<head>
@@ -20,34 +27,58 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<KContainer>
+			<KAside cls="text-center bg-gray-200 flex leading-60px w-1/6">
+				<Aside client:load routerPath={url.pathname}></Aside>
+			</KAside>
+			<KContainer>
+				<KHeader slot="header" cls="text-center flex items-center justify-between bg-gray-100 leading-40px">
+					<div class="navgator flex justify-center mr-5">
+						<KButton type="main" cls="mr-2 go-back" ghost>
+							<KIcon icon="i-carbon-arrow-left" size={16}></KIcon>
+						</KButton>
+						<KButton type="main" cls="mr-2 go-forward" ghost>
+							<KIcon icon="i-carbon-arrow-right" size={16}></KIcon>
+						</KButton>
+						<KButton type="main" cls="go-reload" ghost>
+							<KIcon icon="i-carbon-renew" size={16}></KIcon>
+						</KButton>
+					</div>
+					<h3>{title}</h3>
+					<Search type={type} className="mr-5" client:only="react" />
+				</KHeader>
+				<KMain cls="text-center bg-gray-300 overflow-y-auto">
+					<slot></slot>
+				</KMain>
+				<KFooter slot="footer" cls="text-center bg-gray-100 leading-60px">
+					与君相别离，何日是归期
+				</KFooter>
+			</KContainer>
+		</KContainer>
 	</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
+<script is:inline>
+	document.querySelector('.go-back').onclick = () => {
+		window.history.back()
 	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: var(--bg-dark);
+	document.querySelector('.go-forward').onclick = () => {
+		window.history.forward()
 	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+	document.querySelector('.go-reload').onclick = () => {
+		window.location.reload()
+	}
+</script>
+<style lang="less">
+	body {
+		height: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	.k-container {
+		height: 100vh;
+		overflow: hidden;
+		.k-container {
+			overflow: auto;
+		}
 	}
 </style>
