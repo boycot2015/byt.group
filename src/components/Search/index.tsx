@@ -9,11 +9,12 @@ const SearchComponent = (props:any) => {
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
         if (info?.source ==='clear') {
             setKeyword('');
-            window.location.href = `/music/${props.type||'netease'}`
+            window.location.href = `/${window.location.pathname.split('/')[1]}/${props.type||''}`
             return
         }
         if (!value) return;
-        window.location.href = `/music/${props.type||'netease'}/search?keyword=${value}`
+        if (!props.type) return window.location.href = `/${window.location.pathname.split('/')[1]}?keyword=${value}`
+        window.location.href = `/${window.location.pathname.split('/')[1]}/${props.type||''}/search?keyword=${value}`
     };
     return (
         <div className={props.className}>

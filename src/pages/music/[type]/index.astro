@@ -3,6 +3,7 @@ import CateList from '@/components/music/playlist/cate.svelte';
 import PlayList from '@/components/music/playlist/index.vue';
 import Layout from '@/layouts/Layout.astro';
 import { KContainer } from '@ikun-ui/core';
+
 export function getStaticPaths () {
  return [
     {params: {type: 'qq'}},
@@ -28,13 +29,14 @@ const typeName: Params = {
 	'migu': '咪咕音乐',
 }
 const { title } = Astro.props;
-const { type = 'netease' } = Astro.params;
+const { type = 'qq' } = Astro.params;
 
 ---
 <Layout title={`音乐-${title?title+'-':''}${typeName[type]}`}>
   <KContainer cls='flex-col overflow-hidden h-[100%]'>
     <CateList value={type} client:load />
-    <PlayList client:only="vue" {type}></PlayList>
+    <PlayList client:only="vue" {type}>
+    </PlayList>
   </KContainer>
 </Layout>
 <style>

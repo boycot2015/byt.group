@@ -2,7 +2,9 @@
 import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KSkeletonInput } from '@ikun-ui/core';
 import { KIcon } from '@ikun-ui/icon';
 import Aside from './Aside.vue';
-import Search from '@/components/music/Search/index.tsx'
+import Search from '@/components/Search';
+import Lyric from '@/components/music/player/lyric.tsx';
+import Player from '@/components/music/player/index.svelte';
 import 'virtual:uno.css';
 import 'element-plus/dist/index.css';
 interface Props {
@@ -28,12 +30,12 @@ const { url } = Astro;
 	</head>
 	<body>
 		<KContainer>
-			<KAside cls="text-center bg-gray-200 flex leading-60px w-1/6">
+			<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px relative">
 				<Aside client:load routerPath={url.pathname}></Aside>
 			</KAside>
 			<KContainer>
 				<KHeader slot="header" cls="text-center flex items-center justify-between bg-gray-100 leading-40px">
-					<div class="navgator flex justify-center mr-5">
+					<div class="navgator justify-center mr-5 hidden md:flex">
 						<KButton type="main" cls="mr-2 go-back" ghost>
 							<KIcon icon="i-carbon-arrow-left" size={16}></KIcon>
 						</KButton>
@@ -44,14 +46,15 @@ const { url } = Astro;
 							<KIcon icon="i-carbon-renew" size={16}></KIcon>
 						</KButton>
 					</div>
-					<h3>{title}</h3>
-					<Search type={type} className="mr-5" client:only="react" />
+					<h3 class="hidden md:block">{title}</h3>
+					{type ? <Lyric client:only="react" className="w-[300px] hidden lg:block" />:null}
+					<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 				</KHeader>
-				<KMain cls="text-center bg-gray-300 overflow-y-auto">
+				<KMain cls="text-center main-scroll-wrap bg-gray-300 overflow-y-auto">
 					<slot></slot>
 				</KMain>
-				<KFooter slot="footer" cls="text-center bg-gray-100 leading-60px">
-					与君相别离，何日是归期
+				<KFooter slot="footer" cls="text-center p-0 bg-gray-100 leading-60px">
+					<Player client:only="svelte"><Lyric slot="lyric" className="w-[80%]" client:only="react" /></Player>
 				</KFooter>
 			</KContainer>
 		</KContainer>
