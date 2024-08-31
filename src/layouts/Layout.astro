@@ -31,7 +31,7 @@ const { url } = Astro;
 	<body>
 		<KContainer>
 			<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px relative">
-				<Aside client:load routerPath={url.pathname}></Aside>
+				<Aside client:only="vue" routerPath={url.pathname}></Aside>
 			</KAside>
 			<KContainer>
 				<KHeader slot="header" cls="text-center flex items-center justify-between bg-gray-100 leading-40px">

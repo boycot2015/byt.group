@@ -30,7 +30,7 @@ const typeName: Params = {
 }
 ---
 <Layout title={`音乐-${title?title+'-':''}${typeName[type]}`}>
-	<PlayListDetail client:load {type}></PlayListDetail>
+	<PlayListDetail client:only="react" {type}></PlayListDetail>
 </Layout>
 <style>
 </style>
