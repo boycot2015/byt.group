@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, onMounted, ref, defineOptions } from 'vue'
+import { onMounted, ref, defineOptions } from 'vue'
 import { ElRow, ElCol, ElCard, 
 	ElImage, ElText, ElIcon, ElSkeleton, ElTooltip,
 	ElSkeletonItem, ElInfiniteScroll, ElBacktop } from 'element-plus'

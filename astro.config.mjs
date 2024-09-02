@@ -30,6 +30,21 @@ export default defineConfig({
                 presetIkun('@ikun-ui/preset', '#1677ff')
             ],
             safelist: [...getSafeList()],
+            // 以下配置是为了可以直接使用标签 <i-ep-edit />
+            variants: [
+                {
+                    match: (s) => {
+                        if (s.startsWith('i-')) {
+                        return {
+                                matcher: s,
+                                selector: (s) => {
+                                    return s.startsWith('.') ? `${s.slice(1)},${s}` : s
+                                },
+                            }
+                        }
+                    },
+                },
+            ],
             preflights: [
                 {
                     layer: 'base',

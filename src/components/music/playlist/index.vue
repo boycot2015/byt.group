@@ -88,7 +88,7 @@ onMounted(() => {
 	<ElSkeleton :loading="pageLoading" animated>
 		<template #template>
 			<div class="flex mb-2">
-				<el-skeleton-item v-for="item in 10" variant="button" style="margin-right: 15px;" :key="item" />
+				<el-skeleton-item v-for="item in 6" variant="button" style="margin-right: 15px;" :key="item" />
 			</div>
 		</template>
 		<template #default>
@@ -138,7 +138,7 @@ onMounted(() => {
 			<ElCol :span="12" class="text-left" :xs="{span: 8}" :sm="{span: 6}" :md="{span: 4}" :lg="{span: 3}" :xl="{span: 2}" v-for="item in (pageLoading ? 24 : state.playList)" :key="item.id || item">
 				<ElSkeleton :loading="pageLoading" animated>
 				<template #template>
-					<ElSkeletonItem variant="image" style="width: 100%; height: 180px;margin-bottom: 10px;" />
+					<ElSkeletonItem variant="image" style="width: 100%; height: 130px;margin-bottom: 10px;" />
 					<el-skeleton-item variant="text" style="width: 100%" />
 					<el-skeleton-item variant="text" style="width: 60%" />
 				</template>

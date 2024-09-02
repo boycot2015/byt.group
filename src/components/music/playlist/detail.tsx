@@ -137,12 +137,11 @@ const playListDetail = (props:any) => {
 					{!loading?<Flex justify="flex-start" align="flex-start">
 						<Image
 							alt="avatar"
-							className='avatar'
-							style={{ width: 200, height: 200 }}
+							className='avatar !w-[120px] !h-[120px] md:!w-[200px] md:!h-[200px]'
 							src={state.info?.cover_img_url||''}
 						/>
 						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 32px' }}>
-							<Typography.Title level={2} className='text-left'>
+							<Typography.Title level={2} className='text-left !text-xl lg:text-xxl'>
 							{state.info?.title || '歌单'}
 							</Typography.Title>
 							<Flex justify="space-around">
@@ -176,7 +175,7 @@ const playListDetail = (props:any) => {
 				current: state.currentPage || 1,
 				pageSize: state.pageSize || 20,
 				onChange: (page, size) => { getSearchData({page, size, searchType}) }
-			}:undefined}
+			}:{ position: ['bottomCenter'] }}
 			dataSource={state.songs}
 			columns={columns}
 			/>

@@ -24,7 +24,7 @@ a {
         <!-- <el-image src="/logo.svg" alt="logo" class="w-12 h-12 cursor-pointer" /> -->
          <h3 v-show="!collapse" class="p-0 m-0 w-120px text-color-[var(--el-color-primary)]">{{ config.websiteName }}</h3>
         <ElButton type="primary" @click="() => collapse = !collapse" class="toggle-menu z-2">
-            <ElIcon :size="16"><i class="i-carbon-menu"></i></ElIcon>
+            <span class="i-carbon-menu text-xl"></span>
         </ElButton>
     </a>
     <ElMenu
@@ -37,11 +37,11 @@ a {
         @select="handleChange"
     >
         <ElMenuItem index="/music">
-            <ElIcon><i class="i-carbon-music"></i></ElIcon>
+            <span class="i-carbon-music text-xl mr-2"></span>
             <span>音乐</span>
         </ElMenuItem>
         <ElMenuItem index="/news">
-            <ElIcon><i class="i-carbon-sun dark:i-carbon-moon"></i></ElIcon>
+            <span class="i-carbon-sun text-xl mr-2"></span>
             <span>新闻</span>
         </ElMenuItem>
         <!-- <ElMenuItem index="/blog">
