@@ -38,6 +38,7 @@ const playListDetail = (props:any) => {
 		songs: SongProp[];
 		hasMore?: boolean;
 		currentPage?: number;
+		playIndex: number;
 		pageSize?: number;
 	}>({
 		totalCount: 0,
@@ -45,15 +46,17 @@ const playListDetail = (props:any) => {
 		pageSize: 20,
         info: {},
 		songs: [],
+		playIndex: 0,
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
+		{title:'封面', dataIndex: 'img_url', hidden: false, width: '48px', render: (text:string, record:any) => <Image src={text} className='w-[48px]' />, align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '220px', dataIndex: 'title', align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌手':'作者'}</span>, dataIndex: 'artist', width: '160px', render: (text:string, record:any) => record.artist || record.author, align: 'left'},
 		{title:'专辑', dataIndex: 'album', hidden: false, width: '260px', render: (text:string, record:any) => text || '--', align: 'left'},
-		{title:'操作', dataIndex: 'operate', align: 'left', width: '220px', render: (text:string, record:any) => [
+		{title:'操作', dataIndex: 'operate', align: 'left', width: '180px', render: (text:string, record:any, index: number) => [
 			<Button onClick={() => {
-				searchType == '0' && onPlay(record)
+				searchType == '0' && onPlay(record, index)
 				searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
 			}} size='small' key={'play'} className='mr-2'>{searchType == '0' ? <span className='i-carbon-play-filled-alt text-md'></span>:<span className='i-carbon-view text-md'></span>}{searchType == '0'?'播放':'详情'}</Button>,
 			<Button size='small' key={'link'} onClick={() => {
@@ -110,8 +113,9 @@ const playListDetail = (props:any) => {
 		setLoading(false)
 		
 	}
-    const onPlay = async (item?:any) => {
+    const onPlay = async (item?:any, index?:number) => {
 		item = item || state.songs[0] || {}
+		if (!item.id) return
 		let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type}`);
 		let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type}`);
 		let lyricRes = await lyricData.json();
@@ -119,10 +123,54 @@ const playListDetail = (props:any) => {
 		// console.log(item, lyricRes, urlRes, 'item');
 		window.localStorage.setItem('playData', JSON.stringify({
 			...item,
+			playIndex: index || 0,
 			url: urlRes.data,
 			lyric: lyricRes.data.lyric,
 		}));
-		StorageEmitter.emit('play', item)
+		StorageEmitter.emit('play', {
+			...item,
+			playIndex: index || 0,
+			url: urlRes.data,
+			lyric: lyricRes.data.lyric,
+		})
+		// console.log(StorageEmitter.listeners, 'StorageEmitter.emit');
+		if (!urlRes.data) {
+			StorageEmitter.emit('playNext', true)
+			// StorageEmitter.off('playNext', playNext)
+			return
+		}
+		StorageEmitter.on('playNext', playNext)
+    }
+	const playNext = (isNext:boolean) => {
+		if (isNext) {
+			if (state.playIndex > state.songs.length - 1) {
+				setState({
+					...state,
+					playIndex: 0
+				})
+				onPlay(state.songs[0]);
+				return
+			}
+			setState({
+				...state,
+				playIndex: ++state.playIndex
+			})
+			onPlay(state.songs[++state.playIndex]);
+			return
+		}
+		if (state.playIndex < 0) {
+			setState({
+				...state,
+				playIndex: 0
+			})
+			onPlay(state.songs[0]);
+			return
+		}
+		setState({
+			...state,
+			playIndex: --state.playIndex
+		})
+		onPlay(state.songs[--state.playIndex]);
     }
 	const toggleSearchType = (searchType:any) => {
 		getSearchData({ page: 1, searchType })
@@ -159,6 +207,7 @@ const playListDetail = (props:any) => {
 						</Flex>
 					</Flex>}
 				</div>:<div className="flex justify-end">
+					{keyword && <Button type='primary' className='mr-2' onClick={() =>onPlay()}><span className='i-carbon-play-filled text-xl'></span>播放全部</Button>}
 					<Button className='mr-2' onClick={() => toggleSearchType('0')} type={searchType=='0'?'primary':'default'}>歌曲</Button>
 					<Button  onClick={() => toggleSearchType('1')} type={searchType=='1'?'primary':'default'}>歌单</Button>
 				</div>}

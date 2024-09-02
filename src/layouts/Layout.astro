@@ -1,7 +1,6 @@
 ---
 import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KBacktop } from '@ikun-ui/core';
 // import { ElBacktop } from 'element-plus';
-
 import { KIcon } from '@ikun-ui/icon';
 import Aside from './Aside.vue';
 import Search from '@/components/Search';
@@ -10,7 +9,6 @@ import Player from '@/components/music/player/index.svelte';
 import 'virtual:uno.css';
 import 'element-plus/dist/index.css';
 import '@assets/less/index.less';
-import 'uno.css';
 interface Props {
 	title: string
 }
@@ -50,8 +48,8 @@ const { url } = Astro;
 							<KIcon icon="i-carbon-renew" size={16}></KIcon>
 						</KButton>
 					</div>
-					<h3 class="hidden md:block">{title}</h3>
-					{type ? <Lyric client:only="react" className="w-[300px] hidden lg:block" />:null}
+					<h3 class="hidden md:block flex-1">{title}</h3>
+					{type ? <Lyric client:only="react" className="w-[300px] flex-1 hidden xl:block" />:null}
 					<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 				</KHeader>
 				<KMain cls="text-center main-scroll-wrap bg-gray-300 realtive overflow-hidden overflow-y-auto">

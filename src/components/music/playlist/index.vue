@@ -87,9 +87,13 @@ onMounted(() => {
 <template>
 	<ElSkeleton :loading="pageLoading" animated>
 		<template #template>
-			<div class="flex mb-2">
-				<el-skeleton-item v-for="item in 6" variant="button" style="margin-right: 15px;" :key="item" />
-			</div>
+			<el-tabs>
+				<el-tab-pane v-for="item in 10" :key="item">
+					<template #label>
+						<el-skeleton-item variant="button" />
+					</template>
+				</el-tab-pane>
+			</el-tabs>
 		</template>
 		<template #default>
 			<div class="relative">
@@ -97,11 +101,11 @@ onMounted(() => {
 					<el-tab-pane v-for="tab in state.cateData.recommend" :label="tab.name" :key="tab.id" :name="tab.id+''">
 						<template #label>
 							<span v-if="tab.id=='-1'">
-								<el-popover trigger="hover" effect="light" width="600px">
+								<el-popover trigger="hover" effect="light" width="50%">
 									<div class="p-3 overflow-hidden overflow-y-auto h-[300px]" v-if="state.cateData.all">
 										<div class="flex items-center mb-5" :key="item.name" v-for="item in state.cateData.all">
 											<div class="title text-xl mr-5">{{item.category}}</div>
-											<div class="content flex !w-[85%] flex-wrap" v-if="item.filters">
+											<div class="content flex !w-[90%] flex-wrap" v-if="item.filters">
 												<span class="text-[14px] leading-28px mr-5 cursor-pointer !hover:text-color-[var(--el-color-primary)]" @click="onTabChange(cate.id)" :key="cate.name" v-for="cate in item.filters">{{cate.name}}</span>
 											</div>
 										</div>
@@ -115,21 +119,6 @@ onMounted(() => {
 						</template>
 					</el-tab-pane>
 				</el-tabs>
-				<!-- <div class="more absolute cursor-pointer !hover:text-color-[var(--el-color-primary)] z-2 text-sm right-0 bottom-5">
-					<el-popover trigger="hover" effect="light" width="600px">
-						<div class="p-3 overflow-hidden overflow-y-auto h-[300px]" v-if="state.cateData.all">
-							<div class="flex items-center mb-5" :key="item.name" v-for="item in state.cateData.all">
-								<div class="title text-xl flex-base-[200px] mr-10">{{item.category}}</div>
-								<div class="content flex flex-wrap" v-if="item.filters">
-									<span class="text-[14px] leading-28px mr-5 cursor-pointer !hover:text-color-[var(--el-color-primary)]" @click="onTabChange(cate.id)" :key="cate.name" v-for="cate in item.filters">{{cate.name}}</span>
-								</div>
-							</div>
-						</div>
-						<template #reference>
-							<span class="flex items-center">更多<el-icon size="18" class="ml-2"><i class="i-carbon-chevron-down"></i></el-icon></span>
-						</template>
-					</el-popover>
-				</div> -->
 			</div>
 		</template>
 	</ElSkeleton>
