@@ -50,15 +50,15 @@ const playListDetail = (props:any) => {
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'封面', dataIndex: 'img_url', hidden: false, width: '80px', render: (text:string, record:any) => <Image src={text} className='w-[48px]' />, align: 'left'},
-		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '220px', dataIndex: 'title', align: 'left'},
+		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[70px]' />, align: 'left'},
+		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '180px', dataIndex: 'title', align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌手':'作者'}</span>, dataIndex: 'artist', width: '160px', render: (text:string, record:any) => record.artist || record.author, align: 'left'},
 		{title:'专辑', dataIndex: 'album', hidden: false, width: '260px', render: (text:string, record:any) => text || '--', align: 'left'},
-		{title:'操作', dataIndex: 'operate', align: 'left', width: '200px', render: (text:string, record:any, index: number) => [
+		{title:'操作', dataIndex: 'operate', align: 'left', width: '210px', render: (text:string, record:any, index: number) => [
 			<Button onClick={() => {
 				searchType == '0' && onPlay(record, index)
 				searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
-			}} size='small' key={'play'} className='mr-1'>{searchType == '0' ? <span className='i-carbon-play-filled-alt text-md'></span>:<span className='i-carbon-view text-md'></span>}{searchType == '0'?'播放':'详情'}</Button>,
+			}} size='small' key={'play'} className='mr-2'>{searchType == '0' ? <span className='i-carbon-play-filled-alt text-md'></span>:<span className='i-carbon-view text-md'></span>}{searchType == '0'?'播放':'详情'}</Button>,
 			<Button size='small' key={'link'} onClick={() => {
 				record.source_url && window.open(record.source_url, '_blank')
 			}}><span className='i-carbon-link text-md'></span>外链</Button>
