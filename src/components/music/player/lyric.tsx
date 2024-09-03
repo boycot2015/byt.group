@@ -1,6 +1,6 @@
 import { useEffect, useState, createRef } from "react"
 import { Carousel, Typography } from 'antd'
-import { StorageEmitter } from '@/utils';
+import { CustomEvent } from '@/utils';
 const { Text } = Typography;
 const contentStyle: React.CSSProperties = {
     margin: 0,
@@ -19,13 +19,6 @@ const lyric = (props:any) => {
     })
     let carouselRef = createRef<any>()
     const getData = (playData?:any) => {
-        if (playData) {
-            setState({
-                ...state,
-                ...playData,
-            })
-            return
-        }
         let data:any = window.localStorage.getItem('playData')
         try {
             data = JSON.parse(data)
@@ -34,6 +27,7 @@ const lyric = (props:any) => {
         }
         setState({
             ...state,
+            ...playData || {},
             ...data,
         })
     }
@@ -42,19 +36,21 @@ const lyric = (props:any) => {
     }, [])
     const onPlay = (playData:any) => {
         getData(playData)
-        StorageEmitter.on('playing', (audio:any) => {
+        CustomEvent.on('playing', (audio:any) => {
             let lyricArr = state.lyric?.split('\n').filter((_:any) =>_).map((el:any) => el.split(']')[0].split('[')[1].split('.')[0])
             let min = parseInt(audio.currentTime / 60 + '')
             let sec = parseInt((audio.currentTime % 60).toFixed(2))
             let currentTime = (min < 10 ? ('0' + min) : min) +':'+ (sec < 10 ? ('0' + sec) : sec)
             setState({
                 ...state,
+                ...playData || {},
                 autoplaySpeed: (++state.autoplaySpeed * 100),
                 currentTime,
             })
             if (lyricArr.includes(currentTime)) {
                 setState({
                     ...state,
+                    ...playData || {},
                     autoplaySpeed: 0,
                     currentIndex: lyricArr.indexOf(currentTime),
                     currentTime,
@@ -63,9 +59,10 @@ const lyric = (props:any) => {
             }
         })
     }
-    StorageEmitter.on('play', onPlay)
+    CustomEvent.on('play', onPlay)
     return (
         <div className={`leading-60px h-[60px] overflow-hidden ${props.className}`}>
+            {state.lyric}
             <Carousel dotPosition="left" ref={carouselRef} speed={state.autoplaySpeed || 500} easing={'ease-in-out'} dots={false} autoplay arrows={false} infinite={false}>
             {state.lyric && state.lyric.split('\n').filter((_:any) =>_).map((item:any, index:number) => {
                     return item.split(']')[1] ? <div key={item} className="pl-2 text-left">

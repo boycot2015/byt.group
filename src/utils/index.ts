@@ -1,16 +1,14 @@
-export const StorageEmitter =  {
+export const CustomEvent =  {
     listeners: {} as any,
     on: function (event: string | number, fn: any) {
         (this.listeners[event] || (this.listeners[event] = [])).push(fn);
-        // this.listeners[event] && (this.listeners[event] = [fn])
-        // this.listeners[event] = [fn]
     },
     off: function(event: string | number, fn: any) {
       const eventList = this.listeners[event];
       eventList && eventList.length && (this.listeners[event] = [eventList.filter((f: any) => f!==fn)]);
     },
     emit: function(event: string | number, ...arg: any[]) {
-      this.listeners[event] && this.listeners[event].forEach((fn: { apply: (arg0: { listeners: any; on(event: string | number, fn: any): void; off(event: string | number, fn: any): void; emit(event: string | number, ...arg: any[]): void; }, arg1: any[]) => any; }) => fn?.apply(this, arg));
+      this.listeners[event] && this.listeners[event].forEach((fn: any) => fn?.apply(this, arg));
     }
 }
 export const JSONfn = () => {

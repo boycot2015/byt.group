@@ -4,7 +4,7 @@ import type { TableColumnType } from 'antd';
 import { useState, useEffect, useRef } from 'react';
 import { baseApiUrl } from '@/api/index';
 import zhCN from 'antd/locale/zh_CN';
-import { StorageEmitter } from '@/utils';
+import { CustomEvent } from '@/utils';
 type InfoProp = {
 	cover_img_url?: string
 	title?: string
@@ -50,15 +50,15 @@ const playListDetail = (props:any) => {
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'封面', dataIndex: 'img_url', hidden: false, width: '48px', render: (text:string, record:any) => <Image src={text} className='w-[48px]' />, align: 'left'},
+		{title:'封面', dataIndex: 'img_url', hidden: false, width: '80px', render: (text:string, record:any) => <Image src={text} className='w-[48px]' />, align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '220px', dataIndex: 'title', align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌手':'作者'}</span>, dataIndex: 'artist', width: '160px', render: (text:string, record:any) => record.artist || record.author, align: 'left'},
 		{title:'专辑', dataIndex: 'album', hidden: false, width: '260px', render: (text:string, record:any) => text || '--', align: 'left'},
-		{title:'操作', dataIndex: 'operate', align: 'left', width: '180px', render: (text:string, record:any, index: number) => [
+		{title:'操作', dataIndex: 'operate', align: 'left', width: '200px', render: (text:string, record:any, index: number) => [
 			<Button onClick={() => {
 				searchType == '0' && onPlay(record, index)
 				searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
-			}} size='small' key={'play'} className='mr-2'>{searchType == '0' ? <span className='i-carbon-play-filled-alt text-md'></span>:<span className='i-carbon-view text-md'></span>}{searchType == '0'?'播放':'详情'}</Button>,
+			}} size='small' key={'play'} className='mr-1'>{searchType == '0' ? <span className='i-carbon-play-filled-alt text-md'></span>:<span className='i-carbon-view text-md'></span>}{searchType == '0'?'播放':'详情'}</Button>,
 			<Button size='small' key={'link'} onClick={() => {
 				record.source_url && window.open(record.source_url, '_blank')
 			}}><span className='i-carbon-link text-md'></span>外链</Button>
@@ -115,66 +115,30 @@ const playListDetail = (props:any) => {
 	}
     const onPlay = async (item?:any, index?:number) => {
 		item = item || state.songs[0] || {}
-		if (!item.id) return
-		let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type}`);
-		let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type}`);
-		let lyricRes = await lyricData.json();
-		let urlRes = await urlDta.json();
-		// console.log(item, lyricRes, urlRes, 'item');
-		window.localStorage.setItem('playData', JSON.stringify({
-			...item,
-			playIndex: index || 0,
-			url: urlRes.data,
-			lyric: lyricRes.data.lyric,
-		}));
-		StorageEmitter.emit('play', {
-			...item,
-			playIndex: index || 0,
-			url: urlRes.data,
-			lyric: lyricRes.data.lyric,
-		})
-		// console.log(StorageEmitter.listeners, 'StorageEmitter.emit');
-		if (!urlRes.data) {
-			StorageEmitter.emit('playNext', true)
-			// StorageEmitter.off('playNext', playNext)
-			return
-		}
-		StorageEmitter.on('playNext', playNext)
-    }
-	const playNext = (isNext:boolean) => {
-		if (isNext) {
-			if (state.playIndex > state.songs.length - 1) {
-				setState({
-					...state,
-					playIndex: 0
-				})
-				onPlay(state.songs[0]);
-				return
+		try {
+			let playData = {
+				...item,
+				type,
+				songs: state.songs,
+				playIndex: index || 0
 			}
-			setState({
-				...state,
-				playIndex: ++state.playIndex
-			})
-			onPlay(state.songs[++state.playIndex]);
-			return
+			if (!item.id) return
+			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type}`);
+			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type}`);
+			let lyricRes = await lyricData.json();
+			let urlRes = await urlDta.json();
+			playData = { ...playData, ...lyricRes.data, url: urlRes.data };
+			window.localStorage.setItem('playData', JSON.stringify(playData))
+			CustomEvent.emit('play', playData)
+			
+		} catch (error) {
+			console.log(error, item, index, 'isNext');
 		}
-		if (state.playIndex < 0) {
-			setState({
-				...state,
-				playIndex: 0
-			})
-			onPlay(state.songs[0]);
-			return
-		}
-		setState({
-			...state,
-			playIndex: --state.playIndex
-		})
-		onPlay(state.songs[--state.playIndex]);
     }
 	const toggleSearchType = (searchType:any) => {
 		getSearchData({ page: 1, searchType })
     }
+	CustomEvent.on('playNext', onPlay)
 	useEffect(() => {
 		setLoading(true)
 		keyword ? getSearchData(): getMusicList()
@@ -217,7 +181,7 @@ const playListDetail = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
-			scroll={keyword?{ x: '800px', y: 'calc(100vh - 390px)' }:{ x: '700px' }}
+			scroll={keyword?{ x: '800px', y: 'calc(100vh - 390px)' }:{ x: '800px' }}
 			pagination={keyword?{
 				total: state.totalCount,
 				pageSizeOptions: ['10', '20'],

@@ -1,37 +1,43 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { KImage } from "@ikun-ui/core";
-    import { StorageEmitter } from '@/utils';
+    import { CustomEvent } from '@/utils';
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
+    $:state = {} as any;
+
     let audioRef: HTMLAudioElement | {currentTime?: number} = {};
-    export let state:any = {};
-    const getData = (playData?:any) => {
-        if (playData) {
-            state = { ...state, ...playData }
-            return
-        }
-        let data:any = window.localStorage.getItem('playData');
+    const getData = (playData?:any, isNext?:boolean) => {
         try {
-            data = JSON.parse(data);
+            state = JSON.parse(window.localStorage.getItem('playData') as string) || playData || {};
         } catch (error) {
-            data = {}
+            state = {...playData || {}}
         }
-        state = { ...state, ...data };
-    }
-    const playNext = (isNext:boolean) => {
-        StorageEmitter.emit('playNext', isNext)
+		if (isNext) {
+            CustomEvent.emit('playNext', playData, state.playIndex)
+        }
     }
     const onPlaying = (e:any) => {
-        StorageEmitter.emit('playing', audioRef)
+        CustomEvent.emit('playing', audioRef)
+    }
+    const playNext = (isNext:boolean, data?:any) => {
+		if (isNext) {
+            state = {
+                ...state,
+                playIndex: isNext ? ++state.playIndex : --state.playIndex
+            }
+		}
+        if (!state.songs[state.playIndex]) {
+            state.playIndex = 0
+        }
+        
+        getData(data || state.songs[state.playIndex] || {}, true)
     }
     onMount(() => {
         getData();
+        CustomEvent.on('play', getData)
     })
-    StorageEmitter.on('play', getData)
-	onDestroy(() => {
-        
-    });
+	onDestroy(() => {});
 </script>
 <style>
     audio::-webkit-media-controls-panel {
