@@ -48,8 +48,8 @@ const newsDetailList = (props:any) => {
 	const columns:TableColumnType[] = [
 		{title:'图片', dataIndex: 'album', width: '80px', render: (text:string, record:any) => <Image className='!w-[80px] bg-[grey]' src={record.pic || record.src || record.img}></Image>, align: 'left'},
 		{title:'作者', dataIndex: 'owner', width: '120px', render: (text:string, record:any) => text || '--', align: 'left'},
-		{title: '标题', dataIndex: 'title', width: '180px', render: (text:string, record:any) => <a href={record.mobileUrl || record.url} target='_blank'>{text}</a>, align: 'left'},
-		{title: '详情', dataIndex: 'desc', render: (text:string, record:any) => text || '--', align: 'left'},
+		{title: '标题', dataIndex: 'title', width: '220px', render: (text:string, record:any) => <p><a href={record.mobileUrl || record.url} target='_blank'>{text}</a></p>, align: 'left'},
+		{title: '详情', dataIndex: 'desc', width: '220px', render: (text:string, record:any) => text || '--', align: 'left'},
 	]
 	const getListData = async () => {
 		let res = await fetch(`${baseApiUrl}/hots?name=${type}`)
@@ -91,7 +91,7 @@ const newsDetailList = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
-			scroll={{ x: 'auto', y: 'calc(100vh - 390px)'}}
+			scroll={{ x: 'auto', y: 'calc(100vh - 400px)'}}
 			dataSource={state.list}
 			columns={columns}
 			/>

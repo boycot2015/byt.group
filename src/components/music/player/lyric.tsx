@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useReducer, useRef } from "react"
 import { Carousel, Typography } from 'antd'
 import { CustomEvent } from '@/utils';
 const { Text } = Typography;
@@ -10,12 +10,32 @@ const contentStyle: React.CSSProperties = {
     textAlign: 'left',
     background: 'var(--el-color-bg)',
 };
+type State = {
+    lyric?: string;
+    currentIndex: number
+    currentTime: string
+  };
 const lyric = (props:any) => {
-    let [state, setState] = useState({
-        lyric: '',
-        currentIndex: 0,
-        currentTime: ''
-    })
+    // let [state, setState] = useState({
+    //     lyric: '',
+    //     currentIndex: 0,
+    //     currentTime: ''
+    // })
+    const [state, dispatch] = useReducer(reducer, {
+            lyric: '',
+            currentIndex: 0,
+            currentTime: ''
+        });
+    function reducer(state: State, action: any): State {
+        switch (action.type) {
+          case 'setData':
+            return { ...state, ...action.data };
+          case 'setLyric':
+            return { ...state, ...action.data };
+          default:
+            throw new Error();
+        }
+      }
     let carouselRef = useRef<any>()
     const getData = (playData?:any) => {
         let data:any = window.localStorage.getItem('playData')
@@ -24,10 +44,12 @@ const lyric = (props:any) => {
         } catch (error) {
             data = {}
         }
-        setState({
-            ...state,
-            ...playData || {},
-            ...data,
+        dispatch({
+            type: 'setData',
+            data: {
+                ...playData || {},
+                ...data,
+            }
         })
         CustomEvent.on('playing', (audio:any) => playing(audio, {
             ...state,
@@ -38,21 +60,18 @@ const lyric = (props:any) => {
     const playing = (audio:any, playData?:any) => {
         let lyricArr = playData.lyric?.split('\n').filter((_:any) =>_).map((el:any) => el.split(']')[0].split('[')[1].split('.')[0])
         let min = parseInt(audio.currentTime / 60 + '')
-        let sec = parseInt((audio.currentTime % 60).toFixed(2))
+        let sec = parseInt((audio.currentTime % 60).toFixed(3))
         let currentTime = (min < 10 ? ('0' + min) : min) +':'+ (sec < 10 ? ('0' + sec) : sec)
-        setState({
-            ...state,
-            ...playData || {},
-            currentTime: audio.currentTime,
-        })
-        if (lyricArr.includes(currentTime)) {
-            setState({
-                ...state,
+        dispatch({
+            type: 'setData',
+            data: {
                 ...playData || {},
                 currentIndex: lyricArr.indexOf(currentTime),
                 currentTime,
-            })
-            carouselRef.current?.goTo(lyricArr.indexOf(currentTime))
+            }
+        })
+        if (lyricArr.includes(currentTime)) {
+            carouselRef.current?.goTo(lyricArr.indexOf(currentTime) || state.currentIndex)
         }
     }
     useEffect(() => {

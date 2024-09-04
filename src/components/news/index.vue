@@ -95,6 +95,6 @@ onMounted(() => {
 				</el-skeleton>
 			</ElCol>
 		</ElRow>
-		<ElBacktop style="right: 50px;bottom: 120px;" target=".main-scroll-wrap" />
+		<!-- <ElBacktop style="right: 50px;bottom: 120px;" target=".main-scroll-wrap" /> -->
 	</div>
 </template>

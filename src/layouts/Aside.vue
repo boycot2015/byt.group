@@ -13,7 +13,6 @@ onMounted(() => {
         collapse.value = window.innerWidth < 768
     })
 })
-console.log(props.routerPath.split('/').filter(_=>_)[0], '1232');
 
 </script>
 <style lang="less" scoped>

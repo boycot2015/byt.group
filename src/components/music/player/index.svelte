@@ -56,7 +56,7 @@
         <audio bind:this={audioRef} class="flex-1" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer" size={20} ></KIcon>
     </div>
-    <!-- <div class="lyric hidden lg:flex lg:flex-1">
+    <!-- <div class="lyric hidden lg:flex flex-1">
         <slot name="lyric" data={state}></slot>
     </div> -->
 </div>

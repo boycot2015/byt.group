@@ -101,7 +101,7 @@ onMounted(() => {
 					<el-tab-pane v-for="tab in state.cateData.recommend" :label="tab.name" :key="tab.id" :name="tab.id+''">
 						<template #label>
 							<span v-if="tab.id=='-1'">
-								<el-popover trigger="hover" effect="light" width="50%">
+								<el-popover :show-arrow="false" trigger="hover" popper-class="!backdrop-blur-md !bg-[rgba(255,255,255,0.6)]" ffect="light" width="50%">
 									<div class="p-3 overflow-hidden overflow-y-auto h-[300px]" v-if="state.cateData.all">
 										<div class="flex items-center mb-5" :key="item.name" v-for="item in state.cateData.all">
 											<div class="title text-xl mr-5">{{item.category}}</div>
