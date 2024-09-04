@@ -6,6 +6,7 @@ import Aside from './Aside.vue';
 import Search from '@/components/Search';
 import Lyric from '@/components/music/player/lyric.tsx';
 import Player from '@/components/music/player/index.svelte';
+import Cover from '@/components/music/cover/index.tsx';
 import 'virtual:uno.css';
 import 'element-plus/dist/index.css';
 import '@assets/less/index.less';
@@ -60,7 +61,8 @@ const { url } = Astro;
 				</KMain>
 				<KFooter slot="footer" cls="text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
 					<Player client:only="svelte">
-						<!-- <Lyric slot="lyric" className="w-[80%]" client:only="react" /> -->
+						<Cover slot="cover" client:only="react" />
+						<Lyric slot="lyric" className="w-[80%] hidden" client:only="react" />
 					</Player>
 				</KFooter>
 			</KContainer>

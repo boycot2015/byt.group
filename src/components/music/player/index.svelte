@@ -33,6 +33,9 @@
         
         getData(data || state.songs[state.playIndex] || {}, true)
     }
+    const openCover = () => {
+        CustomEvent.emit('showCover', state)
+    }
     onMount(() => {
         getData();
         CustomEvent.on('play', getData)
@@ -45,9 +48,13 @@
     }
 </style>
 <div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-center h-[60px] overflow-hidden">
-    <div class="image w-[40px] h-[40px] bg-[black]">
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <div class="image w-[40px] h-[40px] bg-[black] realtive cursor-pointer" on:click={openCover}>
         <KImage cls="w-[100%] h-[100%]" src={state.img_url}></KImage>
+        <KIcon class="h-full w-full absolute z-10" icon="i-carbon-arrow-up" size={32}></KIcon>
     </div>
+    <slot name="cover"></slot>
     <!-- <div class="progress flex-1 px-4">
         <KProgress strokeWidth={8} status={'primary'} percentage={percentage} format={formatPercentage}></KProgress>
     </div> -->
@@ -56,6 +63,7 @@
         <audio bind:this={audioRef} class="flex-1" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer" size={20} ></KIcon>
     </div>
+    <slot name="lyric" data={state}></slot>
     <!-- <div class="lyric hidden lg:flex flex-1">
         <slot name="lyric" data={state}></slot>
     </div> -->
