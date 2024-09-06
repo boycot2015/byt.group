@@ -50,7 +50,7 @@ const playListDetail = (props:any) => {
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[40px]' />, align: 'left'},
+		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[64px]' />, align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '180px', dataIndex: 'title', align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌手':'作者'}</span>, dataIndex: 'artist', width: '160px', render: (text:string, record:any) => record.artist || record.author, align: 'left'},
 		{title:'专辑', dataIndex: 'album', hidden: false, width: '260px', render: (text:string, record:any) => text || '--', align: 'left'},
@@ -90,7 +90,6 @@ const playListDetail = (props:any) => {
 			info: songsRes.data.info || {},
 			totalCount: data.total,
 			songs: songsRes.data.tracks || []
-			// .filter((el, index, self) => self.findIndex((item) => item.dataIndex === el.dataIndex) === index)
 		})
 		setLoading(false)
 		
@@ -114,14 +113,14 @@ const playListDetail = (props:any) => {
 		
 	}
     const onPlay = async (item?:any, index?:number) => {
-		item = item || state.songs[0] || {}
+		item = item || state.songs[index||0] || {}
 		try {
 			let playData = {
 				...item,
 				type,
 				songs: state.songs,
 				playIndex: index || 0
-			}
+			}			
 			if (!item.id) return
 			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type}`);
 			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type}`);
@@ -130,7 +129,6 @@ const playListDetail = (props:any) => {
 			playData = { ...playData, ...lyricRes.data, url: urlRes.data };
 			window.localStorage.setItem('playData', JSON.stringify(playData))
 			CustomEvent.emit('play', playData)
-			
 		} catch (error) {
 			console.log(error, item, index, 'isNext');
 		}
@@ -181,6 +179,18 @@ const playListDetail = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
+			onRow={(record, index) => {
+				return {
+				  onClick: (event) => {
+					searchType == '0' && onPlay(record, index)
+					searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
+				  }, // 点击行
+				  onDoubleClick: (event) => {},
+				  onContextMenu: (event) => {},
+				  onMouseEnter: (event) => {}, // 鼠标移入行
+				  onMouseLeave: (event) => {},
+				};
+			}}
 			scroll={keyword?{ x: '800px', y: 'calc(100vh - 390px)' }:{ x: '800px' }}
 			pagination={keyword?{
 				total: state.totalCount,

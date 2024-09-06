@@ -44,5 +44,5 @@
         {/each}
     </div>
 { :else }
-    <KTabs navOptions={cateList} type='card' on:click={handleClick} {value}></KTabs>
+    <KTabs navOptions={cateList} type='' on:click={handleClick} {value}></KTabs>
 {/if}

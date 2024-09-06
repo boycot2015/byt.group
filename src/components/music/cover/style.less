@@ -1,0 +1,24 @@
+.ant-carousel .cover-lyric .slick-list {
+    overflow-y: auto !important;
+    height: auto !important;
+    .slick-slide ,.ant-typography {
+        transition: font-size 0.5s !important;
+        &.slick-active {
+            color: red;
+            .ant-typography {
+                font-size: 24px;
+            }
+        }
+    }
+    .slick-track {
+        padding-top: 60px;
+    }
+}
+.ant-drawer {
+    position: absolute !important;
+    .cover-drawer {
+        .ant-drawer-bottom>.ant-drawer-content-wrapper {
+            box-shadow: none !important;
+        }
+    }
+}

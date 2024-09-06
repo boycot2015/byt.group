@@ -1,6 +1,6 @@
 ---
-import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KBacktop } from '@ikun-ui/core';
-// import { ElBacktop } from 'element-plus';
+import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KBacktop, KAffix } from '@ikun-ui/core';
+// import { ElAffix, ElButton} from 'element-plus';
 import { KIcon } from '@ikun-ui/icon';
 import Aside from './Aside.vue';
 import Search from '@/components/Search';
@@ -13,9 +13,7 @@ import '@assets/less/index.less';
 interface Props {
 	title: string
 }
-interface Params {
-	[key:string]: string
-}
+type ScrollTarget =  Window | Document | HTMLElement
 const { title } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
@@ -33,52 +31,67 @@ const { url } = Astro;
 	</head>
 	<body>
 		<KContainer>
-			<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative">
-				<Aside client:only="vue" routerPath={url.pathname}></Aside>
-			</KAside>
-			<KContainer cls="relative">
-				<KHeader slot="header" cls="text-center flex items-center left-[auto] justify-between !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] leading-40px w-[100%] backdrop-blur-md !overflow-auto !z-100 absolute">
-					<div class="navgator justify-center mr-5 hidden md:flex">
-						<KButton type="main" cls="mr-2 go-back" ghost>
-							<KIcon icon="i-carbon-arrow-left" size={16}></KIcon>
-						</KButton>
-						<KButton type="main" cls="mr-2 go-forward" ghost>
-							<KIcon icon="i-carbon-arrow-right" size={16}></KIcon>
-						</KButton>
-						<KButton type="main" cls="go-reload" ghost>
-							<KIcon icon="i-carbon-renew" size={16}></KIcon>
-						</KButton>
-					</div>
-					<h3 class="hidden flex-1 md:block">{title}</h3>
-					<Lyric client:only="react" className="w-[300px] flex-1 px-2 hidden lg:block" />
-					<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
-				</KHeader>
-				<KMain cls="text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[100px] overflow-y-auto">
-					<slot></slot>
-					<KBacktop cls="shadow-none" client:only="svelte" bottom={80} right={50} showHeight={50} target=".main-scroll-wrap">
-					</KBacktop>
-					<!-- <ElBacktop client:only="vue" target={".main-scroll-wrap"}></ElBacktop> -->
-				</KMain>
-				<KFooter slot="footer" cls="text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
-					<Player client:only="svelte">
-						<Cover slot="cover" client:only="react" />
-						<Lyric slot="lyric" className="w-[80%] hidden" client:only="react" />
-					</Player>
-				</KFooter>
+			<KContainer cls="relative !overflow-hidden h-full">
+				<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative">
+					<Aside client:only="vue" routerPath={url.pathname}></Aside>
+				</KAside>
+				<KContainer cls="relative">
+					<KHeader slot="header" cls="text-center flex items-center left-[auto] justify-between !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] leading-40px w-[100%] backdrop-blur-md !overflow-auto !z-100 absolute">
+						<div class="navgator justify-center mr-5 hidden md:flex">
+							<KButton type="main" cls="mr-2 go-back" ghost>
+								<KIcon icon="i-carbon-arrow-left" size={16}></KIcon>
+							</KButton>
+							<KButton type="main" cls="mr-2 go-forward" ghost>
+								<KIcon icon="i-carbon-arrow-right" size={16}></KIcon>
+							</KButton>
+							<KButton type="main" cls="go-reload" ghost>
+								<KIcon icon="i-carbon-renew" size={16}></KIcon>
+							</KButton>
+						</div>
+						<h3 class="hidden flex-1 md:block">{title}</h3>
+						<Lyric client:only="react" className="w-[300px] flex-1 px-2 hidden lg:block" />
+						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
+					</KHeader>
+					<KMain cls="text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[100px] mb-[60px] overflow-y-auto">
+						<slot></slot>
+						<KBacktop cls="shadow-none" client:only="svelte" bottom={80} right={50} showHeight={50} target=".main-scroll-wrap">
+						</KBacktop>
+						<!-- <ElBacktop client:only="vue" target={".main-scroll-wrap"}></ElBacktop> -->
+						<!-- <ElAffix :offset="120" target=".main-scroll-wrap" class="md:hidden" position="bottom" client:only="vue">
+							<ElButton client:only="vue">首页</ElButton>
+						</ElAffix> -->
+					</KMain>
+					<Cover client:only="react" />
+					<KAffix bottom={120} class="k-affix k-affix--affixed md:hidden z-99 bottom-[150px] right-[60px]" triggerBottom={0}>
+						<div class="go-home">
+							<KIcon icon="i-carbon-rocket" size={20}></KIcon>
+						</div>
+					</KAffix>
+				</KContainer>
 			</KContainer>
+			<KFooter slot="footer" cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
+				<Player client:only="svelte">
+					<Lyric slot="lyric" className="w-[80%] hidden" client:only="react" />
+				</Player>
+			</KFooter>
 		</KContainer>
 	</body>
 </html>
 <script is:inline>
-	document.querySelector('.go-back').onclick = () => {
-		window.history.back()
-	}
-	document.querySelector('.go-forward').onclick = () => {
-		window.history.forward()
-	}
-	document.querySelector('.go-reload').onclick = () => {
-		window.location.reload()
-	}
+	window.addEventListener('load', () => {
+		document.querySelector('.go-back').onclick = () => {
+			window.history.back()
+		}
+		document.querySelector('.go-home').onclick = () => {			
+			window.location.href = '/'
+		}
+		document.querySelector('.go-forward').onclick = () => {
+			window.history.forward()
+		}
+		document.querySelector('.go-reload').onclick = () => {
+			window.location.reload()
+		}
+	})
 </script>
 <style lang="less">
 	body {

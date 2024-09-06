@@ -13,41 +13,50 @@ const contentStyle: React.CSSProperties = {
 type State = {
     lyric?: string;
     currentIndex: number
+    lyircArr: string[]
     currentTime: string
   };
 const lyric = (props:any) => {
-    // let [state, setState] = useState({
-    //     lyric: '',
-    //     currentIndex: 0,
-    //     currentTime: ''
-    // })
+    let carouselRef = useRef<any>()
     const [state, dispatch] = useReducer(reducer, {
-            lyric: '',
-            currentIndex: 0,
-            currentTime: ''
-        });
+        lyric: '',
+        lyircArr: [],
+        currentIndex: 0,
+        currentTime: ''
+    });
     function reducer(state: State, action: any): State {
         switch (action.type) {
           case 'setData':
-            return { ...state, ...action.data };
-          case 'setLyric':
-            return { ...state, ...action.data };
+            let lyircArr = action.data?.lyric.trim()?.split('\n').filter((_:any) =>_ && _.split(']')[1]) || []
+            if (action.data.audio) {
+                let timeArr = lyircArr.map((el:any) => el.split(']')[0].split('[')[1].split('.')[0])
+                timeArr = [...timeArr]
+                let min = parseInt(action.data.audio.currentTime / 60 + '')
+                let sec = parseInt((action.data.audio.currentTime % 60).toFixed(3))
+                let currentTime = (min < 10 ? ('0' + min) : min) +':'+ (sec < 10 ? ('0' + sec) : sec)
+                if (timeArr.indexOf(currentTime) > - 1 && timeArr.indexOf(currentTime) >= state.currentIndex) {
+                    // console.log(state.currentTime, currentTime, timeArr, 'state.currentIndex');
+                    carouselRef.current?.goTo(timeArr.indexOf(currentTime))
+                }
+                return { ...state, ...action.data, lyircArr, currentTime, currentIndex: timeArr.indexOf(currentTime) };
+            }
+            return { ...state, ...action.data, lyircArr };
           default:
             throw new Error();
         }
       }
-    let carouselRef = useRef<any>()
     const getData = (playData?:any) => {
-        let data:any = window.localStorage.getItem('playData')
+        let data:any = window.localStorage.getItem('playData') || {}
         try {
             data = JSON.parse(data)
         } catch (error) {
-            data = {}
+            console.log(error, 'getPlayData');
+        } finally {
+            data = { ...data, ...playData || {} }
         }
         dispatch({
             type: 'setData',
             data: {
-                ...playData || {},
                 ...data,
             }
         })
@@ -58,21 +67,13 @@ const lyric = (props:any) => {
         }))
     }
     const playing = (audio:any, playData?:any) => {
-        let lyricArr = playData.lyric?.split('\n').filter((_:any) =>_).map((el:any) => el.split(']')[0].split('[')[1].split('.')[0])
-        let min = parseInt(audio.currentTime / 60 + '')
-        let sec = parseInt((audio.currentTime % 60).toFixed(3))
-        let currentTime = (min < 10 ? ('0' + min) : min) +':'+ (sec < 10 ? ('0' + sec) : sec)
         dispatch({
             type: 'setData',
             data: {
-                ...playData || {},
-                currentIndex: lyricArr.indexOf(currentTime),
-                currentTime,
+                audio,
+                ...playData || {}
             }
         })
-        if (lyricArr.includes(currentTime)) {
-            carouselRef.current?.goTo(lyricArr.indexOf(currentTime) || state.currentIndex)
-        }
     }
     useEffect(() => {
         getData()
@@ -84,12 +85,10 @@ const lyric = (props:any) => {
     }, [])
     return (
         <div className={`leading-60px h-[60px] overflow-hidden ${props.className}`}>
-            <Carousel dotPosition="left" ref={carouselRef} autoplaySpeed={2000} speed={500} easing={'ease-in-out'} dots={false} autoplay={false} arrows={false} infinite={false}>
-            {state.lyric && state.lyric.split('\n').filter((_:any) =>_).map((item:any, index:number) => {
-                    return item.split(']')[1] ? <div key={item} className="pl-2 text-left">
-                        <Text ellipsis={{ tooltip: item.split(']')[1] }} style={contentStyle}>{item.split(']')[1]}</Text>
-                    </div> : <div key={item} className="pl-2 text-left">
-                        <Text ellipsis={{ tooltip: item }} style={contentStyle}>{item}</Text>
+            <Carousel dotPosition="left" ref={carouselRef} autoplaySpeed={2000} speed={500} easing={'ease-in-out'} dots={false} autoplay={false} arrows={false} infinite={false} {...props} className={props.carouselClass||''}>
+            {state.lyircArr.map((item:any, index:number) => {
+                    return <div key={item} className="pl-2 text-left">
+                        <Text style={contentStyle}>{item.split(']')[1]}</Text>
                     </div>
                 })}
             </Carousel>

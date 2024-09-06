@@ -4,41 +4,42 @@
     import { CustomEvent } from '@/utils';
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
-    $:state = {} as any;
+    $:state = { visible: false } as any;
 
     let audioRef: HTMLAudioElement | {currentTime?: number} = {};
     const getData = (playData?:any, isNext?:boolean) => {
         try {
             state = JSON.parse(window.localStorage.getItem('playData') as string) || playData || {};
         } catch (error) {
-            state = {...playData || {}}
+            console.log(error, 'error');
+        } finally {
+            state = {...state, ...playData || {}}
         }
 		if (isNext) {
-            CustomEvent.emit('playNext', playData, state.playIndex)
+            CustomEvent.emit('playNext', state, state.playIndex)
         }
     }
     const onPlaying = (e:any) => {
         CustomEvent.emit('playing', audioRef)
     }
     const playNext = (isNext:boolean, data?:any) => {
-		if (isNext) {
-            state = {
-                ...state,
-                playIndex: isNext ? ++state.playIndex : --state.playIndex
-            }
-		}
+        isNext ? state.playIndex += 1 : state.playIndex -= 1
         if (!state.songs[state.playIndex]) {
             state.playIndex = 0
         }
-        
+        window.localStorage.setItem('playData', JSON.stringify({...state, ...(data || state.songs[state.playIndex] || {})}))
         getData(data || state.songs[state.playIndex] || {}, true)
     }
-    const openCover = () => {
-        CustomEvent.emit('showCover', state)
+    const toggleCover = () => {
+        state.visible = !state.visible
+        CustomEvent.emit('toggleCover', {...state, visible: state.visible })
     }
     onMount(() => {
         getData();
         CustomEvent.on('play', getData)
+    })
+    CustomEvent.on('toggleCover', ({ visible }:any) => {
+        state.visible = visible
     })
 	onDestroy(() => {});
 </script>
@@ -50,11 +51,10 @@
 <div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-center h-[60px] overflow-hidden">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="image w-[40px] h-[40px] bg-[black] realtive cursor-pointer" on:click={openCover}>
+    <div class="image w-[40px] h-[40px] bg-[black] realtive cursor-pointer" on:click={toggleCover}>
         <KImage cls="w-[100%] h-[100%]" src={state.img_url}></KImage>
         <KIcon class="h-full w-full absolute z-10" icon="i-carbon-arrow-up" size={32}></KIcon>
     </div>
-    <slot name="cover"></slot>
     <!-- <div class="progress flex-1 px-4">
         <KProgress strokeWidth={8} status={'primary'} percentage={percentage} format={formatPercentage}></KProgress>
     </div> -->
