@@ -1,6 +1,7 @@
 ---
 import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KBacktop, KAffix } from '@ikun-ui/core';
 // import { ElAffix, ElButton} from 'element-plus';
+import { CustomEvent } from '@/utils';
 import { KIcon } from '@ikun-ui/icon';
 import Aside from './Aside.vue';
 import Search from '@/components/Search';
@@ -17,6 +18,7 @@ type ScrollTarget =  Window | Document | HTMLElement
 const { title } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
+let lyircVisible = true
 ---
 <!doctype html>
 <html lang="zh-cn">
@@ -49,7 +51,7 @@ const { url } = Astro;
 							</KButton>
 						</div>
 						<h3 class="hidden flex-1 md:block">{title}</h3>
-						<Lyric client:only="react" className="w-[300px] flex-1 px-2 hidden lg:block" />
+						{<Lyric key="KHeader-Lyric" client:only="react" className="w-[300px] flex-1 px-2 hidden lg:block" />}
 						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 					</KHeader>
 					<KMain cls="text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[100px] mb-[60px] overflow-y-auto">
@@ -62,8 +64,8 @@ const { url } = Astro;
 						</ElAffix> -->
 					</KMain>
 					<Cover client:only="react" />
-					<KAffix bottom={120} class="k-affix k-affix--affixed md:hidden z-99 bottom-[150px] right-[60px]" triggerBottom={0}>
-						<div class="go-home">
+					<KAffix bottom={120} class="k-affix k-affix--affixed md:hidden z-99 bottom-[170px] right-[50px]" triggerBottom={0}>
+						<div class="go-home rounded-full p-2 bg-white">
 							<KIcon icon="i-carbon-rocket" size={20}></KIcon>
 						</div>
 					</KAffix>
@@ -71,7 +73,7 @@ const { url } = Astro;
 			</KContainer>
 			<KFooter slot="footer" cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
 				<Player client:only="svelte">
-					<Lyric slot="lyric" className="w-[80%] hidden" client:only="react" />
+					<!-- <Lyric key="Player-Lyric" slot="lyric" className="w-[80%]" client:only="react" /> -->
 				</Player>
 			</KFooter>
 		</KContainer>

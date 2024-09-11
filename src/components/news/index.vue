@@ -87,7 +87,7 @@ onMounted(() => {
 								<ElIcon class="icon" size="24" color="var(--el-color-primary)" v-if="index < 3 && !(list.pic||list.img_ur)"><span :class="{'i-carbon-fire text-color-[red]': index === 0, 'i-carbon-badge text-color-[orange]': index === 1, 'i-carbon-bookmark-filled': index === 2}"></span></ElIcon>
 								<ElImage v-if="(list.pic||list.img_url)" :src="list.pic||list.img_url" class="w-[60px] h-[42px]" :alt="item.title" lazy></ElImage>
 								<span v-else-if="index >= 3">{{ index + 1 }}.</span>
-								<ElText line-clamp="2" class="flex-1 hover:text-color-[var(--el-color-primary)]" :class="{'w-[100%]': index >= 3 && !(list.pic||list.img_url), 'w-[80%]': index < 3 && !(list.pic||list.img_url), 'w-[62%]': (list.pic||list.img_url)}"  style="padding: 0 10px;">{{ list.title }}</ElText>
+								<ElText line-clamp="2" :title="list.title" class="flex-1 hover:text-color-[var(--el-color-primary)]" :class="{'w-[100%]': index >= 3 && !(list.pic||list.img_url), 'w-[80%]': index < 3 && !(list.pic||list.img_url), 'w-[62%]': (list.pic||list.img_url)}"  style="padding: 0 10px;">{{ list.title }}</ElText>
 							</a>
 						</div>
 					</ElCard>

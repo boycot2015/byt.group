@@ -101,12 +101,12 @@ onMounted(() => {
 					<el-tab-pane v-for="tab in state.cateData.recommend" :label="tab.name" :key="tab.id" :name="tab.id+''">
 						<template #label>
 							<span v-if="tab.id=='-1'">
-								<el-popover :show-arrow="false" trigger="hover" popper-class="!backdrop-blur-md !bg-[rgba(255,255,255,0.6)]" ffect="light" width="50%">
+								<el-popover :show-arrow="false" trigger="hover" popper-class="!backdrop-blur-md !w-[100vw] !md:w-[50vw] !bg-[rgba(255,255,255,0.6)]" ffect="light" width="auto">
 									<div class="p-3 overflow-hidden overflow-y-auto h-[300px]" v-if="state.cateData.all">
-										<div class="flex items-center mb-5" :key="item.name" v-for="item in state.cateData.all">
+										<div class="flex mb-5" :key="item.name" v-for="item in state.cateData.all">
 											<div class="title text-xl mr-5">{{item.category}}</div>
-											<div class="content flex !w-[90%] flex-wrap" v-if="item.filters">
-												<span class="text-[14px] leading-28px mr-5 cursor-pointer !hover:text-color-[var(--el-color-primary)]" @click="onTabChange(cate.id)" :key="cate.name" v-for="cate in item.filters">{{cate.name}}</span>
+											<div class="content flex !text-justify !w-[82%] !md:w-[90%] flex-wrap" v-if="item.filters">
+												<span class="text-[14px] leading-28px mr-5 cursor-pointer !hover:text-color-[var(--el-color-primary)]" :class="{'text-color-[var(--el-color-primary)]': cate.id === state.cateId}" @click="onTabChange(cate.id)" :key="cate.name" v-for="cate in item.filters">{{cate.name}}</span>
 											</div>
 										</div>
 									</div>

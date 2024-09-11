@@ -20,6 +20,11 @@ type SongProp = {
     source: string
     source_url: string
     img_url: string
+	pic?: string
+	src?: string
+	img?: string
+	hot?: number|string
+	owner?: string
     url: string
     disabled: boolean
 }
@@ -46,10 +51,10 @@ const newsDetailList = (props:any) => {
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'图片', dataIndex: 'album', width: '80px', render: (text:string, record:any) => <Image className='!w-[80px] bg-[grey]' src={record.pic || record.src || record.img}></Image>, align: 'left'},
-		{title:'作者', dataIndex: 'owner', width: '120px', render: (text:string, record:any) => text || '--', align: 'left'},
-		{title: '标题', dataIndex: 'title', width: '220px', render: (text:string, record:any) => <p><a href={record.mobileUrl || record.url} target='_blank'>{text}</a></p>, align: 'left'},
-		{title: '详情', dataIndex: 'desc', width: '220px', render: (text:string, record:any) => text || '--', align: 'left'},
+		{title:'图片', dataIndex: 'album', width: 80, render: (text:string, record:any) => <Image key={text} className='!w-[auto] !h-[40px] bg-[grey]' src={record.pic || record.src || record.img}></Image>, align: 'left'},
+		{title: () => <span>{state.list[0]?.owner||state.list[0]?.artist?'作者':'热度'}</span>, dataIndex: 'owner', width: 80, render: (text:string, record:any, index) => <Typography.Paragraph key={text||index} ellipsis={{ tooltip: text || record.artist || record.hot, rows: 2 }}>{text || record.hot || '--'}</Typography.Paragraph>, align: 'left'},
+		{title: '标题', dataIndex: 'title', width: 160, render: (text:string, record:any) => <Typography.Paragraph key={text} ellipsis={{ tooltip: text, rows: 2 }}><Typography.Link  target='_blank' href={record.mobileUrl || record.url}>{text || '--'}</Typography.Link></Typography.Paragraph>, align: 'left'},
+		{title: '详情', dataIndex: 'desc', width: 300, render: (text:string, record:any) => <Typography.Paragraph key={text} ellipsis={{ tooltip: text, rows: 2 }}>{text || '--'}</Typography.Paragraph>, align: 'left'},
 	]
 	const getListData = async () => {
 		let res = await fetch(`${baseApiUrl}/hots?name=${type}`)
@@ -91,7 +96,7 @@ const newsDetailList = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
-			scroll={{ x: 'auto', y: 'calc(100vh - 400px)'}}
+			scroll={{ x: '1000px', y: 'calc(100vh - 400px)'}}
 			dataSource={state.list}
 			columns={columns}
 			/>

@@ -59,14 +59,16 @@ const Cover = () => {
         className="i-carbon-close text-[30px] cursor-pointer"></div>}
         placement="bottom"
         height={'100vh'}
-        // style={{background: `url(${state.img_url}) center/cover no-repeat`}}
         className={`cover-drawer !overflow-hidden !backdrop-blur-md !bg-[rgba(255,255,255,.6)]`}>
             <div className="cover-main flex h-full justify-center items-center">
                 <div className="img !w-[20%] mr-20 hidden md:block">
                     <Image src={state.img_url} />
                 </div>
                 <div className="lyirc md:w-[40%] w-full">
-                    <div className="text-xl text-left">{state.title + '-' + state.artist}</div>
+                    <div className="text-xl text-left flex mb-5">
+                        <span className="mr-4">歌名：{state.title}</span>
+                        <span>歌手：{state.artist}</span>
+                    </div>
                     <Lyric dotPosition="right" className="!h-[auto] overflow-y-auto" carouselClass="cover-lyric pt-[0px] md:h-[500px] overflow-hidden" />
                 </div>
             </div>

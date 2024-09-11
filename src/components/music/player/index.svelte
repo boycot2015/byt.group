@@ -4,7 +4,7 @@
     import { CustomEvent } from '@/utils';
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
-    $:state = { visible: false } as any;
+    $:state = { visible: false, lyricVisible: true } as any;
 
     let audioRef: HTMLAudioElement | {currentTime?: number} = {};
     const getData = (playData?:any, isNext?:boolean) => {
@@ -34,6 +34,10 @@
         state.visible = !state.visible
         CustomEvent.emit('toggleCover', {...state, visible: state.visible })
     }
+    const toggleLyric = () => {
+        state.lyricVisible = !state.lyricVisible
+        CustomEvent.emit('toggleLyric', state.lyricVisible)
+    }
     onMount(() => {
         getData();
         CustomEvent.on('play', getData)
@@ -60,8 +64,11 @@
     </div> -->
     <div class="play-section flex flex-2 justify-around items-center px-4 w-[80%] md:w-[70%] lg:w-[50%]">
         <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg]" size={20} on:click={() => playNext(false)}></KIcon>
-        <audio bind:this={audioRef} class="flex-1" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer" size={20} ></KIcon>
+        <audio bind:this={audioRef} class="flex-1" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <span class="lyric-text cursor-pointer {state.lyricVisible?'text-color-[var(--el-color-primary)]':''}" on:click={() => toggleLyric()}>词</span>
     </div>
     <slot name="lyric" data={state}></slot>
     <!-- <div class="lyric hidden lg:flex flex-1">
