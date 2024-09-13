@@ -96,7 +96,7 @@ const lyric = (props:any) => {
         <div className={`leading-60px h-[60px] overflow-hidden ${props.className} ${props.carouselClass?.includes('cover-lyric')?'':!lyricVisible?'!hidden':''}`}>
             <Carousel dotPosition={props.dotPosition || "left"} ref={carouselRef} autoplaySpeed={2000} speed={500} easing={'ease-in-out'} dots={false} autoplay={props.autoplay||false} arrows={false} infinite={false} {...props} className={props.carouselClass||''}>
             {state.lyricArr.map((item:any, index:number) => {
-                    return <div key={item} className="text-left">
+                    return <div key={item} className="text-left !text-leading-[16px]">
                         <Text style={contentStyle}>{item.split(']')[1]}</Text>
                     </div>
                 })}

@@ -1,5 +1,6 @@
 
-import { Button, Table, Flex, Typography, Image, Skeleton, ConfigProvider } from 'antd';
+import { Button, Table, Flex, Typography, Image, message,
+	Skeleton, ConfigProvider, Modal } from 'antd';
 import type { TableColumnType } from 'antd';
 import { useState, useEffect, useRef } from 'react';
 import { baseApiUrl } from '@/api/index';
@@ -25,9 +26,10 @@ type SongProp = {
     disabled: boolean
 }
 const playListDetail = (props:any) => {
-	let { id, type = '', keyword } = props;
+	let { id, type = '', keyword, simple } = props;	
 	const tableRef = useRef<any>(null);
 	const [loading, setLoading] = useState(false);
+	let requestTimes = 0;
     const getParams = new URLSearchParams(window.location.search.split('?')[1]);
     id = id || getParams.get('id');
     keyword = keyword || getParams.get('keyword');
@@ -35,6 +37,7 @@ const playListDetail = (props:any) => {
 	const [state, setState] = useState<{
 		totalCount: number;
         info: InfoProp;
+		type: string;
 		songs: SongProp[];
 		hasMore?: boolean;
 		currentPage?: number;
@@ -45,16 +48,17 @@ const playListDetail = (props:any) => {
 		currentPage: 1,
 		pageSize: 20,
         info: {},
+		type: '',
 		songs: [],
 		playIndex: 0,
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[64px]' />, align: 'left'},
+		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[40px]' onClick={(e) => e.stopPropagation()} />, align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '180px', dataIndex: 'title', align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌手':'作者'}</span>, dataIndex: 'artist', width: '160px', render: (text:string, record:any) => record.artist || record.author, align: 'left'},
-		{title:'专辑', dataIndex: 'album', hidden: false, width: '260px', render: (text:string, record:any) => text || '--', align: 'left'},
-		{title:'操作', dataIndex: 'operate', align: 'left', width: '210px', render: (text:string, record:any, index: number) => [
+		{title:'专辑', dataIndex: 'album', hidden: false, width: '220px', render: (text:string, record:any) => text || '--', align: 'left'},
+		{title:'操作', dataIndex: 'operate', align: 'left', width: '200px', render: (text:string, record:any, index: number) => [
 			<Button onClick={() => {
 				searchType == '0' && onPlay(record, index)
 				searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
@@ -68,6 +72,22 @@ const playListDetail = (props:any) => {
 		let res = await fetch(`${baseApiUrl}/music?type=${type}`)
 		let { data } = await res.json()
 		id = id || data.result[0]?.id
+		if (simple) {
+			let playData = {}
+			try {
+				playData = JSON.parse(window.localStorage.getItem('playData') as string) || {};
+			} catch (error) {
+				console.log(error, 'error');
+			} finally {
+				playData = {...playData || {}}
+			}
+			setState({
+				...state,
+				...playData
+			})
+			setLoading(false)
+			return
+		}
 		if (id.includes('kg')){
 			// const target_url = `https://m.kugou.com/plist/list/${id}?json=true`;
   			// window.open(target_url, '_blank');
@@ -89,7 +109,7 @@ const playListDetail = (props:any) => {
 			...state,
 			info: songsRes.data.info || {},
 			totalCount: data.total,
-			songs: songsRes.data.tracks || []
+			songs: songsRes.data.tracks.map((el:any) => ({...el, type})) || []
 		})
 		setLoading(false)
 		
@@ -106,27 +126,45 @@ const playListDetail = (props:any) => {
 			pageSize: size || 1,
 			hasMore: !!songsRes.data.hasNextPage,
 			totalCount: songsRes.data.total,
-			songs: songsRes.data.result || [],
+			songs: songsRes.data.result.map((el:any) => ({...el, type})) || [],
 			// .filter((el, index, self) => self.findIndex((item) => item.dataIndex === el.dataIndex) === index)
 		})
 		setLoading(false)
 		
 	}
     const onPlay = async (item?:any, index?:number) => {
+		if (!item) {
+			Modal.confirm({
+				title:'提示',
+				content:'此操作会替换播放列表, 确定继续?',
+				onOk: () => {
+					onPlay(state.songs[0], 0);
+				}
+			})
+			return
+		}
 		item = item || state.songs[index||0] || {}
 		try {
 			let playData = {
 				...item,
 				type,
-				songs: state.songs,
+				songs: (state.songs.length ? state.songs : item.songs) || [],
 				playIndex: index || 0
-			}			
-			if (!item.id) return
-			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type}`);
-			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type}`);
+			}
+			setTimeout(() => {
+				requestTimes = 0;
+			}, 200);
+			if (!item.id || requestTimes) return
+			requestTimes++
+			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type||item.type}`);
+			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type||item.type}`);
 			let lyricRes = await lyricData.json();
 			let urlRes = await urlDta.json();
-			playData = { ...playData, ...lyricRes.data, url: urlRes.data };
+			playData = { ...playData, ...lyricRes.data, type, url: urlRes.data };
+			// console.log(playData, 'playData');
+			if(!urlRes.data) {
+				message.info('获取歌曲失败，无法播放此歌曲~');
+			}
 			window.localStorage.setItem('playData', JSON.stringify(playData))
 			CustomEvent.emit('play', playData)
 		} catch (error) {
@@ -136,13 +174,13 @@ const playListDetail = (props:any) => {
 	const toggleSearchType = (searchType:any) => {
 		getSearchData({ page: 1, searchType })
     }
-	CustomEvent.on('playNext', onPlay)
 	useEffect(() => {
 		setLoading(true)
+		CustomEvent.on('playNext', onPlay)
 		keyword ? getSearchData(): getMusicList()
 	}, [id, type, keyword])
 	return <ConfigProvider locale={zhCN}>
-			{<div className="cover mb-5">
+			{!simple && <div className="cover mb-5">
 				{!keyword?<div>
 					{!loading?<Flex justify="flex-start" align="flex-start">
 						<Image
@@ -179,19 +217,25 @@ const playListDetail = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
+			className={`${simple && '!w-[100%] !md:w-[850px]'}`}
 			onRow={(record, index) => {
 				return {
-				  onClick: (event) => {
-					searchType == '0' && onPlay(record, index)
-					searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
-				  }, // 点击行
-				  onDoubleClick: (event) => {},
-				  onContextMenu: (event) => {},
-				  onMouseEnter: (event) => {}, // 鼠标移入行
-				  onMouseLeave: (event) => {},
+					onClick: (event) => {
+						event.preventDefault();event.stopPropagation();event.nativeEvent.stopImmediatePropagation();
+						searchType == '0' && onPlay(record, index)
+						searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
+					}, // 点击行
+					onDoubleClick: (event) => {
+						event.preventDefault();event.stopPropagation();event.nativeEvent.stopImmediatePropagation();
+						searchType == '0' && onPlay(record, index)
+						searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
+					},
+					onContextMenu: (event) => {},
+					onMouseEnter: (event) => {}, // 鼠标移入行
+					onMouseLeave: (event) => {},
 				};
 			}}
-			scroll={keyword?{ x: '800px', y: 'calc(100vh - 390px)' }:{ x: '800px' }}
+			scroll={keyword?{ x: 800, y: 'calc(100vh - 390px)' }:{ x: 800, y: simple? 400 : '' }}
 			pagination={keyword?{
 				total: state.totalCount,
 				pageSizeOptions: ['10', '20'],

@@ -1,7 +1,7 @@
 ---
 import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KBacktop, KAffix } from '@ikun-ui/core';
 // import { ElAffix, ElButton} from 'element-plus';
-import { CustomEvent } from '@/utils';
+import PlayListDetail from '@/components/music/playlist/detail.tsx';
 import { KIcon } from '@ikun-ui/icon';
 import Aside from './Aside.vue';
 import Search from '@/components/Search';
@@ -73,7 +73,8 @@ let lyircVisible = true
 			</KContainer>
 			<KFooter slot="footer" cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
 				<Player client:only="svelte">
-					<!-- <Lyric key="Player-Lyric" slot="lyric" className="w-[80%]" client:only="react" /> -->
+					<PlayListDetail slot="playlist" simple={true} client:only="react" {type}></PlayListDetail>
+					<Lyric key="Player-Lyric" slot="lyric" className="w-[80%] md:hidden" client:only="react" />
 				</Player>
 			</KFooter>
 		</KContainer>

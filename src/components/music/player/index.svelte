@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { KImage } from "@ikun-ui/core";
+    import { KImage, KPopover } from "@ikun-ui/core";
     import { CustomEvent } from '@/utils';
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
@@ -13,11 +13,12 @@
         } catch (error) {
             console.log(error, 'error');
         } finally {
-            state = {...state, ...playData || {}}
+            state = {...state, lyricVisible: !state.lyricVisible || true, ...playData || {}}
         }
-		if (isNext) {
+		if (isNext) {         
             CustomEvent.emit('playNext', state, state.playIndex)
         }
+        return state
     }
     const onPlaying = (e:any) => {
         CustomEvent.emit('playing', audioRef)
@@ -28,7 +29,8 @@
             state.playIndex = 0
         }
         window.localStorage.setItem('playData', JSON.stringify({...state, ...(data || state.songs[state.playIndex] || {})}))
-        getData(data || state.songs[state.playIndex] || {}, true)
+        // isNext && CustomEvent.emit('playNext', state, state.playIndex)
+        getData({...state, ...(data || state.songs[state.playIndex] || {})}, true)
     }
     const toggleCover = () => {
         state.visible = !state.visible
@@ -36,6 +38,7 @@
     }
     const toggleLyric = () => {
         state.lyricVisible = !state.lyricVisible
+        window.localStorage.setItem('playData', JSON.stringify({ ...state }))
         CustomEvent.emit('toggleLyric', state.lyricVisible)
     }
     onMount(() => {
@@ -65,10 +68,16 @@
     <div class="play-section flex flex-2 justify-around items-center px-4 w-[80%] md:w-[70%] lg:w-[50%]">
         <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg]" size={20} on:click={() => playNext(false)}></KIcon>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer" size={20} ></KIcon>
-        <audio bind:this={audioRef} class="flex-1" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
+        <audio bind:this={audioRef} class="flex-1 hidden md:block" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <span class="lyric-text cursor-pointer {state.lyricVisible?'text-color-[var(--el-color-primary)]':''}" on:click={() => toggleLyric()}>词</span>
+        <span class="lyric-text cursor-pointer hidden md:block {state.lyricVisible?'text-color-[var(--el-color-primary)]':''}" on:click={() => toggleLyric()}>词</span>
+        <KPopover placement="top" cls="!md:left-[50%] !md:ml-[-450px] w-[100%] !bottom-[60px] md:w-[auto]" trigger="click">
+            <KIcon slot="triggerEl" icon="i-carbon-list" title="播放列表" cls="cursor-pointer ml-4" size={16}></KIcon>
+            <div slot="contentEl" class="flex flex-col h-[520px]">
+                <slot name="playlist"></slot>
+            </div>
+        </KPopover>
     </div>
     <slot name="lyric" data={state}></slot>
     <!-- <div class="lyric hidden lg:flex flex-1">
