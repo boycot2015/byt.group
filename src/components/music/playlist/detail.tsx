@@ -88,21 +88,21 @@ const playListDetail = (props:any) => {
 			setLoading(false)
 			return
 		}
-		if (id.includes('kg')){
-			// const target_url = `https://m.kugou.com/plist/list/${id}?json=true`;
-  			// window.open(target_url, '_blank');
-			// let detail = await fetch(target_url, {redirect: 'manual', headers: { Referer: 'https://www.kugou.com/' } })
-			// 	fetch('/302', { redirect: 'manual' }).then(async res => {
-			// 		console.log("Fetch Basic Res:", res)
-			// 		console.log("Fetch JSON Res:", await res.json())
-			// 	  }).catch(err => {
-			// 		console.log("Fetch Error:", err)
-			// 	  })
-			// 	let songsRes = await detail.json()
-			// console.log(detail, 'songsRes');
-			setLoading(false)
-			return
-		}
+		// if (id.includes('kg')){
+		// 	// const target_url = `https://m.kugou.com/plist/list/${id}?json=true`;
+  		// 	// window.open(target_url, '_blank');
+		// 	// let detail = await fetch(target_url, {redirect: 'manual', headers: { Referer: 'https://www.kugou.com/' } })
+		// 	// 	fetch('/302', { redirect: 'manual' }).then(async res => {
+		// 	// 		console.log("Fetch Basic Res:", res)
+		// 	// 		console.log("Fetch JSON Res:", await res.json())
+		// 	// 	  }).catch(err => {
+		// 	// 		console.log("Fetch Error:", err)
+		// 	// 	  })
+		// 	// 	let songsRes = await detail.json()
+		// 	// console.log(detail, 'songsRes');
+		// 	setLoading(false)
+		// 	return
+		// }
 		let detail = await fetch(`${baseApiUrl}/music/detail?id=${id}&type=${type}`)
 		let songsRes = await detail.json()
 		setState({
@@ -160,9 +160,8 @@ const playListDetail = (props:any) => {
 			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type||item.type}`);
 			let lyricRes = await lyricData.json();
 			let urlRes = await urlDta.json();
-			playData = { ...playData, ...lyricRes.data, type, url: urlRes.data };
-			// console.log(playData, 'playData');
-			if(!urlRes.data) {
+			playData = { ...playData, ...lyricRes.data, type: type || item.type, url: urlRes.data?.url || urlRes.data };
+			if(!urlRes.data && !urlRes.data?.url) {
 				message.info('获取歌曲失败，无法播放此歌曲~');
 			}
 			window.localStorage.setItem('playData', JSON.stringify(playData))
@@ -176,9 +175,9 @@ const playListDetail = (props:any) => {
     }
 	useEffect(() => {
 		setLoading(true)
-		CustomEvent.on('playNext', onPlay)
 		keyword ? getSearchData(): getMusicList()
 	}, [id, type, keyword])
+	// CustomEvent.on('playNext', onPlay)
 	return <ConfigProvider locale={zhCN}>
 			{!simple && <div className="cover mb-5">
 				{!keyword?<div>
@@ -193,7 +192,7 @@ const playListDetail = (props:any) => {
 							{state.info?.title || '歌单'}
 							</Typography.Title>
 							<Flex justify="space-around">
-								<Button type='primary' className='mr-2' onClick={() =>onPlay()}><span className='i-carbon-play-filled text-xl'></span>播放全部</Button>
+								<Button type='primary' className='mr-2' disabled={state.songs && !state.songs.length} onClick={() =>onPlay()}><span className='i-carbon-play-filled text-xl'></span>播放全部</Button>
 								<Button type='default' onClick={() => { state.info.source_url && window.open(state.info.source_url, '_blank') }}>外链<span className='i-carbon-link text-md'></span></Button>
 							</Flex>
 						</Flex>
@@ -217,10 +216,14 @@ const playListDetail = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
+			rowClassName={(record, index) => {
+				return index == state.playIndex ? '!text-color-[var(--el-color-primary)]' : ''
+			}}
 			className={`${simple && '!w-[100%] !md:w-[850px]'}`}
 			onRow={(record, index) => {
 				return {
 					onClick: (event) => {
+						if (document.body.offsetWidth > 768) return
 						event.preventDefault();event.stopPropagation();event.nativeEvent.stopImmediatePropagation();
 						searchType == '0' && onPlay(record, index)
 						searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
@@ -235,7 +238,7 @@ const playListDetail = (props:any) => {
 					onMouseLeave: (event) => {},
 				};
 			}}
-			scroll={keyword?{ x: 800, y: 'calc(100vh - 390px)' }:{ x: 800, y: simple? 400 : '' }}
+			scroll={keyword?{ x: 800, y: 'calc(100vh - 400px)' }:{ x: 800, y: simple? 400 : '' }}
 			pagination={keyword?{
 				total: state.totalCount,
 				pageSizeOptions: ['10', '20'],

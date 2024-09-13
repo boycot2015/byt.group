@@ -39,7 +39,7 @@
 </script>
 { #if loading}
     <div class="flex leading-32px mt-2 mb-6 ml-4">
-        { #each '123456' as item}
+        { #each '1234' as item}
         <KSkeletonButton cls="mr-10" key={item} loading={true}></KSkeletonButton>
         {/each}
     </div>

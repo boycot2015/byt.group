@@ -65,11 +65,11 @@ const Cover = () => {
                     <Image src={state.img_url} />
                 </div>
                 <div className="lyirc md:w-[40%] w-full">
-                    <div className="text-xl text-left flex flex-col mb-5">
+                    <div className="text-xl text-left flex flex-col md:flex-row mb-5">
                         <span className="mr-4">歌名：{state.title}</span>
                         <span>歌手：{state.artist}</span>
                     </div>
-                    <Lyric dotPosition="right" className="!h-[auto] overflow-y-auto" carouselClass="cover-lyric pt-[0px] h-[300px] md:h-[450px] overflow-hidden" />
+                    <Lyric key="player-Lyric-cover" className="!h-[auto] overflow-y-auto" carouselClass="cover-lyric pt-[0px] h-[70vh] md:h-[450px] overflow-hidden" />
                 </div>
             </div>
             {/* <h1 className="text-center">Cover</h1> */}

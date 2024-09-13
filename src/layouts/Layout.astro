@@ -63,7 +63,6 @@ let lyircVisible = true
 							<ElButton client:only="vue">首页</ElButton>
 						</ElAffix> -->
 					</KMain>
-					<Cover client:only="react" />
 					<KAffix bottom={120} class="k-affix k-affix--affixed md:hidden z-99 bottom-[170px] right-[50px]" triggerBottom={0}>
 						<div class="go-home rounded-full p-2 bg-white">
 							<KIcon icon="i-carbon-rocket" size={20}></KIcon>
@@ -73,6 +72,7 @@ let lyircVisible = true
 			</KContainer>
 			<KFooter slot="footer" cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
 				<Player client:only="svelte">
+					<Cover slot="cover" client:only="react" />
 					<PlayListDetail slot="playlist" simple={true} client:only="react" {type}></PlayListDetail>
 					<Lyric key="Player-Lyric" slot="lyric" className="w-[80%] md:hidden" client:only="react" />
 				</Player>
