@@ -32,7 +32,7 @@ const typeName: Params = {
 	lol: '英雄联盟',
 	weibo: '微博',
 	zhihu: '知乎'
-}
+};
 ---
 <Layout title={`新闻-${title?title+'-':''}${typeName[type]}`}>
 	<PlayListDetail client:only="react" {type}></PlayListDetail>

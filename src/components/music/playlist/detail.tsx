@@ -6,25 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 import { baseApiUrl } from '@/api/index';
 import zhCN from 'antd/locale/zh_CN';
 import { CustomEvent } from '@/utils';
-type InfoProp = {
-	cover_img_url?: string
-	title?: string
-	id?: string
-	source_url?: string
-}
-type SongProp = {
-	id: string
-    title: string
-    artist: string
-    artist_id: string
-    album: string
-    album_id: string
-    source: string
-    source_url: string
-    img_url: string
-    url: string
-    disabled: boolean
-}
+import type { InfoProp, SongProp } from '@/types';
+
 const playListDetail = (props:any) => {
 	let { id, type = '', keyword, simple } = props;	
 	const tableRef = useRef<any>(null);
@@ -46,7 +29,7 @@ const playListDetail = (props:any) => {
 	}>({
 		totalCount: 0,
 		currentPage: 1,
-		pageSize: 20,
+		pageSize: 10,
         info: {},
 		type: '',
 		songs: [],
@@ -60,7 +43,7 @@ const playListDetail = (props:any) => {
 		{title:'专辑', dataIndex: 'album', hidden: false, width: '220px', render: (text:string, record:any) => text || '--', align: 'left'},
 		{title:'操作', dataIndex: 'operate', align: 'left', width: '200px', render: (text:string, record:any, index: number) => [
 			<Button onClick={() => {
-				searchType == '0' && onPlay(record, index)
+				searchType == '0' && onPlay(record, (index || 0) + ((state.currentPage || 1) * (state.pageSize || 10) - (state.pageSize || 10)))
 				searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
 			}} size='small' key={'play'} className='mr-2'>{searchType == '0' ? <span className='i-carbon-play-filled-alt text-md'></span>:<span className='i-carbon-view text-md'></span>}{searchType == '0'?'播放':'详情'}</Button>,
 			<Button size='small' key={'link'} onClick={() => {
@@ -68,11 +51,8 @@ const playListDetail = (props:any) => {
 			}}><span className='i-carbon-link text-md'></span>外链</Button>
 		]},
 	]
-	const getMusicList = async () => {
-		let res = await fetch(`${baseApiUrl}/music?type=${type}`)
-		let { data } = await res.json()
-		id = id || data.result[0]?.id
-		if (simple) {
+	const getMusicList = async ({page = state.currentPage, size = state.pageSize } = {} as {page?:number, size?:number}) => {
+		if (simple || (page && page > 1)) {
 			let playData = {}
 			try {
 				playData = JSON.parse(window.localStorage.getItem('playData') as string) || {};
@@ -83,6 +63,8 @@ const playListDetail = (props:any) => {
 			}
 			setState({
 				...state,
+				currentPage: page || 1,
+				pageSize: size || 10,
 				...playData
 			})
 			setLoading(false)
@@ -103,13 +85,18 @@ const playListDetail = (props:any) => {
 		// 	setLoading(false)
 		// 	return
 		// }
+		let res = await fetch(`${baseApiUrl}/music?type=${type}`)
+		let { data } = await res.json()
+		id = id || data.result[0]?.id
 		let detail = await fetch(`${baseApiUrl}/music/detail?id=${id}&type=${type}`)
 		let songsRes = await detail.json()
 		setState({
 			...state,
+			currentPage: page || 1,
+			pageSize: size || 10,
 			info: songsRes.data.info || {},
-			totalCount: data.total,
-			songs: songsRes.data.tracks.map((el:any) => ({...el, type})) || []
+			totalCount: songsRes.data?.tracks?.length || 0,
+			songs: songsRes.data.tracks.map((el:SongProp, index:number) => ({...el, type, playIndex: index})) || []
 		})
 		setLoading(false)
 		
@@ -123,7 +110,7 @@ const playListDetail = (props:any) => {
 		setState({
 			...state,
 			currentPage: page || 1,
-			pageSize: size || 1,
+			pageSize: size || 10,
 			hasMore: !!songsRes.data.hasNextPage,
 			totalCount: songsRes.data.total,
 			songs: songsRes.data.result.map((el:any) => ({...el, type})) || [],
@@ -132,7 +119,7 @@ const playListDetail = (props:any) => {
 		setLoading(false)
 		
 	}
-    const onPlay = async (item?:any, index?:number) => {
+    const onPlay = async (item?:any, index?:number) => {		
 		if (!item) {
 			Modal.confirm({
 				title:'提示',
@@ -156,11 +143,11 @@ const playListDetail = (props:any) => {
 			}, 200);
 			if (!item.id || requestTimes) return
 			requestTimes++
-			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${type||item.type}`);
-			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${type||item.type}`);
+			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${item.source||type||item.type}`);
+			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${item.source||type||item.type}`);
 			let lyricRes = await lyricData.json();
 			let urlRes = await urlDta.json();
-			playData = { ...playData, ...lyricRes.data, type: type || item.type, url: urlRes.data?.url || urlRes.data };
+			playData = { ...playData, ...lyricRes.data, type: item.source || type || item.type, url: urlRes.data?.url || urlRes.data };
 			if(!urlRes.data && !urlRes.data?.url) {
 				message.info('获取歌曲失败，无法播放此歌曲~');
 			}
@@ -170,7 +157,7 @@ const playListDetail = (props:any) => {
 			console.log(error, item, index, 'isNext');
 		}
     }
-	const toggleSearchType = (searchType:any) => {
+	const toggleSearchType = (searchType:string) => {
 		getSearchData({ page: 1, searchType })
     }
 	useEffect(() => {
@@ -217,7 +204,7 @@ const playListDetail = (props:any) => {
 			ref={tableRef}
 			key={'playlist'}
 			rowClassName={(record, index) => {
-				return index == state.playIndex ? '!text-color-[var(--el-color-primary)]' : ''
+				return record.playIndex == state.playIndex ? '!text-color-[var(--el-color-primary)]' : ''
 			}}
 			className={`${simple && '!w-[100%] !md:w-[850px]'}`}
 			onRow={(record, index) => {
@@ -225,12 +212,12 @@ const playListDetail = (props:any) => {
 					onClick: (event) => {
 						if (document.body.offsetWidth > 768) return
 						event.preventDefault();event.stopPropagation();event.nativeEvent.stopImmediatePropagation();
-						searchType == '0' && onPlay(record, index)
+						searchType == '0' && onPlay(record, (index || 0) + ((state.currentPage || 1) * (state.pageSize || 10) - (state.pageSize || 10)))
 						searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
 					}, // 点击行
 					onDoubleClick: (event) => {
 						event.preventDefault();event.stopPropagation();event.nativeEvent.stopImmediatePropagation();
-						searchType == '0' && onPlay(record, index)
+						searchType == '0' && onPlay(record, (index || 0) + ((state.currentPage || 1) * (state.pageSize || 10) - (state.pageSize || 10)))
 						searchType == '1' && (window.location.href = `/music/${type}/playlist?id=${record.id}`)
 					},
 					onContextMenu: (event) => {},
@@ -239,13 +226,14 @@ const playListDetail = (props:any) => {
 				};
 			}}
 			scroll={keyword?{ x: 800, y: 'calc(100vh - 400px)' }:{ x: 800, y: simple? 400 : '' }}
-			pagination={keyword?{
+			pagination={{
 				total: state.totalCount,
 				pageSizeOptions: ['10', '20'],
 				current: state.currentPage || 1,
 				pageSize: state.pageSize || 20,
-				onChange: (page, size) => { getSearchData({page, size, searchType}) }
-			}:{ position: ['bottomCenter'] }}
+				position: [!keyword?'bottomCenter':'bottomRight'],
+				onChange: (page, size) => { keyword?getSearchData({page, size, searchType}):getMusicList({page, size}) }
+			}}
 			dataSource={state.songs}
 			columns={columns}
 			/>

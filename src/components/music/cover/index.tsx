@@ -2,19 +2,20 @@ import { Drawer, Image } from "antd";
 import { useState } from "react";
 import { CustomEvent } from '@/utils';
 import Lyric from "../player/lyric";
-// import 'virtual:uno.css';
 import './style.less'
+import type { PlayData } from "@/types";
 const Cover = () => {
-    let [state, setState] = useState({
+    let [state, setState] = useState<PlayData>({
         lyric: '',
         title: '',
         artist: '',
         img_url: '',
         playIndex: 0,
+        songs: [],
         visible: false,
         currentTime: ''
     })
-    const getData = (playData?:any, isNext?:boolean) => {
+    const getData = (playData?:PlayData, isNext?:boolean) => {
         let data = { ...state }
         try {
             data = JSON.parse(window.localStorage.getItem('playData') as string) || playData || {};
@@ -32,7 +33,7 @@ const Cover = () => {
         })
     }
     CustomEvent.on('play', getData)
-    CustomEvent.on('toggleCover', (data:any) => {
+    CustomEvent.on('toggleCover', (data:PlayData) => {
         setState({
             ...state,
             ...data
@@ -69,7 +70,7 @@ const Cover = () => {
                         <span className="mr-4">歌名：{state.title}</span>
                         <span>歌手：{state.artist}</span>
                     </div>
-                    <Lyric key="player-Lyric-cover" className="!h-[auto] overflow-y-auto" carouselClass="cover-lyric pt-[0px] h-[70vh] md:h-[450px] overflow-hidden" />
+                    <Lyric key="player-Lyric-cover" className="!h-[auto] overflow-y-auto" carouselClass="cover-lyric pt-[0px] h-[70vh] md:h-[60vh] overflow-hidden" />
                 </div>
             </div>
             {/* <h1 className="text-center">Cover</h1> */}

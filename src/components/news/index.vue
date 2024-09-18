@@ -14,7 +14,7 @@ const { id } = props
 const loading = ref(true);
 const pageLoading = ref(true);
 const state = ref({
-	playList: [],
+	dataList: [],
 	cateId: id || '',
 	currentPage: 1,
 	totalCount: 0,
@@ -27,11 +27,11 @@ const getData = async (currentPage = state.value.currentPage) => {
 	loading.value = true
 	let cateRes = await fetch(`${baseApiUrl}/hots/cate`)
 	let { data: names } = await cateRes.json()	
-	let res = await Promise.all(names.map(async item => await fetch(`${baseApiUrl}/hots?name=${item.name}`)))
+	let res = await Promise.all(names.map(async (item) => await fetch(`${baseApiUrl}/hots?name=${item.name}`)))
 	let data = await Promise.all(res.map(el => el.json()))
 	state.value = {
 		...state.value,
-		playList: data.map((el, index) => ({list: el.data ? el.data.slice(0, 5) : null, ...names[index]})).filter(el => el.list) || [],
+		dataList: data.map((el, index) => ({list: el.data ? el.data.slice(0, 5) : null, ...names[index]})).filter((el) => el.list) || [],
 		currentPage,
 		hasMore: !!data?.hasNextPage || !!data.result?.length,
 	}
@@ -57,7 +57,7 @@ onMounted(() => {
 <template>
 	<div class="px-0 h-[100%]">
 		<ElRow :gutter="16">
-			<ElCol :span="24" class="text-left" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 8}" :lg="{span: 6}" :xl="{span: 4}" :xxl="{span: 3}" v-for="item in (pageLoading ? 24 : state.playList)" :key="item">
+			<ElCol :span="24" class="text-left" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 8}" :lg="{span: 6}" :xl="{span: 4}" :xxl="{span: 3}" v-for="(item, index) in (pageLoading ? 24 : state.dataList)" :key="index">
 				<el-skeleton :loading="pageLoading" animated>
 				<template #template>
 					<el-skeleton-item variant="button" style="width: 80%;margin-bottom: 10px;margin-right: 5%;" />

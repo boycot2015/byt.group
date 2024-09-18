@@ -4,30 +4,8 @@ import type { TableColumnType } from 'antd';
 import { useState, useEffect, useRef } from 'react';
 import { baseApiUrl } from '@/api/index';
 import zhCN from 'antd/locale/zh_CN';
-type InfoProp = {
-	cover_img_url?: string
-	title?: string
-	id?: string
-	source_url?: string
-}
-type SongProp = {
-	id: string
-    title: string
-    artist: string
-    artist_id: string
-    album: string
-    album_id: string
-    source: string
-    source_url: string
-    img_url: string
-	pic?: string
-	src?: string
-	img?: string
-	hot?: number|string
-	owner?: string
-    url: string
-    disabled: boolean
-}
+import type { ArticleProp } from '@/types';
+
 const newsDetailList = (props:any) => {
 	let { type = '', title = '' } = props;
 	const tableRef = useRef<any>(null);
@@ -37,8 +15,7 @@ const newsDetailList = (props:any) => {
     title = title || getParams.get('title');
 	const [state, setState] = useState<{
 		totalCount: number;
-        info: InfoProp;
-		list: SongProp[];
+		list: ArticleProp[];
 		hasMore?: boolean;
 		currentPage?: number;
 		pageSize?: number;
@@ -46,12 +23,11 @@ const newsDetailList = (props:any) => {
 		totalCount: 0,
 		currentPage: 1,
 		pageSize: 20,
-        info: {},
 		list: [],
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'图片', dataIndex: 'album', width: 80, render: (text:string, record:any) => <Image key={text} className='!w-[auto] !h-[40px] bg-[grey]' src={record.pic || record.src || record.img}></Image>, align: 'left'},
+		{title:'图片', dataIndex: 'img', width: 80, render: (text:string, record:any) => <Image key={text} className='!w-[auto] !h-[40px] bg-[grey]' src={record.pic || record.src || record.img}></Image>, align: 'left'},
 		{title: () => <span>{state.list[0]?.owner||state.list[0]?.artist?'作者':'热度'}</span>, dataIndex: 'owner', width: 80, render: (text:string, record:any, index) => <Typography.Paragraph key={text||index} ellipsis={{ tooltip: text || record.artist || record.hot, rows: 2 }}>{text || record.hot || '--'}</Typography.Paragraph>, align: 'left'},
 		{title: '标题', dataIndex: 'title', width: 160, render: (text:string, record:any) => <Typography.Paragraph key={text} ellipsis={{ tooltip: text, rows: 2 }}><Typography.Link  target='_blank' href={record.mobileUrl || record.url}>{text || '--'}</Typography.Link></Typography.Paragraph>, align: 'left'},
 		{title: '详情', dataIndex: 'desc', width: 300, render: (text:string, record:any) => <Typography.Paragraph key={text} ellipsis={{ tooltip: text, rows: 2 }}>{text || '--'}</Typography.Paragraph>, align: 'left'},

@@ -10,5 +10,5 @@
       "@assets/*": ["src/assets/*"],
     }
   },
-  "include": ["src/**/*", "tests/**/*"]
+  "include": ["src/**/*", "tests/**/*", "env.d.ts"]
 }

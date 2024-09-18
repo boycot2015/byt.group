@@ -5,12 +5,16 @@
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
     import { baseApiUrl } from '@/api/index';
+    import type { PlayData } from "@/types";
     let visible = false;
     let lyricVisible = true;
-    let state:any = {};
+    let state:PlayData = {
+        playIndex: 0,
+        songs: []
+    };
     let requestTimes = 0;
     let audioRef: HTMLAudioElement | {currentTime?: number} = {};
-    const getData = (playData?:any, isNext?:boolean) => {
+    const getData = (playData?:PlayData, isNext?:boolean) => {
         try {
             state = JSON.parse(window.localStorage.getItem('playData') as string) || playData || {};
         } catch (error) {
@@ -23,10 +27,10 @@
         }
         return state
     }
-    const onPlaying = (e:any) => {
+    const onPlaying = (e:Event) => {
         CustomEvent.emit('playing', audioRef)
     }
-    const playNext = (isNext:boolean, data?:any) => {
+    const playNext = (isNext:boolean, data?:PlayData) => {
         isNext ? state.playIndex += 1 : state.playIndex -= 1
         if (!state.songs[state.playIndex]) {
             state.playIndex = 0
@@ -66,11 +70,11 @@
 			}, 200);
 			if (!item.id || requestTimes) return
 			requestTimes++
-			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${playData.type}`);
-			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${playData.type}`);
+			let lyricData = await fetch(`${baseApiUrl}/music/lyric?id=${item.id}&type=${playData.source||playData.type}`);
+			let urlDta = await fetch(`${baseApiUrl}/music/url?id=${item.id}&type=${playData.source||playData.type}`);
 			let lyricRes = await lyricData.json();
 			let urlRes = await urlDta.json();
-			playData = { ...playData, ...lyricRes.data, type: playData.type, url: urlRes.data?.url || urlRes.data };
+			playData = { ...playData, ...lyricRes.data, type: playData.source||playData.type, url: urlRes.data?.url || urlRes.data };
 			if(!urlRes.data && !urlRes.data?.url) {
 				KMessage.info({
                     content: `<span style="font-size: 14px;font-weight:normal;color:var(--el-color-primary)">获取歌曲失败，无法播放此歌曲~</span>`,

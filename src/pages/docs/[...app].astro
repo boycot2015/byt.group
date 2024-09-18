@@ -131,8 +131,8 @@ const { app } = Astro.params;
   <link rel="stylesheet" href="https://unpkg.com/docsify/lib/themes/vue.css">
 </head>
 <body class={app}>
-  <div id="app"></div>
-  <div id="scroll-to-top" title="回到顶部"><KIcon icon="i-carbon-rocket" /></div>
+    <div id="app"></div>
+    <div class="scroll-to-top" title="回到顶部"><KIcon icon="i-carbon-rocket" /></div>
 </body>
 <script async define:vars={{ docsify, siteTime }}>
     window.$docsify = docsify || {}
@@ -270,12 +270,12 @@ const { app } = Astro.params;
 <script is:inline>
   window.addEventListener('scroll', (e) => {
     if (e.target.scrollingElement && e.target.scrollingElement.scrollTop > 500) {
-      document.querySelector('#scroll-to-top').style.display = 'block'
+      document.querySelector('.scroll-to-top').style.display = 'block'
     } else {
-      document.querySelector('#scroll-to-top').style.display = 'none'
+      document.querySelector('.scroll-to-top').style.display = 'none'
     }
   })
-  document.querySelector('#scroll-to-top')?.addEventListener('click', () => {
+  document.querySelector('.scroll-to-top')?.addEventListener('click', () => {
     function scrollToTop () {
       const cubic = value => Math.pow(value, 3)
       const easeInOutCubic = value => value < 0.5
@@ -303,7 +303,7 @@ const { app } = Astro.params;
 <script is:inline src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </html>
 <style lang="less" is:global define:vars={{themeColor: docsify?.themeColor}}>
-  #scroll-to-top {
+  .scroll-to-top {
     position: fixed;
     right: 15px;
     bottom: 60px;

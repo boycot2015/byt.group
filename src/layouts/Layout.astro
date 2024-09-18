@@ -14,12 +14,13 @@ import '@assets/less/index.less';
 interface Props {
 	title: string
 }
-type ScrollTarget =  Window | Document | HTMLElement
+type ScrollTarget =  Window | Document | HTMLElement;
 const { title } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
-let lyircVisible = true
+let lyircVisible = true;
 ---
+
 <!doctype html>
 <html lang="zh-cn">
 	<head>
@@ -32,7 +33,7 @@ let lyircVisible = true
 		<title>{title}</title>
 	</head>
 	<body>
-		<KContainer>
+		<KContainer cls="main">
 			<KContainer cls="relative !overflow-hidden h-full">
 				<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative">
 					<Aside client:only="vue" routerPath={url.pathname}></Aside>
@@ -96,7 +97,8 @@ let lyircVisible = true
 		}
 	})
 </script>
-<style lang="less">
+<style lang="less" scoped>
+	// eslint-disable astro/no-unused-css-selector
 	body {
 		height: 100%;
 		padding: 0;
