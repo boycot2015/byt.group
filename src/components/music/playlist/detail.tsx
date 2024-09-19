@@ -203,6 +203,7 @@ const playListDetail = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
+			virtual={true}
 			rowClassName={(record, index) => {
 				return record.playIndex == state.playIndex ? '!text-color-[var(--el-color-primary)]' : ''
 			}}
