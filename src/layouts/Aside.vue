@@ -47,9 +47,9 @@ a {
             <i class="i-carbon-sun text-xl mr-2"></i>
             <span>新闻</span>
         </ElMenuItem>
-        <!-- <ElMenuItem index="/blog">
-            <ElIcon><i class="i-carbon-blog"></i></ElIcon>
-            <span>博客</span>
-        </ElMenuItem> -->
+        <ElMenuItem index="/wallpaper">
+            <i class="i-carbon-image text-xl mr-2"></i>
+            <span>壁纸</span>
+        </ElMenuItem>
     </ElMenu>
 </template>

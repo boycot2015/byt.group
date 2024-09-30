@@ -1,0 +1,22 @@
+---
+import List from '@/components/Solid/wallpaper.jsx';
+import Layout from '@/layouts/Layout.astro';
+import { KContainer, KImage } from '@ikun-ui/core';
+interface Props {
+	title?: string
+}
+interface Params {
+	[key:string]: string
+}
+const { type = 'birdpaper' } = Astro.params;
+
+---
+<Layout title={`壁纸-首页`}>
+  <KContainer cls='flex-col h-[100%]'>
+    <List client:load {type}>
+      <KImage></KImage>
+    </List>
+  </KContainer>
+</Layout>
+<style>
+</style>
