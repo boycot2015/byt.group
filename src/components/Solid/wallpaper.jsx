@@ -1,6 +1,8 @@
-import { createSignal, createEffect, For, Show } from 'solid-js';
-import { baseApiUrl } from '@/api'
+import { createSignal, createEffect, For, Show, splitProps } from 'solid-js';
+import { baseApiUrl } from '@/api';
+import { Tabs, DatePicker, parseDate } from '@ark-ui/solid'
  const Hello = (props) => {
+    const [localProps, rootProps] = splitProps(props, ['title', 'src'])
      const [state, setState] = createSignal({
         loading: true,
         cateLoading: true,
@@ -30,6 +32,18 @@ import { baseApiUrl } from '@/api'
         setState({ ...state(), ...res.data, loading: false, cateLoading: false });
     }
     return <Show when={!state().pageLoading} fallback={<div>Loading...</div>}>
+         {/* <Tabs.Root {...rootProps}>
+            <Tabs.List>
+                <Tabs.Trigger value="react">React</Tabs.Trigger>
+                <Tabs.Trigger value="vue">Vue</Tabs.Trigger>
+                <Tabs.Trigger value="solid">Solid</Tabs.Trigger>
+                <Tabs.Indicator />
+            </Tabs.List>
+            <Tabs.Content value="react">React Content</Tabs.Content>
+            <Tabs.Content value="vue">Vue Content</Tabs.Content>
+            <Tabs.Content value="solid">Solid Content</Tabs.Content>
+        </Tabs.Root> */}
+        {/* <DatePicker.Root defaultValue={parseDate('2024-01-01')} /> */}
         <div class="nav flex flex-wrap">
             <For each={state().source.sort((a, b) => a.sort - b.sort ) || []}>
             {(item) => <div onClick={() => getData({type: item.value})}
