@@ -47,6 +47,10 @@ a {
             <i class="i-carbon-sun text-xl mr-2"></i>
             <span>新闻</span>
         </ElMenuItem>
+        <ElMenuItem index="/movie">
+            <i class="i-carbon-video-player text-xl mr-2"></i>
+            <span>电影</span>
+        </ElMenuItem>
         <ElMenuItem index="/wallpaper">
             <i class="i-carbon-image text-xl mr-2"></i>
             <span>壁纸</span>
