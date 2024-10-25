@@ -62,7 +62,7 @@ const lyric = (props:any) => {
         try {
             data = JSON.parse(data)
         } catch (error) {
-            console.log(error, 'getPlayData');
+            // console.log(error, 'getPlayData');
         } finally {
             data = { ...data, ...playData || {} }
         }

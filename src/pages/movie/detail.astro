@@ -1,25 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import { baseApiUrl } from '@/api/index.ts';
+import MovieDetail from '@/components/Movie/Detail/index.vue';
 interface Props {
 	title: string
 }
-interface Params {
-	[key:string]: string | number | undefined
-}
-const { title } = Astro.props;
-const { id } = Astro.params as Params;
-let indexData:any = {};
-const getData = async () => {
-    let res = await fetch(baseApiUrl + '/movie/detail?id=1');
-    let data = await res.json();
-    indexData = data.data;
-    console.log(indexData, 'res');
-};
-await getData();
 ---
-<Layout title={`电影详情-${title?title+'-':''}`}>
-	<details>{indexData}</details>
+<Layout title="猫眼电影-电影详情">
+	<MovieDetail client:load></MovieDetail>
 </Layout>
 <style>
 </style>
