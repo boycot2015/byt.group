@@ -72,7 +72,7 @@ const newsDetailList = (props:any) => {
 			rowKey={'id'}
 			ref={tableRef}
 			key={'playlist'}
-			scroll={{ x: '1000px', y: 'calc(100vh - 400px)'}}
+			scroll={{ x: '1000px', y: 'calc(100vh - 350px)'}}
 			dataSource={state.list}
 			columns={columns}
 			/>

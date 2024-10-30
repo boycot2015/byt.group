@@ -6,7 +6,7 @@ import Side from './SideBar.vue';
 import Tabs from './Tabs/index.vue';
 import { ElSkeleton, ElSkeletonItem,
     ElBreadcrumb, ElBreadcrumbItem,
-    ElRow, ElCol
+    ElRow, ElCol, ElLink
 } from 'element-plus';
 let state:any = ref({});
 let loading = ref(true);
@@ -60,11 +60,13 @@ onMounted(() => {
                 </div>
             </template>
             <template #default>
-                <ElBreadcrumb separator=">" class="my-[10px]">
-                    <ElBreadcrumbItem to="/movie">猫眼电影</ElBreadcrumbItem>
-                    <ElBreadcrumbItem >{{state.typeDesc}}</ElBreadcrumbItem>
-                    <ElBreadcrumbItem>{{state.nm}}</ElBreadcrumbItem>
-                </ElBreadcrumb>
+                <div class="flex">
+                    <ElLink href="/movie" class="mr-[10]" type="primary" replace>猫眼电影 > </ElLink>
+                    <ElBreadcrumb separator=">" class="my-[10px]">
+                        <ElBreadcrumbItem >{{state.typeDesc}}</ElBreadcrumbItem>
+                        <ElBreadcrumbItem>{{state.nm}}</ElBreadcrumbItem>
+                    </ElBreadcrumb>
+                </div>
                 <Header :data="state" class="mt-[10px]"></Header>
                 <div class="content">
                     <ElRow class="bg-white w-[100%] p-[10px] py-[20px] !m-0" :gutter="20">
