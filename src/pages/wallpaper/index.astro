@@ -1,21 +1,21 @@
 ---
 import List from '@/components/Solid/wallpaper.jsx';
 import Layout from '@/layouts/Layout.astro';
-import { KContainer, KImage } from '@ikun-ui/core';
+import { KContainer } from '@ikun-ui/core';
+import ImageViewer from '@/components/ImageViewer/index.vue';
 interface Props {
 	title?: string
 }
 interface Params {
 	[key:string]: string
 }
-const { type = 'birdpaper' } = Astro.params;
+const { type = 'default' } = Astro.params;
 
 ---
 <Layout title={`壁纸-首页`}>
   <KContainer cls='flex-col h-[100%]'>
-    <List client:load {type}>
-      <KImage></KImage>
-    </List>
+    <List client:load {type}></List>
+    <ImageViewer client:load></ImageViewer>
   </KContainer>
 </Layout>
 <style>

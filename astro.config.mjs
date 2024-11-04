@@ -20,7 +20,7 @@ export default defineConfig({
   },
   integrations: [
     vue(),
-    react({ include: ['**/components/*.tsx', '**/pages/*.tsx'], exclude: ['**/components/Solid/*'] }),
+    react({ include: ['**/components/*.tsx', '**/pages/*.tsx'], exclude: ['**/components/Solid/*.jsx'] }),
     svelte(),
     solidJs({ include: ['**/components/Solid/*.jsx'] }),
     UnoCSS({
