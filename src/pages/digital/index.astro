@@ -1,0 +1,17 @@
+---
+import Digital from '@/components/Digital/index.vue';
+import Layout from '@/layouts/Layout.astro';
+import { KContainer } from '@ikun-ui/core';
+import ImageViewer from '@/components/ImageViewer/index.vue';
+interface Props {
+	title?: string
+}
+---
+<Layout title={`数码-首页`}>
+  <KContainer cls='flex-col h-[100%]'>
+    <Digital client:only="vue"></Digital>
+    <ImageViewer client:load></ImageViewer>
+  </KContainer>
+</Layout>
+<style>
+</style>

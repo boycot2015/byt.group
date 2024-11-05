@@ -55,5 +55,9 @@ a {
             <i class="i-carbon-image text-xl mr-2"></i>
             <span>壁纸</span>
         </ElMenuItem>
+        <ElMenuItem index="/digital">
+            <i class="i-carbon-box text-xl mr-2"></i>
+            <span>数码</span>
+        </ElMenuItem>
     </ElMenu>
 </template>
