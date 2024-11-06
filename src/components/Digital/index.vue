@@ -13,6 +13,7 @@ const loading = ref(true)
 const pageLoading = ref(true)
 const data = ref({})
 const cates = ref([])
+const bannerHeight = ref('460px')
 const getData = async (type = 'xiaomi') => {
     loading.value = true
     let json = await fetch(baseApiUrl + '/digital/list?type=' + type)
@@ -32,7 +33,7 @@ const getData = async (type = 'xiaomi') => {
     setTimeout(() => {
         loading.value = pageLoading.value || false
     }, 500)
-    // console.log(res.data, cate.data, 'res');
+    bannerHeight.value = type === 'meizu' ? '360px' : '460px'
  }
  getData()
 </script>
@@ -77,21 +78,28 @@ const getData = async (type = 'xiaomi') => {
         </template>
         <template #default>
             <Category :cates="cates" @change="getData" />
-            <div v-loading="loading" style="min-height: 500px;">
-                <Banner :banner="data.banner || {}"/>
+            <div v-loading="loading" style="min-height: 100vh;">
+                <Banner :banner="data.banner || []" :key="Math.random()" class="mb-[20px]" />
                 <div class="list" v-for="item in data.indexData || []" :key="item.name">
-                    <div class="header flex justify-between mb-[20px]">
+                    <div class="header flex justify-between mb-[20px]" v-if="item.name">
                         <div class="title">{{ item.name }}</div>
                         <el-link class="more" v-if="item.url" :href="item.url" target="_brank">{{ item.more_text || item.list && item.list.length ? '查看更多':'' }}</el-link>
                     </div>
-                    <div class="body flex">
-                        <div class="imgs" v-if="item.list && item.list.length">
-                            <Banner :height="item.list && item.list.length?'490px': '240px'" class="mr-[20px]" :class="{'w-[200px] ': item.list && item.list.length}" :banner="item.bg_imgs || []" imgClass="w-[100%] !h-[auto]" arrow="never" />
+                    <div class="body flex flex-col md:flex-row" :class="{'flex-wrap': item.view_type === 'cells_auto_fill'}">
+                        <a :href="item.bg_imgs[0].url" target="_blank" rel="noopener noreferrer" v-if="item.view_type && item.view_type === 'cells_auto_fill'" >
+                            <el-image :src="item.bg_imgs[0].img" alt="" fit="cover" class="mb-[20px] h-[200px] w-[100%]" />
+                        </a>
+                        <div class="imgs w-[100%] md:w-[auto]" v-else-if="(item.view_type && item.view_type === 'list_eight_product') || (item.bg_imgs && item.bg_imgs.length === 1)">
+                            <Banner :height="item.list && item.list.length?'520px': '240px'" class="md:mr-[20px] md:w-[200px]" :banner="item.bg_imgs || []" imgClass="h-[520px]" fit="contain" arrow="never" />
                         </div>
-                        <el-image v-else v-if="item.bg_imgs && item.bg_imgs.length" :src="item.bg_imgs[0].img" alt="" fit="cover" class="mb-[20px] h-[120px]" />
-                        <el-row :gutter="20" class="flex-1" v-if="item.list && item.list.length">
+                        <div class="flex flex-col mr-[20px]" v-else-if="item.bg_imgs">
+                            <a :href="item.url" v-for="item in item.bg_imgs" target="_blank" rel="noopener noreferrer">
+                                <el-image :src="item.img" alt="" fit="cover" class="mb-[20px] h-[250px]" ></el-image>
+                            </a>
+                        </div>
+                        <el-row :gutter="20" class="flex-1 mt-[20px] md:mt-[0px]" v-if="item.list && item.list.length">
                             <el-col
-                            v-for="goods in item.list || []" :key="goods.id"
+                            v-for="goods in item.list.slice(0, 12) || []" :key="goods.id"
                             :span="12"
                             :xs="{span:12}"
                             :sm="{span:8}"
@@ -101,7 +109,7 @@ const getData = async (type = 'xiaomi') => {
                             :xxl="{span:3}"
                             class="mb-[20px]"
                             >
-                            <el-card>
+                            <el-card class="rounded-[30px] overflow-hidden shadow-lg shadow-cyan-500/50">
                                 <GoodsItem :goods="goods"/>
                             </el-card>
                         </el-col>
