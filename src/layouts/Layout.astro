@@ -55,7 +55,7 @@ let lyircVisible = true;
 						{<Lyric key="KHeader-Lyric" client:only="react" className="flex-1 px-2 line-clamp-1 hidden lg:block" />}
 						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 					</KHeader>
-					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto flex flex-col justify-center'}>
+					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto'}>
 						<slot></slot>
 						<KBacktop cls="shadow-none" client:only="svelte" bottom={80} right={50} showHeight={50} target=".main-scroll-wrap">
 						</KBacktop>
