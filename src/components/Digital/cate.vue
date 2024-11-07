@@ -13,7 +13,8 @@ const props = defineProps({
         default: () => [],
     },
 })
-const onTabClick = () => {
+const onTabClick = (val) => {
+    if (val.paneName === activeCate.value) return;
     nextTick(() => {
         emits('change', activeCate.value)
     })

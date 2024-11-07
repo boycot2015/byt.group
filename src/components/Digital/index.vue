@@ -16,6 +16,7 @@ const cates = ref([])
 const bannerHeight = ref('460px')
 const getData = async (type = 'xiaomi') => {
     loading.value = true
+    data.value = {}
     let json = await fetch(baseApiUrl + '/digital/list?type=' + type)
     let cateJson = await fetch(baseApiUrl + '/digital/cate')
     let cateDefaultJson = await fetch(baseApiUrl + '/digital/cate?type=' + type)
@@ -78,7 +79,7 @@ const getData = async (type = 'xiaomi') => {
         </template>
         <template #default>
             <Category :cates="cates" @change="getData" />
-            <div v-loading="loading" class="md:min-h-[100vh]">
+            <div v-loading="loading" class="md:min-h-[100%]">
                 <Banner :banner="data.banner || []" :key="Math.random()" class="mb-[20px]" />
                 <div class="list" v-for="item in data.indexData || []" :key="item.name">
                     <div class="header flex justify-between mb-[20px]" v-if="item.name">
