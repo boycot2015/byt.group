@@ -132,8 +132,8 @@ onMounted(() => {
 					<el-skeleton-item variant="text" style="width: 60%" />
 				</template>
 				<template #default>
-					<ElCard class="text-left md:min-h-[230px] lg:min-h-[auto]" @click="onView(item)" :body-style="{padding: 0}" style="width: 100%;">
-						<ElImage class="min-h-[60px] lg:min-h-[120px]" :src="item.cover_img_url||item.img_url" style="width: 100%;" lazy></ElImage>
+					<ElCard class="text-left !rounded-xl !hover:shadow-xl md:min-h-[230px] lg:min-h-[auto]" @click="onView(item)" :body-style="{padding: 0}" style="width: 100%;">
+						<ElImage class="min-h-[60px] lg:min-h-[160px]" fit="cover" :src="item.cover_img_url||item.img_url" style="width: 100%;" lazy></ElImage>
 						<ElText line-clamp="2" style="padding: 0 10px;">{{ item.title }}</ElText>
 					</ElCard>
 				</template>

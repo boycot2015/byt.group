@@ -34,35 +34,31 @@ let lyircVisible = true;
 	</head>
 	<body>
 		<KContainer cls="main">
-			<KContainer cls="relative !overflow-hidden h-full">
+			<KContainer cls="relative !overflow-hidden h-full bg-gray-100">
 				<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative">
 					<Aside client:only="vue" routerPath={url.pathname}></Aside>
 				</KAside>
 				<KContainer cls="relative">
-					<KHeader slot="header" cls="text-center flex items-center left-[auto] right-[16px] justify-between pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] leading-40px w-[100%] backdrop-blur-md !overflow-auto !z-100 absolute">
+					<KHeader slot="header" cls="text-center flex items-center left-[auto] md:right-[16px] justify-between pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute">
 						<div class="navgator justify-center mr-5 hidden md:flex">
-							<KButton type="main" cls="mr-2 go-back" ghost>
-								<KIcon icon="i-carbon-arrow-left" size={16}></KIcon>
+							<KButton type="main" cls="mr-2 go-back border-none bg-[transparent]" ghost>
+								<KIcon icon="i-carbon-arrow-left text-color-[var(--color-primary)" size={16}></KIcon>
 							</KButton>
-							<KButton type="main" cls="mr-2 go-forward" ghost>
-								<KIcon icon="i-carbon-arrow-right" size={16}></KIcon>
+							<KButton type="main" cls="mr-2 go-forward border-none bg-[transparent]" ghost>
+								<KIcon icon="i-carbon-arrow-right text-color-[var(--color-primary)" size={16}></KIcon>
 							</KButton>
-							<KButton type="main" cls="go-reload" ghost>
-								<KIcon icon="i-carbon-renew" size={16}></KIcon>
+							<KButton type="main" cls="go-reload border-none bg-[transparent]" ghost>
+								<KIcon icon="i-carbon-renew text-color-[var(--color-primary)" size={16}></KIcon>
 							</KButton>
 						</div>
-						<h3 class="hidden flex-1 md:block">{title}</h3>
-						{<Lyric key="KHeader-Lyric" client:only="react" className="w-[300px] flex-1 px-2 hidden lg:block" />}
+						<h3 class="hidden flex-1 text-[16px] md:block">{title}</h3>
+						{<Lyric key="KHeader-Lyric" client:only="react" className="flex-1 px-2 line-clamp-1 hidden lg:block" />}
 						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 					</KHeader>
-					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] overflow-y-auto'}>
+					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto flex flex-col justify-center'}>
 						<slot></slot>
 						<KBacktop cls="shadow-none" client:only="svelte" bottom={80} right={50} showHeight={50} target=".main-scroll-wrap">
 						</KBacktop>
-						<!-- <ElBacktop client:only="vue" target={".main-scroll-wrap"}></ElBacktop> -->
-						<!-- <ElAffix :offset="120" target=".main-scroll-wrap" class="md:hidden" position="bottom" client:only="vue">
-							<ElButton client:only="vue">首页</ElButton>
-						</ElAffix> -->
 					</KMain>
 					<KAffix bottom={120} class="k-affix k-affix--affixed md:hidden z-99 bottom-[170px] right-[50px]" triggerBottom={0}>
 						<div class="go-home rounded-full p-2 bg-white">

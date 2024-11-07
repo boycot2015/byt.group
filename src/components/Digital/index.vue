@@ -78,7 +78,7 @@ const getData = async (type = 'xiaomi') => {
         </template>
         <template #default>
             <Category :cates="cates" @change="getData" />
-            <div v-loading="loading" style="min-height: 100vh;">
+            <div v-loading="loading" class="md:min-h-[100vh]">
                 <Banner :banner="data.banner || []" :key="Math.random()" class="mb-[20px]" />
                 <div class="list" v-for="item in data.indexData || []" :key="item.name">
                     <div class="header flex justify-between mb-[20px]" v-if="item.name">
@@ -86,15 +86,15 @@ const getData = async (type = 'xiaomi') => {
                         <el-link class="more" v-if="item.url" :href="item.url" target="_brank">{{ item.more_text || item.list && item.list.length ? '查看更多':'' }}</el-link>
                     </div>
                     <div class="body flex flex-col md:flex-row" :class="{'flex-wrap': item.view_type === 'cells_auto_fill'}">
-                        <a :href="item.bg_imgs[0].url" target="_blank" rel="noopener noreferrer" v-if="item.view_type && item.view_type === 'cells_auto_fill'" >
-                            <el-image :src="item.bg_imgs[0].img" alt="" fit="cover" class="mb-[20px] h-[200px] w-[100%]" />
+                        <a :href="item.bg_imgs[0].url" target="_blank" rel="noopener noreferrer" v-if="item.view_type && item.view_type === 'cells_auto_fill'" class="w-[100%]">
+                            <el-image :src="item.bg_imgs[0].img" alt="" fit="cover" class="mb-[20px] h-[200px] w-[100%] rounded-xl" />
                         </a>
-                        <div class="imgs w-[100%] md:w-[auto]" v-else-if="(item.view_type && item.view_type === 'list_eight_product') || (item.bg_imgs && item.bg_imgs.length === 1)">
-                            <Banner :height="item.list && item.list.length?'520px': '240px'" class="md:mr-[20px] md:w-[200px]" :banner="item.bg_imgs || []" imgClass="h-[520px]" fit="contain" arrow="never" />
+                        <div class="imgs w-[100%] md:w-[auto] md:mr-5 hidden md:block" v-else-if="(item.view_type && item.view_type === 'list_eight_product') || (item.bg_imgs && item.bg_imgs.length === 1)">
+                            <el-image :src="item.bg_imgs[0]?.img" alt="" fit="cover" class="mb-[20px] h-[520px] rounded-xl" ></el-image>
                         </div>
-                        <div class="flex flex-col mr-[20px]" v-else-if="item.bg_imgs">
-                            <a :href="item.url" v-for="item in item.bg_imgs" target="_blank" rel="noopener noreferrer">
-                                <el-image :src="item.img" alt="" fit="cover" class="mb-[20px] h-[250px]" ></el-image>
+                        <div class="flex flex-row mr-[20px] md:justify-center md:justify-start md:flex-col" v-else-if="item.bg_imgs">
+                            <a :href="item.url" v-for="item in item.bg_imgs" target="_blank" rel="noopener noreferrer" class="w-[100%]">
+                                <el-image :src="item.img" alt="" fit="cover" class="mb-[20px] w-[100%] h-[250px] rounded-md" ></el-image>
                             </a>
                         </div>
                         <el-row :gutter="20" class="flex-1 mt-[20px] md:mt-[0px]" v-if="item.list && item.list.length">
@@ -105,11 +105,10 @@ const getData = async (type = 'xiaomi') => {
                             :sm="{span:8}"
                             :md="{span:6}"
                             :lg="{span:4}"
-                            :xl="{span:4}"
-                            :xxl="{span:3}"
+                            :xl="{span:3}"
                             class="mb-[20px]"
                             >
-                            <el-card class="rounded-[30px] overflow-hidden shadow-lg shadow-cyan-500/50">
+                            <el-card class="!rounded-[10px] overflow-hidden shadow-lg">
                                 <GoodsItem :goods="goods"/>
                             </el-card>
                         </el-col>

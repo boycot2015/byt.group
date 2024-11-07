@@ -10,7 +10,7 @@ const handleChange = (key) => {
 let collapse = ref(false)
 onMounted(() => {
     window.addEventListener('resize', () => {
-        collapse.value = window.innerWidth < 768
+        collapse.value = window.innerWidth < 1000
     })
 })
 
@@ -22,18 +22,19 @@ a {
 }
 </style>
 <template>
-    <div class="logo absolute z-2 flex justify-around h-60px items-center border w-[100%] border-[grey]">
+    <div class="logo absolute z-2 flex justify-center h-60px items-center w-[100%] border-b-1 border-[#eee] border-b-solid">
         <!-- <el-image src="/logo.svg" alt="logo" class="w-12 h-12 cursor-pointer" /> -->
-         <a href="/" v-show="!collapse" >
-             <h3 class="p-0 m-0 w-120px text-color-[var(--el-color-primary)]">{{ config.websiteName }}</h3>
+        <a href="/" class="flex justify-center" :title="config.websiteName">
+            <i class="i-carbon-web-services-container text-[30px] text-color-[var(--color-primary)]"></i>
+             <!-- <h3 class="p-0 m-0 w-120px text-color-[var(--el-color-primary)]">{{ config.websiteName }}</h3> -->
          </a>
-        <ElButton type="primary" @click="() => collapse = !collapse" class="toggle-menu z-2">
+        <!-- <ElButton v-if="collapse" type="primary" @click="() => collapse = !collapse" class="toggle-menu z-2">
             <span class="i-carbon-menu text-xl"></span>
-        </ElButton>
+        </ElButton> -->
     </div>
     <ElMenu
         style="width: 100%;padding-top: 60px;"
-        :style="{width: collapse ? '100%': '220px'}"
+        :style="{width: collapse ? '100%': '100px'}"
         mode="vertical"
         :collapse="collapse"
         :default-active="'/' + (props.routerPath.split('/').filter(_=>_)[0] || 'music')"
