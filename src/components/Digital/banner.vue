@@ -13,7 +13,7 @@ const props = defineProps({
     },
     imgClass: {
         type: String,
-        default: 'md:h-[360px] w-[100%]',
+        default: 'w-[100%] fit-cover md:fit-[auto]',
 
      }
 })
@@ -37,8 +37,8 @@ const props = defineProps({
 
 <template>
     <div>
-        <el-carousel v-bind="{...attrs}">
-            <el-carousel-item v-for="item in props.banner" :key="item.img">
+        <el-carousel v-bind="{...attrs, height: 'auto'}">
+            <el-carousel-item v-for="item in props.banner" :style="{height: (item.height|| 350) + 'px'}" :key="item.img">
                 <a :href="item.url" target="_blank" rel="noopener noreferrer">
                     <el-image :class="`${props.imgClass} h-[100%]`" :src="item.img" :fit="item.fit ||'cover'" :alt="item.img"></el-image>
                 </a>

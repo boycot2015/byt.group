@@ -11,7 +11,7 @@ interface Params {
 const { type = 'netease' } = Astro.params;
 
 ---
-<Layout title={`新闻-首页`}>
+<Layout title={`新闻`}>
   <KContainer cls='flex-col h-[100%]'>
     <PlayList client:only="vue" {type}></PlayList>
   </KContainer>

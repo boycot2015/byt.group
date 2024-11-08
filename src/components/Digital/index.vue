@@ -2,7 +2,7 @@
 import { baseApiUrl } from '@/api/index';
 import Banner from './banner.vue';
 import Category from './cate.vue';
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import GoodsItem from './goodsItem.vue';
 import { ElRow, ElCol, ElCard, ElImage, ElSkeleton, ElSkeletonItem, ElLink, ElLoading } from 'element-plus';
 defineOptions({
@@ -13,7 +13,6 @@ const loading = ref(true)
 const pageLoading = ref(true)
 const data = ref({})
 const cates = ref([])
-const bannerHeight = ref('460px')
 const getData = async (type = 'xiaomi') => {
     loading.value = true
     data.value = {}
@@ -31,10 +30,9 @@ const getData = async (type = 'xiaomi') => {
         return el
     })
     pageLoading.value = false
-    setTimeout(() => {
+    nextTick(() => {
         loading.value = pageLoading.value || false
-    }, 500)
-    bannerHeight.value = type === 'meizu' ? '360px' : '460px'
+    })
  }
  getData()
 </script>
@@ -79,8 +77,8 @@ const getData = async (type = 'xiaomi') => {
         </template>
         <template #default>
             <Category :cates="cates" @change="getData" />
-            <div v-loading="loading" class="md:min-h-[100%]">
-                <Banner :banner="data.banner || []" :key="Math.random()" class="mb-[20px]" />
+            <div v-loading="loading" class="min-h-[100%] md:min-h-[84%]">
+                <Banner v-if="data.banner && data.banner.length" :banner="data.banner || []" :key="Math.random()" class="mb-[20px]" />
                 <div class="list" v-for="item in data.indexData || []" :key="item.name">
                     <div class="header flex justify-between mb-[20px]" v-if="item.name">
                         <div class="title">{{ item.name }}</div>
@@ -93,9 +91,9 @@ const getData = async (type = 'xiaomi') => {
                         <div class="imgs w-[100%] md:w-[auto] md:mr-5 hidden md:block" v-else-if="(item.view_type && item.view_type === 'list_eight_product') || (item.bg_imgs && item.bg_imgs.length === 1)">
                             <el-image :src="item.bg_imgs[0]?.img" alt="" fit="cover" class="mb-[20px] h-[520px] rounded-xl" ></el-image>
                         </div>
-                        <div class="flex flex-row mr-[20px] md:justify-center md:justify-start md:flex-col" v-else-if="item.bg_imgs">
-                            <a :href="item.url" v-for="item in item.bg_imgs" target="_blank" rel="noopener noreferrer" class="w-[100%]">
-                                <el-image :src="item.img" alt="" fit="cover" class="mb-[20px] w-[100%] h-[250px] rounded-md" ></el-image>
+                        <div class="flex flex-row mx-[-10px] md:ml-0 md:mr-[20px] justify-between md:justify-start md:flex-col" v-else-if="item.bg_imgs">
+                            <a :href="item.url" v-for="item in item.bg_imgs" target="_blank" rel="noopener noreferrer" class="px-[10px] md:px-0 w-[100%] md:mb-[20px]">
+                                <el-image :src="item.img" alt="" fit="cover" class="w-[100%] h-[250px] rounded-md" ></el-image>
                             </a>
                         </div>
                         <el-row :gutter="20" class="flex-1 mt-[20px] md:mt-[0px]" v-if="item.list && item.list.length">
@@ -109,7 +107,7 @@ const getData = async (type = 'xiaomi') => {
                             :xl="{span:3}"
                             class="mb-[20px]"
                             >
-                            <el-card class="!rounded-[10px] overflow-hidden shadow-lg">
+                            <el-card class="!rounded-[10px] overflow-hidden shadow-lg hover:translate-y-[-3px]">
                                 <GoodsItem :goods="goods"/>
                             </el-card>
                         </el-col>

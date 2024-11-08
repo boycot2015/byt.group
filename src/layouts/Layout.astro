@@ -8,6 +8,8 @@ import Search from '@/components/Search';
 import Lyric from '@/components/music/player/lyric.tsx';
 import Player from '@/components/music/player/index.svelte';
 import Cover from '@/components/music/cover/index.tsx';
+import Nav from '@/components/Nav/index.vue';
+
 import 'virtual:uno.css';
 import 'element-plus/dist/index.css';
 import '@assets/less/index.less';
@@ -39,7 +41,7 @@ let lyircVisible = true;
 					<Aside client:only="vue" routerPath={url.pathname}></Aside>
 				</KAside>
 				<KContainer cls="relative">
-					<KHeader slot="header" cls="text-center flex items-center left-[auto] md:right-[16px] justify-between pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute">
+					<KHeader slot="header" cls="text-left flex items-center left-[auto] md:right-[16px] justify-start pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute">
 						<div class="navgator justify-center mr-5 hidden md:flex">
 							<KButton type="main" cls="mr-2 go-back border-none bg-[transparent]" ghost>
 								<KIcon icon="i-carbon-arrow-left text-color-[var(--color-primary)" size={16}></KIcon>
@@ -57,12 +59,12 @@ let lyircVisible = true;
 					</KHeader>
 					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto'}>
 						<slot></slot>
-						<KBacktop cls="shadow-none" client:only="svelte" bottom={80} right={50} showHeight={50} target=".main-scroll-wrap">
+						<KBacktop cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)]" client:only="svelte" bottom={80} right={20} showHeight={50} target=".main-scroll-wrap">
 						</KBacktop>
 					</KMain>
-					<KAffix bottom={120} class="k-affix k-affix--affixed md:hidden z-99 bottom-[170px] right-[50px]" triggerBottom={0}>
-						<div class="go-home rounded-full p-2 bg-white">
-							<KIcon icon="i-carbon-rocket" size={20}></KIcon>
+					<KAffix class="k-affix k-affix--affixed md:hidden z-999 bottom-[140px] right-[20px]" client:visible triggerBottom={0}>
+						<div class="nav rounded-full bg-[var(--color-primary)] z-index-99999">
+							<Nav client:only="vue" class="md:hidden" />
 						</div>
 					</KAffix>
 				</KContainer>
@@ -82,9 +84,9 @@ let lyircVisible = true;
 		document.querySelector('.go-back').onclick = () => {
 			window.history.back()
 		}
-		document.querySelector('.go-home').onclick = () => {			
-			window.location.href = '/'
-		}
+		// document.querySelector('.go-home').onclick = () => {			
+		// 	window.location.href = '/'
+		// }
 		document.querySelector('.go-forward').onclick = () => {
 			window.history.forward()
 		}

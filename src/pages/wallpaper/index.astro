@@ -12,7 +12,7 @@ interface Params {
 const { type = 'default' } = Astro.params;
 
 ---
-<Layout title={`壁纸-首页`}>
+<Layout title={`壁纸`}>
   <KContainer cls='flex-col h-[100%]'>
     <List client:load {type}></List>
     <ImageViewer client:load></ImageViewer>

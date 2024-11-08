@@ -73,7 +73,7 @@ onMounted(() => {
 					</div>
 				</template>
 				<template #default>
-					<ElCard class="text-left" :header="item.title" :body-style="{padding: 5}" style="width: 100%;">
+					<ElCard class="text-left hover:translate-y-[-3px] transition-all duration-400" :header="item.title" :body-style="{padding: 5}" style="width: 100%;">
 						<template #header>
 							<h3 class="p-0 m-0">
 								{{ item.title }} · {{ item.subTitle }}
