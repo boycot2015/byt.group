@@ -123,7 +123,7 @@ onMounted(() => {
 		</template>
 	</ElSkeleton>
 	<div class="px-0 h-[100%] playlist-scroll-wrap overflow-hidden overflow-y-auto" v-infinite-scroll="() => getData(++state.currentPage)">
-		<ElRow :gutter="16" class="pt-[5px]">
+		<ElRow :gutter="16" class="pt-[5px] bg-[var(--bg-color-light)]">
 			<ElCol :span="12" class="text-left" :xs="{span: 8}" :sm="{span: 6}" :md="{span: 4}" :lg="{span: 3}" :xl="{span: 2}" v-for="item in (pageLoading ? 24 : state.playList)" :key="item.id || item">
 				<ElSkeleton :loading="pageLoading" animated>
 				<template #template>
@@ -132,7 +132,7 @@ onMounted(() => {
 					<el-skeleton-item variant="text" style="width: 60%" />
 				</template>
 				<template #default>
-					<ElCard class="text-left !rounded-xl md:min-h-[230px] lg:min-h-[auto] hover:translate-y-[-3px] transition-all duration-500" @click="onView(item)" :body-style="{padding: 0}" style="width: 100%;">
+					<ElCard class="text-left !rounded-md md:min-h-[230px] lg:min-h-[auto] hover:translate-y-[-3px] transition-all duration-500" @click="onView(item)" :body-style="{padding: 0}" style="width: 100%;">
 						<ElImage class="min-h-[60px] lg:min-h-[160px]" fit="cover" :src="item.cover_img_url||item.img_url" style="width: 100%;" lazy></ElImage>
 						<ElText line-clamp="2" style="padding: 0 10px;">{{ item.title }}</ElText>
 					</ElCard>
@@ -142,6 +142,6 @@ onMounted(() => {
 		</ElRow>
 		<p v-if="loading">加载中...</p>
 		<p v-if="!state.hasMore">{{state.playList?.length ? '-------------我是有底线的-------------':'暂无数据~'}}</p>
-		<ElBacktop style="right: 20px;bottom: 90px;" target=".playlist-scroll-wrap" />
+		<ElBacktop style="right: 20px;bottom: 90px;" class="!md:right-[50px]" target=".playlist-scroll-wrap" />
 	</div>
 </template>

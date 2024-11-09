@@ -41,7 +41,7 @@ let lyircVisible = true;
 					<Aside client:only="vue" routerPath={url.pathname}></Aside>
 				</KAside>
 				<KContainer cls="relative">
-					<KHeader slot="header" cls="text-left flex items-center left-[auto] md:right-[16px] justify-start pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute">
+					<KHeader slot="header" cls="text-left flex items-center left-[auto] md:right-[16px] justify-start md:pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute">
 						<div class="navgator justify-center mr-5 hidden md:flex">
 							<KButton type="main" cls="mr-2 go-back border-none bg-[transparent]" ghost>
 								<KIcon icon="i-carbon-arrow-left text-color-[var(--color-primary)" size={16}></KIcon>
@@ -59,7 +59,7 @@ let lyircVisible = true;
 					</KHeader>
 					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto'}>
 						<slot></slot>
-						<KBacktop cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)]" client:only="svelte" bottom={80} right={20} showHeight={50} target=".main-scroll-wrap">
+						<KBacktop cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)] !right-[20px] !md:right-[50px]" client:only="svelte" bottom={80} showHeight={50} target=".main-scroll-wrap">
 						</KBacktop>
 					</KMain>
 					<KAffix class="k-affix k-affix--affixed md:hidden z-999 bottom-[140px] right-[20px]" client:visible triggerBottom={0}>

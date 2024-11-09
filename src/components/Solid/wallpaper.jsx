@@ -54,7 +54,7 @@ import { CustomEvent } from '@/utils';
             <Show when={!state().loading && !state().cateLoading} fallback={<div>加载中...</div>}>
                 <div class="list flex flex-wrap my-2 mx-[-1%] mr-[-2%] pb-5">
                     <For each={state().list.slice(0, state().count || 20) || []}>
-                    {(item, index) => <div onClick={() => setDialogOpen(item, index, state().list.slice(0, state().count || 20))} class="rounded-xl w-[48%] sm:w-[31%] cursor-pointer h-[200px] m-[1%] overflow-hidden"><img class={`w-[100%] h-[100%] object-cover transition-all ease-in-out duration-300 hover:scale-120`} title={item.img_title} src={item.img || item.url}alt="" /></div>}
+                    {(item, index) => <div onClick={() => setDialogOpen(item, index, state().list.slice(0, state().count || 20))} class="rounded-md w-[48%] sm:w-[31%] cursor-pointer h-[200px] m-[1%] overflow-hidden"><img class={`w-[100%] h-[100%] object-cover transition-all ease-in-out duration-300 hover:scale-120`} title={item.img_title} src={item.img || item.url}alt="" /></div>}
                     </For>
                 </div>
                 <div class="page mb-[10px] text-center flex justify-around w-[100%] text-color-[var(--color-primary)]">

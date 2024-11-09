@@ -106,13 +106,13 @@
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="image w-[40px] h-[40px] bg-[black] realtive cursor-pointer" on:click={() => toggleCover()}>
-        <KImage cls="w-[100%] h-[100%]" src={state.img_url}></KImage>
+        <KImage cls="w-[40px] h-[40px]" src={state.img_url}></KImage>
         <KIcon class="h-full w-full absolute z-10" icon="i-carbon-arrow-up" size={32}></KIcon>
     </div>
     <div class="play-section flex flex-2 justify-around items-center px-2 w-[auto] md:w-[70%] lg:w-[50%]">
-        <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg] md:block" size={20} on:click={() => playNext(false)}></KIcon>
-        <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer md:block" size={20} ></KIcon>
+        <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg] !h-[18px] text-color-[#333] md:block" on:click={() => playNext(false)}></KIcon>
         <audio bind:this={audioRef} class="flex-1 hidden md:block" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
+        <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer !h-[18px] text-color-[#333] md:block mr-[10px]" ></KIcon>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <span class="lyric-text cursor-pointer hidden md:block {lyricVisible?'text-color-[var(--el-color-primary)]':''}" on:click={() => toggleLyric()}>词</span>

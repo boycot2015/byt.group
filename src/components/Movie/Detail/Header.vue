@@ -16,12 +16,12 @@ let state:any = ref({ ...props.data, stars: props.data.sc / 2 });
     } */
 </style>
 <template>
-    <div class="movie-detail-header flex flex-wrap md:flex-no-wrap justify-center lg:items-center text-center lg:text-left py-[30px]" :style="{background: state.backgroundColor}">
+    <div class="movie-detail-header flex flex-wrap md:flex-[auto] justify-center lg:items-center text-center lg:text-left py-[30px]" :style="{background: state.backgroundColor}">
         <div class="img relative">
-            <ElImage class="mr-[30px] h-[320px]" fit="cover" :src="state.img"></ElImage>
+            <ElImage class="md:mr-[30px] h-[420px] md:h-[320px]" fit="cover" :src="state.img"></ElImage>
             <i className="score text-white text-xl absolute  top-[0] text-left bg-[var(--color-primary)] w-[100px] pl-[10px] left-[-6px] z-[10]">{{state.version.slice(1,).toUpperCase()}}</i>
         </div>
-        <div class="info mr-[30px] flex flex-col h-[320px] relative justify-between">
+        <div class="info w-[100%] md:w-[auto] md:mr-[30px] flex flex-col h-[320px] relative justify-around md:justify-between">
             <div>
                 <h1 class="text-[24px] font-bold text-white">{{ state.nm }}</h1>
                 <p class="text-[18px] text-white mt-[5px]">{{ state.enm }}</p>
@@ -29,13 +29,13 @@ let state:any = ref({ ...props.data, stars: props.data.sc / 2 });
                 <p class="text-[14px] text-white mt-[15px]">{{ state.src }}/{{ state.dur }}分钟</p>
                 <p class="text-[14px] text-white mt-[15px]">{{ state.pubDesc }}</p>
             </div>
-            <div class="btns mt-[50px]">
+            <div class="btns md:mt-[50px]">
                 <ElButton><i class="i-cardon-star"></i>想看</ElButton>
                 <ElButton><i class="i-cardon-rate"></i>评分</ElButton>
-                <ElButton class="w-[100%] mt-[10px] !mx-[0px]" type="primary" v-if="state.globalReleased">特惠购票</ElButton>
+                <ElButton class="w-[80%] md:w-[100%] mt-[10px] !mx-[0px]" type="primary" v-if="state.globalReleased">特惠购票</ElButton>
             </div>
         </div>
-        <div class="stars lg:self-end">
+        <div class="stars md:self-end">
             <template v-if="state.globalReleased">
                 <p class="text-[14px] text-white mt-[20px]">猫眼口碑</p>
                 <div class="score text-[32px] flex justify-between items-center text-color-[orange]">

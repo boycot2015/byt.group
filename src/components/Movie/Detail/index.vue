@@ -24,9 +24,7 @@ const getData = async () => {
     } finally {
         state = {...state || {} }
     }
-    loading.value = false;
-    console.log(state, 'state');
-    
+    loading.value = false;    
     return state
 }
 onMounted(() => {
@@ -39,10 +37,10 @@ onMounted(() => {
     } */
 </style>
 <template>
-    <div class="movie-detail mt-[-20px] text-left">
+    <div class="movie-detail mt-[-30px] mx-[-16px] md:mx-[auto] text-left">
         <ElSkeleton :loading="loading" animated>
             <template #template>
-                <el-skeleton-item variant="image" style="width: 240px; height: 240px" />
+                <el-skeleton-item variant="image" style="width: 240px; height: 240px;margin: auto;" />
                 <div style="padding: 14px">
                 <el-skeleton-item variant="h3" style="width: 50%" />
                 <div
@@ -60,8 +58,8 @@ onMounted(() => {
                 </div>
             </template>
             <template #default>
-                <div class="flex">
-                    <ElLink href="/movie" class="mr-[10]" type="primary" replace>猫眼电影 > </ElLink>
+                <div class="hidden md:flex">
+                    <ElLink href="/movie" class="mr-[10]" type="primary" replace>&nbsp;电影&nbsp;&nbsp;> &nbsp;&nbsp;</ElLink>
                     <ElBreadcrumb separator=">" class="my-[10px]">
                         <ElBreadcrumbItem >{{state.typeDesc}}</ElBreadcrumbItem>
                         <ElBreadcrumbItem>{{state.nm}}</ElBreadcrumbItem>
