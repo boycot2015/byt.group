@@ -2,15 +2,15 @@
 import Digital from '@/components/Digital/index.vue';
 import Layout from '@/layouts/Layout.astro';
 import { KContainer } from '@ikun-ui/core';
-import ImageViewer from '@/components/ImageViewer/index.vue';
+// import ImageViewer from '@/components/ImageViewer/index.vue';
 interface Props {
 	title?: string
 }
 ---
 <Layout title={`数码`}>
-  <KContainer cls='flex-col h-[100%]'>
+  <KContainer cls='flex-col h-[100%] max-w-[1300px] m-[auto]'>
     <Digital client:only="vue"></Digital>
-    <ImageViewer client:load></ImageViewer>
+    <!-- <ImageViewer client:load></ImageViewer> -->
   </KContainer>
 </Layout>
 <style>

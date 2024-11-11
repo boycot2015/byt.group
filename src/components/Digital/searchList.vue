@@ -15,12 +15,12 @@ const { data } = defineProps({
 </script>
 <template>
     <div>
-        <div class="flex items-center flex-wrap mb-[10px] text-color-[#333]" v-if="data.classes">
+        <div class="flex items-center line-clamp-1 mb-[10px] text-color-[#333]" v-if="data.classes">
             <span>分类：</span>
-            <el-tag class="mr-[10px] mb-[10px]" type="primary" v-for="cls in data.classes || []" :key="cls.name">{{ cls.name }}</el-tag>
+            <el-tag class="mr-[10px]" type="primary" v-for="cls in data.classes || []" :key="cls.name">{{ cls.name }}</el-tag>
         </div>
         <el-checkbox-group class="tags text-left mb-[10px]" v-model="tags">
-            <el-checkbox v-for="tag in data.tags" :value="tag.value">{{ tag.name }}</el-checkbox>
+            <el-checkbox v-for="tag in data.tags" :value="tag.value" :key="tag.name">{{ tag.name }}</el-checkbox>
         </el-checkbox-group>
         <el-row :gutter="15" class="flex-1 mt-[0px]" v-if="data.list && data.list.length">
             <el-col
