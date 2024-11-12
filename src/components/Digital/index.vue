@@ -70,22 +70,23 @@ getData()
     <el-skeleton style="width: 100%;text-align: left;" :loading="pageLoading" animated>
         <template #template>
             <div class="mb-[10px]">
-                <el-skeleton-item v-for="item in 5" variant="button" style="width: 10%;margin-right: 16px;height: 25px;" />
+                <el-skeleton-item v-for="item in 5" :key="item" variant="button" style="width: 10%;margin-right: 16px;height: 25px;" />
             </div>
             <div class="mb-[10px]">
-                <el-skeleton-item v-for="item in 8" variant="button" style="width: 8%;margin-right: 16px;height: 25px;" />
+                <el-skeleton-item v-for="item in 8" :key="item" variant="button" style="width: 8%;margin-right: 16px;height: 25px;" />
             </div>
             <el-skeleton-item variant="image" class="w-[100%] !h-[120px] !md:h-[420px] mb-[var(--gap)]" />
-            <div class="w-[100%]" v-for="item in 8">
+            <div class="w-[100%]" v-for="item in 8" :key="item">
                 <div class="flex justify-between mb-[var(--gap)]">
                     <el-skeleton-item variant="h3" style="width: 20%" />
                     <el-skeleton-item variant="text" style="width: 10%" />
                 </div>
                 <div class="flex flex-col md:flex-row md:justify-between">
-                    <el-skeleton-item class="!hidden !md:block"ariant="image" style="width: 200px; height: 420px;margin-right: 20px;" />
+                    <el-skeleton-item class="!hidden !md:block" variant="image" style="width: 200px; height: 420px;margin-right: 20px;" />
                     <el-row :gutter="15">
                         <el-col
                             v-for="item in 6"
+                            :key="item"
                             :span="12"
                             :xs="{span:12}"
                             :sm="{span:8}"
@@ -127,11 +128,11 @@ getData()
                                     <el-image :src="item.bg_imgs[0].img" :style="{height: data.type === 'honor'&&isMobile?'110px':data.type === 'xiaomi'&&isMobile?'58px':item.bg_imgs[0].height ? item.bg_imgs[0].height + 'px' : ''}" alt="" :fit="data.type === 'honor'&&isMobile?'contain':item.bg_imgs[0].fit||'cover'" class="mb-[var(--gap)] h-[68px] md:h-[200px] w-[100%] rounded-md" />
                                 </a>
                                 <div class="imgs w-[100%] md:w-[auto] md:mr-5 hidden md:block" v-else-if="(item.view_type && item.view_type === 'list_eight_product') || (item.bg_imgs && item.bg_imgs.length === 1)">
-                                    <el-image :src="item.bg_imgs[0]?.img" alt="" fit="cover" class="mb-[var(--gap)] h-[525px] rounded-md fit-cover" ></el-image>
+                                    <el-image :src="item.bg_imgs[0]?.img" alt="" fit="cover" class="mb-[var(--gap)] h-[585px] rounded-md fit-cover" ></el-image>
                                 </div>
                                 <div class="flex flex-row mx-[-10px] md:ml-0 md:mr-[var(--gap)] justify-between md:justify-start md:flex-col" v-else-if="item.bg_imgs">
-                                    <a :href="item.url" v-for="item in item.bg_imgs" target="_blank" rel="noopener noreferrer" class="px-[10px] md:px-0 w-[100%] mb-[var(--gap)]">
-                                        <el-image :src="item.img" alt="" fit="cover" class="w-[100%] h-[255px] rounded-md" ></el-image>
+                                    <a :href="item.url" v-for="item in item.bg_imgs" :key="item.img" target="_blank" rel="noopener noreferrer" class="px-[10px] md:px-0 w-[100%] mb-[var(--gap)]">
+                                        <el-image :src="item.img" alt="" fit="cover" class="w-[100%] h-[285px] rounded-md" ></el-image>
                                     </a>
                                 </div>
                             </template>
@@ -143,7 +144,7 @@ getData()
                                 :sm="{span:8}"
                                 :md="{span:6}"
                                 :lg="{span:4}"
-                                :xl="{span:3}"
+                                :xl="{span:4}"
                                 class="mb-[var(--gap)]"
                                 >
                                 <el-card class="!rounded-md overflow-hidden shadow-lg hover:translate-y-[-3px]" body-class="!px-[15px]">

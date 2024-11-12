@@ -51,7 +51,7 @@ const onTabClick = (val) => {
                                 </el-dropdown>
                             </span>
                         </template>
-                        <template class="outline-none" v-else #label>
+                        <template v-else #label>
                             <a :href="child.url" target="_blank" rel="noopener noreferrer" class="decoration-none text-color-[#333] hover:text-color-[var(--color-primary)]">{{child.title}}</a>
                         </template>
                     </el-tab-pane>
