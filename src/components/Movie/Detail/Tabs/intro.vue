@@ -12,13 +12,10 @@
                 <div class="title leading-[32px]">演员：</div>
                 <div class="name">{{ data.star }}</div>
             </div>
-            <!-- <ElSpace direction="vertical">
-            </ElSpace> -->
         </div>
     </div>
 </template>
 <script lang="ts" setup>
 import { inject } from 'vue';
-import { ElSpace, ElImage } from 'element-plus';
 const data:any = inject('tabsData');
 </script>

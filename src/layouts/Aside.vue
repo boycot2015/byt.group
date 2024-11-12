@@ -45,7 +45,7 @@ a {
             <span>音乐</span>
         </ElMenuItem>
         <ElMenuItem index="/news">
-            <i class="i-carbon-sun text-xl mr-2"></i>
+            <i class="i-carbon-book text-xl mr-2"></i>
             <span>新闻</span>
         </ElMenuItem>
         <ElMenuItem index="/movie">

@@ -40,7 +40,7 @@ onMounted(() => {
     <div class="movie-detail mt-[-30px] mx-[-16px] md:mx-[auto] text-left">
         <ElSkeleton :loading="loading" animated>
             <template #template>
-                <el-skeleton-item variant="image" style="width: 240px; height: 240px;margin: auto;" />
+                <el-skeleton-item variant="image" style="width: 240px; height: 240px;margin: 20px auto;" />
                 <div style="padding: 14px">
                 <el-skeleton-item variant="h3" style="width: 50%" />
                 <div
@@ -58,7 +58,7 @@ onMounted(() => {
                 </div>
             </template>
             <template #default>
-                <div class="hidden md:flex">
+                <div class="hidden md:flex mt-[20px]">
                     <ElLink href="/movie" class="mr-[10]" type="primary" replace>&nbsp;电影&nbsp;&nbsp;> &nbsp;&nbsp;</ElLink>
                     <ElBreadcrumb separator=">" class="my-[10px]">
                         <ElBreadcrumbItem >{{state.typeDesc}}</ElBreadcrumbItem>

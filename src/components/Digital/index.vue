@@ -107,7 +107,7 @@ getData()
             </div>
         </template>
         <template #default>
-            <Category :cates="cates" @change="getData" />
+            <Category :disabled="pageLoading || loading" :cates="cates" :keyword="keywordRef" @change="getData" />
             <div v-loading="loading" element-loading-background="rgba(255,255, 255, 0.5)" class="min-h-[100%] md:min-h-[84%]">
                 <template v-if="keywordRef">
                     <SearchList :data="data" />
@@ -117,7 +117,7 @@ getData()
                     <div class="list" v-for="item in data.indexData || []" :key="item.name">
                         <div class="header flex justify-between mb-[var(--gap)]" v-if="item.name">
                             <div class="title min-w-[100px] text-left">{{ item.name }}</div>
-                            <div class="links flex overflow-x-scroll">
+                            <div class="links flex overflow-x-scroll md:overflow-hidden">
                                 <el-link class="link-item first:ml-0 mx-5 last:mr-0" style="flex: 0 0 auto" v-for="link in item.links" :key="link.name" :href="link.url" target="_brank">{{ link.name }}</el-link>
                             </div>
                             <el-link class="more" v-if="item.url" :href="item.url" target="_brank">{{ item.more_text || item.list && item.list.length ? '查看更多':'' }}</el-link>
@@ -147,7 +147,7 @@ getData()
                                 :xl="{span:4}"
                                 class="mb-[var(--gap)]"
                                 >
-                                <el-card class="!rounded-md overflow-hidden shadow-lg hover:translate-y-[-3px]" body-class="!px-[15px]">
+                                <el-card class="!rounded-md overflow-hidden shadow-lg !hover:translate-y-[-3px] transform-gpu" body-class="!px-[10px] !pb-[15px]">
                                     <GoodsItem :goods="goods"/>
                                 </el-card>
                             </el-col>
