@@ -12,7 +12,7 @@ const { type = 'netease' } = Astro.params;
 
 ---
 <Layout title={`新闻`}>
-  <KContainer cls='flex-col h-[100%]'>
+  <KContainer cls='flex-col h-[100%] mx-auto max-w-[1920px]'>
     <PlayList client:only="vue" {type}></PlayList>
   </KContainer>
 </Layout>

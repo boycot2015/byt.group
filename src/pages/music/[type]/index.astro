@@ -33,7 +33,7 @@ const { type = 'qq' } = Astro.params;
 
 ---
 <Layout title={`音乐-${title?title+'-':''}${typeName[type]}`}>
-  <KContainer cls='flex-col overflow-hidden h-[100%]'>
+  <KContainer cls='flex-col overflow-hidden h-[100%] mx-auto max-w-[1920px]'>
     <CateList value={type} client:only="svelte" />
     <PlayList client:only="vue" {type}>
     </PlayList>

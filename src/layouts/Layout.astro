@@ -14,10 +14,11 @@ import 'virtual:uno.css';
 import 'element-plus/dist/index.css';
 import '@assets/less/index.less';
 interface Props {
-	title: string
+	title: string,
+	className?: string,
 }
 type ScrollTarget =  Window | Document | HTMLElement;
-const { title } = Astro.props;
+const { title, className } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
 let lyircVisible = true;
@@ -35,7 +36,7 @@ let lyircVisible = true;
 		<title>{title}</title>
 	</head>
 	<body>
-		<KContainer cls="main">
+		<KContainer cls={'main'}>
 			<KContainer cls="relative !overflow-hidden h-full bg-gray-100">
 				<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative">
 					<Aside client:only="vue" routerPath={url.pathname}></Aside>
@@ -57,7 +58,7 @@ let lyircVisible = true;
 						{<Lyric key="KHeader-Lyric" client:only="react" className="flex-1 px-2 line-clamp-1 hidden lg:block" />}
 						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 					</KHeader>
-					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto'}>
+					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto ' + className}>
 						<slot></slot>
 						<KBacktop cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)] !right-[20px] !md:right-[50px]" client:only="svelte" bottom={80} showHeight={50} target=".main-scroll-wrap">
 						</KBacktop>

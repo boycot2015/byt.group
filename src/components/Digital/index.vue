@@ -115,9 +115,9 @@ getData()
                     <Banner v-if="data.banner && data.banner.length" :banner="data.banner || []" :key="Math.random()" class="mb-[var(--gap)]" />
                     <div class="list" v-for="item in data.indexData || []" :key="item.name">
                         <div class="header flex justify-between mb-[var(--gap)]" v-if="item.name">
-                            <div class="title">{{ item.name }}</div>
-                            <div class="links">
-                                <el-link class="link-item ml-10" v-for="link in item.links" :href="link.url" target="_brank">{{ link.name }}</el-link>
+                            <div class="title min-w-[100px] text-left">{{ item.name }}</div>
+                            <div class="links flex overflow-x-scroll">
+                                <el-link class="link-item first:ml-0 mx-5 last:mr-0" style="flex: 0 0 auto" v-for="link in item.links" :key="link.name" :href="link.url" target="_brank">{{ link.name }}</el-link>
                             </div>
                             <el-link class="more" v-if="item.url" :href="item.url" target="_brank">{{ item.more_text || item.list && item.list.length ? '查看更多':'' }}</el-link>
                         </div>
