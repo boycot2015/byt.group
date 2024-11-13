@@ -58,7 +58,7 @@ let lyircVisible = true;
 						{<Lyric key="KHeader-Lyric" client:only="react" className="flex-1 px-2 line-clamp-1 hidden lg:block" />}
 						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
 					</KHeader>
-					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto ' + className}>
+					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto ' + (className || '')}>
 						<slot></slot>
 						<KBacktop cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)] !right-[20px] !md:right-[50px]" client:only="svelte" bottom={80} showHeight={50} target=".main-scroll-wrap">
 						</KBacktop>
@@ -74,7 +74,7 @@ let lyircVisible = true;
 				<Player client:only="svelte">
 					<Cover slot="cover" client:only="react" />
 					<PlayListDetail slot="playlist" simple={true} client:only="react" {type}></PlayListDetail>
-					<Lyric key="Player-Lyric" slot="lyric" className="w-[80%] md:hidden" client:only="react" />
+					<Lyric key="Player-Lyric" slot="lyric" className="w-[55%] md:hidden" client:only="react" />
 				</Player>
 			</KFooter>
 		</KContainer>

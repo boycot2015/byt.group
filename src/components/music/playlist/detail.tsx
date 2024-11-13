@@ -171,7 +171,7 @@ const playListDetail = (props:any) => {
 					{!loading?<Flex justify="flex-start" align="flex-start">
 						<Image
 							alt="avatar"
-							className='avatar !w-[120px] !h-[120px] md:!w-[200px] md:!h-[200px]'
+							className='avatar !w-[120px] !h-[120px] !md:w-[200px] !md:h-[200px]'
 							src={state.info?.cover_img_url||''}
 						/>
 						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 32px' }}>
@@ -184,7 +184,7 @@ const playListDetail = (props:any) => {
 							</Flex>
 						</Flex>
 					</Flex>:<Flex justify="flex-start" align="flex-start">
-						<Skeleton.Image active={true} className='!w-[180px] !h-[180px]'></Skeleton.Image>
+						<Skeleton.Image active={true} className='!w-[120px] !h-[120px] !md:w-[200px] !md:h-[200px]'></Skeleton.Image>
 						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 32px' }}>
 							<Skeleton paragraph={false} />
 							<Flex justify="space-around" className='mt-[10px]'>

@@ -6,12 +6,15 @@
     import { KIcon } from '@ikun-ui/icon';
     import { baseApiUrl } from '@/api/index';
     import type { PlayData } from "@/types";
+    import 'virtual:uno.css';
+    import lyric from "./lyric";
     let visible = false;
     let lyricVisible = true;
     let state:PlayData = {
         playIndex: 0,
         songs: []
     };
+    let websiteName = ''
     let requestTimes = 0;
     let audioRef: HTMLAudioElement | {currentTime?: number} = {};
     const getData = (playData?:PlayData, isNext?:boolean) => {
@@ -39,6 +42,7 @@
         getData({...state, ...(data || state.songs[state.playIndex] || {})}, true)
     }
     const toggleCover = () => {
+        if (!state.img_url) return
         visible = !visible
         CustomEvent.emit('toggleCover', {...state, visible })
     }
@@ -92,6 +96,7 @@
         CustomEvent.on('toggleCover', ({ visible: val }:any) => {
             visible = val
         })
+        websiteName = document.title
         CustomEvent.on('playNext', onPlay)
         CustomEvent.on('play', getData)
     })
@@ -102,13 +107,14 @@
         background-color: #fff;
     }
 </style>
-<div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-center h-[60px] overflow-hidden">
+<div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-between md:justify-center h-[60px] overflow-hidden">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="image w-[40px] h-[40px] rounded-md overflow-hidden realtive cursor-pointer" on:click={() => toggleCover()}>
-        <KImage cls="w-[40px] h-[40px]" src={state.img_url}></KImage>
-        <KIcon class="h-full w-full absolute z-10" icon="i-carbon-arrow-up" size={32}></KIcon>
+        <KImage cls="w-[40px] h-[40px]" src={state.img_url || '/favicon.ico'}></KImage>
+        <!-- <i class="absolute left-[24px] top-[20px] z-10 i-carbon-arrow-up text-[24px]"></i> -->
     </div>
+    {#if state.lyric}
     <div class="play-section flex flex-2 justify-around items-center px-2 w-[auto] md:w-[70%] lg:w-[50%]">
         <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg] !h-[18px] text-color-[#333] md:block" on:click={() => playNext(false)}></KIcon>
         <audio bind:this={audioRef} class="flex-1 hidden md:block" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
@@ -125,4 +131,7 @@
         </div>
     </KPopover>
     <slot name="cover" data={state}></slot>
+    {:else}
+    <p class="title flex-1 text-[20px]">{websiteName}</p>
+    {/if}
 </div>

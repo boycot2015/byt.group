@@ -57,7 +57,7 @@ const Cover = () => {
             })
             CustomEvent.emit('toggleCover', {visible: false})
         }}
-        className="i-carbon-close absolute z-100 right-[20px] top-[30px] md:top-[15px] text-color-[--color-primary] text-[30px] cursor-pointer"></div>}
+        className="i-carbon-close absolute z-100 right-[20px] md:right-[20%] top-[30px] md:top-[15px] text-color-[--color-primary] text-[30px] cursor-pointer"></div>}
         placement="bottom"
         height={'100vh'}
         // rgba(255,255,255,.6)

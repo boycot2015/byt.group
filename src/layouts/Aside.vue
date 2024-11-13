@@ -10,7 +10,7 @@ const handleChange = (key) => {
     activeMenu.value = key
     window.location.href = key
 }
-let collapse = ref(true)
+let collapse = ref(false)
 onMounted(() => {
     activeMenu.value = window.location.pathname
     collapse.value = window.innerWidth < 1200
@@ -31,8 +31,8 @@ a {
         <!-- <el-image src="/logo.svg" alt="logo" class="w-12 h-12 cursor-pointer" /> -->
         <a href="/" class="flex justify-center" :title="config.websiteName">
             <i class="i-carbon-web-services-container text-[30px] text-color-[var(--color-primary)]"></i>
-             <!-- <h3 class="p-0 m-0 w-120px text-color-[var(--el-color-primary)]">{{ config.websiteName }}</h3> -->
-         </a>
+            <!-- <h3 class="p-0 m-0 w-120px text-color-[var(--el-color-primary)]">{{ config.websiteName }}</h3> -->
+        </a>
         <!-- <ElButton v-if="collapse" type="primary" @click="() => collapse = !collapse" class="toggle-menu z-2">
             <span class="i-carbon-menu text-xl"></span>
         </ElButton> -->
