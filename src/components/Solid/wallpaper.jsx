@@ -10,7 +10,7 @@ import { CustomEvent } from '@/utils';
         pageLoading: true,
         count: 50,
         currentPage: 1,
-        type: props.type || 'default',
+        type: props.type || 'birdpaper',
         id: '',
         cates: [],
         source: [],

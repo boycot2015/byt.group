@@ -82,7 +82,7 @@ const MovieList = (props:any) => {
                         <Skeleton title paragraph={{rows: 1, width: '100%'}} loading={item.loading || initLoading} active>
                             <Card className='relative !rounded-[10px] overflow-hidden shadow-lg hover:translate-y-[-3px] transition-all duration-400' cover={<Image preview={false} style={{height: 260, fill: 'cover'}} alt={item.nm} src={item.img} />}>
                                 {<Meta title={item.nm} description={item.star?<Text ellipsis={{ tooltip: item.star }}>主演：{item.star}</Text>:null} />}
-                                {item.sc ? <div className="score text-color-[orange] text-xl absolute bottom-[95px] left-[0] text-right bg-[rgba(0,0,0,0.5)] w-[100%] px-[5%] right-[0] z-[10]">{item.sc}</div>:null}
+                                {item.sc ? <div className="score text-color-[orange] text-xl absolute bottom-[102px] left-[0] text-right bg-[rgba(0,0,0,0.5)] w-[100%] px-[5%] right-[0] z-[10]">{item.sc}</div>:null}
                             </Card>
                         </Skeleton>
                     </a></Col>

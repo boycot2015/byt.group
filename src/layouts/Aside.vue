@@ -3,14 +3,19 @@ import { onMounted, ref } from 'vue'
 import { ElMenu, ElMenuItem, ElButton, ElImage } from 'element-plus'
 import config from '@/config'
 import 'virtual:uno.css';
+let activeMenu = ref('/')
 const props = defineProps({ routerPath: [String, undefined] })
 const handleChange = (key) => {
+    if (activeMenu.value === key) return
+    activeMenu.value = key
     window.location.href = key
 }
-let collapse = ref(false)
+let collapse = ref(true)
 onMounted(() => {
+    activeMenu.value = window.location.pathname
+    collapse.value = window.innerWidth < 1200
     window.addEventListener('resize', () => {
-        collapse.value = window.innerWidth < 1000
+        collapse.value = window.innerWidth < 1200
     })
 })
 
@@ -37,6 +42,7 @@ a {
         :style="{width: collapse ? '100%': '100px'}"
         mode="vertical"
         :collapse="collapse"
+        :router="false"
         :default-active="'/' + (props.routerPath.split('/').filter(_=>_)[0] || 'music')"
         @select="handleChange"
     >

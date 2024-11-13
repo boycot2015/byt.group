@@ -24,7 +24,7 @@ const { data } = defineProps({
         </el-checkbox-group>
         <el-row :gutter="15" class="flex-1 mt-[0px]" v-if="data.list && data.list.length">
             <el-col
-            v-for="goods in data.list.slice(0, 12) || []" :key="goods.id"
+            v-for="goods in data.list" :key="goods.id"
             :span="12"
             :xs="{span:12}"
             :sm="{span:8}"
@@ -33,7 +33,7 @@ const { data } = defineProps({
             :xl="{span:3}"
             class="mb-[var(--gap)]"
             >
-            <el-card body-class="!px-[15px]" class="!rounded-md overflow-hidden shadow-lg hover:translate-y-[-3px]">
+            <el-card body-class="!px-[15px]" class="!rounded-md overflow-hidden !hover:shadow-xl hover:translate-y-[-3px]">
                 <GoodsItem :goods="goods"/>
             </el-card>
         </el-col>

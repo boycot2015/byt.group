@@ -49,7 +49,7 @@ const Cover = () => {
         forceRender={true}
         getContainer={() => document.getElementById('.main-scroll-wrap')!}
         zIndex={100}
-        title={<div className="text-xl text-center">{state.title + '-' + state.artist}</div>}
+        title={<div className="text-xl absolute left-0 w-[100%] px-[30px] z-100 text-center">{state.title + '-' + state.artist}</div>}
         extra={<div onClick={() => {
             setState({
                 ...state,
@@ -57,18 +57,23 @@ const Cover = () => {
             })
             CustomEvent.emit('toggleCover', {visible: false})
         }}
-        className="i-carbon-close text-[30px] cursor-pointer"></div>}
+        className="i-carbon-close absolute z-100 right-[20px] top-[30px] md:top-[15px] text-color-[--color-primary] text-[30px] cursor-pointer"></div>}
         placement="bottom"
         height={'100vh'}
-        className={`cover-drawer !overflow-hidden !backdrop-blur-md !bg-[rgba(255,255,255,.6)]`}>
-            <div className="cover-main flex h-full justify-center items-center">
-                <div className="img !w-[20%] mr-20 hidden md:block">
+        // rgba(255,255,255,.6)
+        className={`cover-drawer !overflow-hidden bg-top !bg-cover !bg-no-repeat`} style={{backgroundImage: `url(${state.img_url})`}}>
+            <div className="mask absolute top-0 left-0 w-[100%] h-[100%] !backdrop-blur-xl bg-[rgba(255,255,255,.6)]"></div>
+            <div className="cover-main relative z-index-99 md:flex md:h-[100%] justify-center md:items-center">
+                <div className="img !w-[20%] mr-20 hidden rounded-md overflow-hidden md:block">
                     <Image src={state.img_url} />
                 </div>
-                <div className="lyirc md:w-[40%] w-full">
-                    <div className="text-xl text-left flex flex-col md:flex-row mb-5">
-                        <span className="mr-4">歌名：{state.title}</span>
-                        <span>歌手：{state.artist}</span>
+                <div className="lyirc md:w-[40%] w-[100%] !h-[auto] mt-[15px] md:mt-0">
+                    <div className="top flex items-center mb-5">
+                        <Image src={state.img_url} className="md:hidden rounded-md overflow-hidden !w-[70px] !h-[70px] mr-[15px]" />
+                        <div className="text-xl flex flex-col justify-center text-left h-[100%]">
+                            <p className="mr-4 line-clamp-1">歌名：{state.title}</p>
+                            <p className="line-clamp-1">歌手：{state.artist}</p>
+                        </div>
                     </div>
                     <Lyric key="player-Lyric-cover" className="!h-[auto] overflow-y-auto" carouselClass="cover-lyric pt-[0px] h-[70vh] md:h-[60vh] overflow-hidden" />
                 </div>

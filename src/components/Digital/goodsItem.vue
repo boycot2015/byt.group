@@ -22,7 +22,7 @@ const renderPrice = (goods) => {
 }
 </script>
 <template>
-    <div class="goods text-center relative" :key="goods.id">
+    <div class="goods text-center relative cursor-pointer" :key="goods.id">
         <a :href="goods.url" target="_blank" rel="noopener noreferrer" class="flex flex-col justify-start items-center decoration-none text-color-[var(--color-primary)] h-[248px]">
             <div>
                 <div

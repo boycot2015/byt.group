@@ -104,7 +104,7 @@ const lyric = (props:any) => {
             {state.lyricArr.map((item:any, index:number) => {
                     return <div key={item} className="text-left">
                         <Text style={{...contentStyle,...(props.carouselClass&&{
-                            lineHeight: '18px',
+                            lineHeight: '22px',
                         })}}>{item.split(']')[1]}</Text>
                     </div>
                 })}

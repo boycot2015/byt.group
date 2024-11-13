@@ -105,7 +105,7 @@
 <div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-center h-[60px] overflow-hidden">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="image w-[40px] h-[40px] bg-[black] realtive cursor-pointer" on:click={() => toggleCover()}>
+    <div class="image w-[40px] h-[40px] rounded-md overflow-hidden realtive cursor-pointer" on:click={() => toggleCover()}>
         <KImage cls="w-[40px] h-[40px]" src={state.img_url}></KImage>
         <KIcon class="h-full w-full absolute z-10" icon="i-carbon-arrow-up" size={32}></KIcon>
     </div>
