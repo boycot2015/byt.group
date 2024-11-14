@@ -76,7 +76,7 @@ const MovieList = (props:any) => {
                 }}
                 loadMore={loadMore}
                 renderItem={(item:any) => (
-                    <div span={24} className='mb-[16px] px-[8px]'><a href={'/movie/detail?id=' +item.id}>
+                    <div className='mb-[16px] px-[8px]'><a href={'/movie/detail?id=' +item.id}>
                         {item.loading || initLoading ? <Skeleton.Image style={{marginBottom: 10, width: '190px', height: '260px'}} active /> : null}
                         <Skeleton title paragraph={{rows: 2, width: '100%'}} loading={item.loading || initLoading} active>
                             <Card className='relative !rounded-[10px] overflow-hidden shadow-lg hover:translate-y-[-3px] transition-all duration-400' cover={<Image preview={false} style={{height: 260, fill: 'cover'}} alt={item.nm} src={item.img} />}>
