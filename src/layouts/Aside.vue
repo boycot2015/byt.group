@@ -39,11 +39,11 @@ a {
     </div>
     <ElMenu
         style="width: 100%;padding-top: 60px;"
-        :style="{width: collapse ? '100%': '100px'}"
+        :style="{width: collapse ? '100%': '120px'}"
         mode="vertical"
         :collapse="collapse"
-        :router="false"
-        :default-active="'/' + (props.routerPath.split('/').filter(_=>_)[0] || 'music')"
+        :router="true"
+        :default-active="activeMenu.split('/').includes('music')?'/music':activeMenu"
         @select="handleChange"
     >
         <ElMenuItem index="/music">
@@ -65,6 +65,14 @@ a {
         <ElMenuItem index="/digital">
             <i class="i-carbon-box text-xl mr-2"></i>
             <span>数码</span>
+        </ElMenuItem>
+        <ElMenuItem index="/micro/ione">
+            <i class="text-xl mr-2 i-carbon-link"></i>
+            <span>导航</span>
+        </ElMenuItem>
+        <ElMenuItem index="/micro/links">
+            <i class="text-xl mr-2 i-carbon-link"></i>
+            <span>网站</span>
         </ElMenuItem>
     </ElMenu>
 </template>

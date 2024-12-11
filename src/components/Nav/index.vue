@@ -19,6 +19,8 @@ const handleCommand = (command) => {
             <el-dropdown-item command="/movie"><i class="text-[22px] i-carbon-video-player"></i>电影</el-dropdown-item>
             <el-dropdown-item command="/wallpaper"><i class="text-[22px] i-carbon-image"></i>壁纸</el-dropdown-item>
             <el-dropdown-item command="/digital"><i class="text-[22px] i-carbon-box"></i>数码</el-dropdown-item>
+            <el-dropdown-item command="/micro/ione"><i class="text-[22px] i-carbon-link"></i>导航</el-dropdown-item>
+            <el-dropdown-item command="/micro/links"><i class="text-[22px] i-carbon-link"></i>网址</el-dropdown-item>
         </el-dropdown-menu>
         </template>
     </el-dropdown>

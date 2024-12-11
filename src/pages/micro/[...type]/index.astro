@@ -1,0 +1,48 @@
+---
+// import List from '@/components/Solid/wallpaper.jsx';
+import Layout from "@/layouts/Layout.astro";
+import { KContainer, KSpin } from "@ikun-ui/core";
+// import ImageViewer from '@/components/ImageViewer/index.vue';
+interface Props {
+  [key: string]: string;
+}
+interface Params {
+  [key: string]: string;
+}
+export function getStaticPaths() {
+  return [
+    {
+      params: { type: "ione" },
+      props: { title: "网站导航", url: "https://www.jspoo.com/" },
+    },
+    {
+      params: { type: "links" },
+      props: { title: "网址大全", url: "https://webstack.iotheme.cn/" },
+    },
+  ];
+}
+const spinOptions = {
+  show: false,
+  text: "loading...",
+};
+const handleSpin = () => {
+  spinOptions.show = true;
+  setTimeout(() => {
+    spinOptions.show = false;
+  }, 3000);
+};
+handleSpin();
+console.log(Astro.props, "Astro.params");
+---
+
+<Layout title={`微应用-${Astro.props.title}`}>
+  <KContainer cls="flex-col h-[100%] mx-auto max-w-[1920px]">
+    <!-- <List client:load {type}></List> -->
+    <!-- <ImageViewer client:load></ImageViewer> -->
+    <div @use:KSpin={spinOptions} style="width: 100%; height: 100%;">
+      <iframe src={Astro.props.url} frameborder="0" width="100%" height="100%"
+      ></iframe>
+    </div>
+  </KContainer>
+</Layout>
+<style></style>
