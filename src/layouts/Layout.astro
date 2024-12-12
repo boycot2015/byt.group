@@ -50,7 +50,12 @@ let lyircVisible = true;
 				<KAside
 					cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative"
 				>
-					<Aside client:load props={Astro.props} params={Astro.params} routerPath={url.pathname} />
+					<Aside
+						client:visible
+						props={Astro.props}
+						params={Astro.params}
+						routerPath={url.pathname}
+					/>
 				</KAside>
 				<KContainer cls="relative">
 					<KHeader
@@ -128,9 +133,9 @@ let lyircVisible = true;
 						triggerBottom={0}
 					>
 						<div
-							class="nav rounded-full bg-[var(--color-primary)] z-index-99999"
+							class="nav md:hidden rounded-full bg-[var(--color-primary)] z-index-99999"
 						>
-							<Nav client:only="vue" class="md:hidden" />
+							<Nav client:only="vue" />
 						</div>
 					</KAffix>
 				</KContainer>

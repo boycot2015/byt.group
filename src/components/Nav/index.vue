@@ -16,7 +16,7 @@ const handleCommand = (command) => {
         <template #dropdown>
         <el-dropdown-menu>
             <el-dropdown-item command="/"><i class="text-[22px] i-carbon-home"></i>首页</el-dropdown-item>
-            <el-dropdown-item :command="item.path" v-for="item in config.menus" :key="item.path"><i class="text-[22px]" :class="'i-carbon-' + item.icon"></i>{{item.title}}</el-dropdown-item>
+            <el-dropdown-item :command="item.path" v-for="item in config.menus.filter(el => !el.hideInMenu)" :key="item.path"><i class="text-[22px]" :class="'i-carbon-' + item.icon"></i>{{item.title}}</el-dropdown-item>
         </el-dropdown-menu>
         </template>
     </el-dropdown>

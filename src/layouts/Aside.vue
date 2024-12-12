@@ -10,7 +10,7 @@ const props = defineProps({
     params: {}
 })
 let activeMenu = ref(props.props.activePath || '')
-console.log(props.props, props.params, 'params');
+// console.log(props.props, props.params, 'params');
 const handleChange = (key) => {
     if (activeMenu.value === key) return
     activeMenu.value = key
