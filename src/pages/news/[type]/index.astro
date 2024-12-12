@@ -1,41 +1,44 @@
 ---
-import PlayListDetail from '@/components/news/detail.tsx';
-import Layout from '@/layouts/Layout.astro';
-export function getStaticPaths () {
- return [
-    {params: {type: 'tieba'}},
-    {params: {type: '36kr'}},
-    {params: {type: 'baidu'}},
-    {params: {type: 'toutiao'}},
-    {params: {type: 'juejin'}},
-    {params: {type: 'netease'}},
-    {params: {type: 'lol'}},
-    {params: {type: 'weibo'}},
-    {params: {type: 'zhihu'}},
-  ];
+import PlayListDetail from "@/components/news/detail.tsx";
+import Layout from "@/layouts/Layout.astro";
+export function getStaticPaths() {
+	return [
+		{ params: { type: "tieba" } },
+		{ params: { type: "36kr" } },
+		{ params: { type: "baidu" } },
+		{ params: { type: "toutiao" } },
+		{ params: { type: "juejin" } },
+		{ params: { type: "netease" } },
+		{ params: { type: "lol" } },
+		{ params: { type: "weibo" } },
+		{ params: { type: "zhihu" } },
+	];
 }
 interface Props {
-	title: string
+	title: string;
 }
 interface Params {
-	[key:string]: string
+	[key: string]: string;
 }
 const { title } = Astro.props;
 const { type } = Astro.params;
 const typeName: Params = {
-	tieba: '贴吧',
-	'36kr': '36kr',
-	baidu: '百度',
-	toutiao: '头条',
-	juejin: '掘金',
-	netease: '网易',
-	lol: '英雄联盟',
-	weibo: '微博',
-	zhihu: '知乎'
+	tieba: "贴吧",
+	"36kr": "36kr",
+	baidu: "百度",
+	toutiao: "头条",
+	juejin: "掘金",
+	netease: "网易",
+	lol: "英雄联盟",
+	weibo: "微博",
+	zhihu: "知乎",
 };
 ---
-<Layout title={`新闻-${title?title+'-':''}${typeName[type]}`}>
-	<PlayListDetail client:only="react" {type}></PlayListDetail>
+
+<Layout
+	title={`新闻-${title ? title + "-" : ""}${typeName[type]}`}
+	activePath="/news"
+>
+	<PlayListDetail client:only="react" {type} />
 </Layout>
-<style>
-</style>
+<style></style>

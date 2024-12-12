@@ -57,7 +57,7 @@ const Cover = () => {
             })
             CustomEvent.emit('toggleCover', {visible: false})
         }}
-        className="i-carbon-close absolute z-100 right-[20px] md:right-[20%] top-[30px] md:top-[15px] text-color-[--color-primary] text-[30px] cursor-pointer"></div>}
+        className="i-carbon-chevron-down absolute z-100 right-[20px] md:right-[20%] top-[30px] md:top-[15px] text-color-[--color-primary] text-[30px] cursor-pointer"></div>}
         placement="bottom"
         height={'100vh'}
         // rgba(255,255,255,.6)
@@ -65,7 +65,7 @@ const Cover = () => {
             <div className="mask absolute top-0 left-0 w-[100%] h-[100%] !backdrop-blur-xl bg-[rgba(255,255,255,.6)]"></div>
             <div className="cover-main relative z-index-99 md:flex md:h-[100%] justify-center md:items-center">
                 <div className="img !w-[20%] mr-20 hidden rounded-md overflow-hidden md:block">
-                    <Image src={state.img_url} />
+                    <Image src={state.img_url} className="rounded-md overflow-hidden" />
                 </div>
                 <div className="lyirc md:w-[40%] w-[100%] !h-[auto] mt-[15px] md:mt-0">
                     <div className="top flex items-center mb-5">

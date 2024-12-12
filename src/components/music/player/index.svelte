@@ -110,9 +110,9 @@
 <div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-between md:justify-center h-[60px] overflow-hidden">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="image w-[40px] h-[40px] rounded-md overflow-hidden realtive cursor-pointer" on:click={() => toggleCover()}>
+    <div class="image w-[40px] h-[40px] rounded-md overflow-hidden relative cursor-pointer" on:click={() => toggleCover()}>
         <KImage cls="w-[40px] h-[40px]" src={state.img_url || '/favicon.ico'}></KImage>
-        <!-- <i class="absolute left-[24px] top-[20px] z-10 i-carbon-arrow-up text-[24px]"></i> -->
+        <span class="absolute transition-all {visible?'!rotate-180':''} top-2 left-2 i-carbon-chevron-up text-2xl !text-color-[white]"></span>
     </div>
     {#if state.lyric}
     <div class="play-section flex flex-2 justify-around items-center px-2 w-[auto] md:w-[70%] lg:w-[50%]">

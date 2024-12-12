@@ -1,5 +1,6 @@
 <script setup>
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
+import config from '@/config';
 import 'virtual:uno.css';
 const handleCommand = (command) => {
     // window.open(command)
@@ -15,12 +16,7 @@ const handleCommand = (command) => {
         <template #dropdown>
         <el-dropdown-menu>
             <el-dropdown-item command="/"><i class="text-[22px] i-carbon-home"></i>首页</el-dropdown-item>
-            <el-dropdown-item command="/music"><i class="text-[22px] i-carbon-music"></i>音乐</el-dropdown-item>
-            <el-dropdown-item command="/movie"><i class="text-[22px] i-carbon-video-player"></i>电影</el-dropdown-item>
-            <el-dropdown-item command="/wallpaper"><i class="text-[22px] i-carbon-image"></i>壁纸</el-dropdown-item>
-            <el-dropdown-item command="/digital"><i class="text-[22px] i-carbon-box"></i>数码</el-dropdown-item>
-            <el-dropdown-item command="/micro/ione"><i class="text-[22px] i-carbon-link"></i>导航</el-dropdown-item>
-            <el-dropdown-item command="/micro/links"><i class="text-[22px] i-carbon-link"></i>网址</el-dropdown-item>
+            <el-dropdown-item :command="item.path" v-for="item in config.menus" :key="item.path"><i class="text-[22px]" :class="'i-carbon-' + item.icon"></i>{{item.title}}</el-dropdown-item>
         </el-dropdown-menu>
         </template>
     </el-dropdown>

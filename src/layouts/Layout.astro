@@ -1,23 +1,32 @@
 ---
-import { KContainer, KHeader, KMain, KAside, KFooter, KButton, KBacktop, KAffix } from '@ikun-ui/core';
+import {
+	KContainer,
+	KHeader,
+	KMain,
+	KAside,
+	KFooter,
+	KButton,
+	KBacktop,
+	KAffix,
+} from "@ikun-ui/core";
 // import { ElAffix, ElButton} from 'element-plus';
-import PlayListDetail from '@/components/music/playlist/detail.tsx';
-import { KIcon } from '@ikun-ui/icon';
-import Aside from './Aside.vue';
-import Search from '@/components/Search';
-import Lyric from '@/components/music/player/lyric.tsx';
-import Player from '@/components/music/player/index.svelte';
-import Cover from '@/components/music/cover/index.tsx';
-import Nav from '@/components/Nav/index.vue';
-
-import 'virtual:uno.css';
-import 'element-plus/dist/index.css';
-import '@assets/less/index.less';
+import PlayListDetail from "@/components/music/playlist/detail.tsx";
+import { KIcon } from "@ikun-ui/icon";
+import Aside from "./Aside.vue";
+import Search from "@/components/Search";
+import Lyric from "@/components/music/player/lyric.tsx";
+import Player from "@/components/music/player/index.svelte";
+import Cover from "@/components/music/cover/index.tsx";
+import Nav from "@/components/Nav/index.vue";
+import "virtual:uno.css";
+import "element-plus/dist/index.css";
+import "@assets/less/index.less";
 interface Props {
-	title: string,
-	className?: string,
+	title: string;
+	activePath?: string;
+	className?: string;
 }
-type ScrollTarget =  Window | Document | HTMLElement;
+type ScrollTarget = Window | Document | HTMLElement;
 const { title, className } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
@@ -29,72 +38,141 @@ let lyircVisible = true;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{title}</title>
 	</head>
 	<body>
-		<KContainer cls={'main'}>
+		<KContainer cls={"main"}>
 			<KContainer cls="relative !overflow-hidden h-full bg-gray-100">
-				<KAside cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative">
-					<Aside client:only="vue" routerPath={url.pathname}></Aside>
+				<KAside
+					cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative"
+				>
+					<Aside client:load props={Astro.props} params={Astro.params} routerPath={url.pathname} />
 				</KAside>
 				<KContainer cls="relative">
-					<KHeader slot="header" cls="text-left flex items-center left-[auto] md:right-[16px] justify-start md:pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute">
-						<div class="navgator justify-center mr-5 hidden md:flex">
-							<KButton type="main" cls="mr-2 go-back border-none bg-[transparent]" ghost>
-								<KIcon icon="i-carbon-arrow-left text-color-[var(--color-primary)" size={16}></KIcon>
+					<KHeader
+						slot="header"
+						cls="text-left flex items-center left-[auto] md:right-[16px] justify-start md:pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute"
+					>
+						<div
+							class="navgator justify-center mr-5 hidden md:flex"
+						>
+							<KButton
+								type="main"
+								cls="mr-2 go-back border-none bg-[transparent]"
+								ghost
+							>
+								<KIcon
+									icon="i-carbon-arrow-left text-color-[var(--color-primary)"
+									size={16}
+								/>
 							</KButton>
-							<KButton type="main" cls="mr-2 go-forward border-none bg-[transparent]" ghost>
-								<KIcon icon="i-carbon-arrow-right text-color-[var(--color-primary)" size={16}></KIcon>
+							<KButton
+								type="main"
+								cls="mr-2 go-forward border-none bg-[transparent]"
+								ghost
+							>
+								<KIcon
+									icon="i-carbon-arrow-right text-color-[var(--color-primary)"
+									size={16}
+								/>
 							</KButton>
-							<KButton type="main" cls="go-reload border-none bg-[transparent]" ghost>
-								<KIcon icon="i-carbon-renew text-color-[var(--color-primary)" size={16}></KIcon>
+							<KButton
+								type="main"
+								cls="go-reload border-none bg-[transparent]"
+								ghost
+							>
+								<KIcon
+									icon="i-carbon-renew text-color-[var(--color-primary)"
+									size={16}
+								/>
 							</KButton>
 						</div>
-						<h3 class="hidden flex-1 text-[16px] md:block">{title}</h3>
-						{<Lyric key="KHeader-Lyric" client:only="react" className="flex-1 px-2 line-clamp-1 hidden lg:block" />}
-						<Search type={type} className="w-full my-3 md:my-0 md:w-[auto]" client:only="react" />
+						<h3 class="hidden flex-1 text-[16px] md:block">
+							{title}
+						</h3>
+						{
+							(
+								<Lyric
+									key="KHeader-Lyric"
+									client:only="react"
+									className="flex-1 px-2 line-clamp-1 hidden lg:block"
+								/>
+							)
+						}
+						<Search
+							type={type}
+							className="w-full my-3 md:my-0 md:w-[auto]"
+							client:only="react"
+						/>
 					</KHeader>
-					<KMain cls={'text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto ' + (className || '')}>
-						<slot></slot>
-						<KBacktop cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)] !right-[20px] !md:right-[50px]" client:only="svelte" bottom={80} showHeight={50} target=".main-scroll-wrap">
-						</KBacktop>
+					<KMain
+						cls={"text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto " +
+							(className || "")}
+					>
+						<slot />
+						<KBacktop
+							cls="shadow-none w-[2.5rem] h-[2.5rem] text-color-white bg-[var(--color-primary)] !right-[20px] !md:right-[50px]"
+							client:only="svelte"
+							bottom={80}
+							showHeight={50}
+							target=".main-scroll-wrap"
+						/>
 					</KMain>
-					<KAffix class="k-affix k-affix--affixed md:hidden z-999 bottom-[140px] right-[20px]" client:visible triggerBottom={0}>
-						<div class="nav rounded-full bg-[var(--color-primary)] z-index-99999">
+					<KAffix
+						class="k-affix k-affix--affixed md:hidden z-999 bottom-[140px] right-[20px]"
+						client:visible
+						triggerBottom={0}
+					>
+						<div
+							class="nav rounded-full bg-[var(--color-primary)] z-index-99999"
+						>
 							<Nav client:only="vue" class="md:hidden" />
 						</div>
 					</KAffix>
 				</KContainer>
 			</KContainer>
-			<KFooter slot="footer" cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px">
+			<KFooter
+				slot="footer"
+				cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px"
+			>
 				<Player client:only="svelte">
 					<Cover slot="cover" client:only="react" />
-					<PlayListDetail slot="playlist" simple={true} client:only="react" {type}></PlayListDetail>
-					<Lyric key="Player-Lyric" slot="lyric" className="w-[55%] md:hidden" client:only="react" />
+					<PlayListDetail
+						slot="playlist"
+						simple={true}
+						client:only="react"
+						{type}
+					/>
+					<Lyric
+						key="Player-Lyric"
+						slot="lyric"
+						className="w-[55%] md:hidden"
+						client:only="react"
+					/>
 				</Player>
 			</KFooter>
 		</KContainer>
 	</body>
 </html>
 <script is:inline>
-	window.addEventListener('load', () => {
-		document.querySelector('.go-back').onclick = () => {
-			window.history.back()
-		}
-		// document.querySelector('.go-home').onclick = () => {			
+	window.addEventListener("load", () => {
+		document.querySelector(".go-back").onclick = () => {
+			window.history.back();
+		};
+		// document.querySelector('.go-home').onclick = () => {
 		// 	window.location.href = '/'
 		// }
-		document.querySelector('.go-forward').onclick = () => {
-			window.history.forward()
-		}
-		document.querySelector('.go-reload').onclick = () => {
-			window.location.reload()
-		}
-	})
+		document.querySelector(".go-forward").onclick = () => {
+			window.history.forward();
+		};
+		document.querySelector(".go-reload").onclick = () => {
+			window.location.reload();
+		};
+	});
 </script>
 <style lang="less" scoped>
 	// eslint-disable astro/no-unused-css-selector

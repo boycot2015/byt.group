@@ -77,15 +77,15 @@ getData()
             </div>
             <el-skeleton-item variant="image" class="w-[100%] !h-[120px] !md:h-[420px] mb-[var(--gap)]" />
             <div class="w-[100%]" v-for="item in 8" :key="item">
-                <div class="flex justify-between mb-[var(--gap)]">
+                <div class="flex justify-between mb-[var(--gap)] mt-[--gap]">
                     <el-skeleton-item variant="h3" style="width: 20%" />
                     <el-skeleton-item variant="text" style="width: 10%" />
                 </div>
                 <div class="flex flex-col md:flex-row md:justify-between">
-                    <el-skeleton-item class="!hidden !md:block" variant="image" style="width: 200px; height: 420px;margin-right: 20px;" />
-                    <el-row :gutter="15">
+                    <el-skeleton-item class="!hidden !md:block" variant="image" style="flex-basis: 200px; height: 420px;line-height: 420px;text-align:center;margin-right: 20px;" />
+                    <el-row :gutter="10" class="flex-1">
                         <el-col
-                            v-for="item in 6"
+                            v-for="item in 12"
                             :key="item"
                             :span="12"
                             :xs="{span:12}"
@@ -97,9 +97,9 @@ getData()
                             class="mb-[var(--gap)]"
                         >
                             <el-skeleton-item variant="image" style="width: 100%; width: 170px; height: 170px;margin-bottom: 20px;" />
-                            <div class="flex felx-col">
-                                <el-skeleton-item variant="h3" style="width: 50%" />
-                                <el-skeleton-item variant="text" style="width: 30%" />
+                            <div class="flex flex-col items-center">
+                                <el-skeleton-item variant="h3" style="width: 80%" />
+                                <el-skeleton-item variant="p" style="width: 30%;margin-top: 10px;" />
                             </div>
                         </el-col>
                     </el-row>

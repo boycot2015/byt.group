@@ -32,7 +32,7 @@ const { title } = Astro.props;
 const { type = 'qq' } = Astro.params;
 
 ---
-<Layout title={`音乐-${title?title+'-':''}${typeName[type]}`}>
+<Layout title={`音乐-${title?title+'-':''}${typeName[type]}`} activePath="/music">
   <KContainer cls='flex-col overflow-hidden h-[100%] mx-auto max-w-[1920px]'>
     <CateList value={type} client:only="svelte" />
     <PlayList client:only="vue" {type}>
