@@ -9,31 +9,31 @@ export default {
             active: '/music',
             path: '/music',
             url: '',
-            icon: 'music'
+            icon: 'i-carbon-music'
         },
         {
             title: '新闻',
             path: '/news',
             url: '',
-            icon: 'book'
+            icon: 'i-carbon-book'
         },
         {
             title: '电影',
             path: '/movie',
             url: '',
-            icon: 'music'
+            icon: 'i-carbon-video-player'
         },
         {
             title: '壁纸',
             path: '/wallpaper',
             url: '',
-            icon: 'image'
+            icon: 'i-carbon-image'
         },
         {
             title: '数码',
             path: '/digital',
             url: '',
-            icon: 'box'
+            icon: 'i-carbon-box'
         },
         {
             title: '导航',
@@ -43,7 +43,7 @@ export default {
             subTitle: '网站导航',
             path: '/micro/ione',
             url: 'https://www.jspoo.com/',
-            icon: 'link'
+            icon: 'i-carbon-link'
         },
         {
             title: '网站',
@@ -54,7 +54,7 @@ export default {
             subTitle: '网址大全',
             path: '/micro/links',
             url: 'https://webstack.iotheme.cn/',
-            icon: 'link'
+            icon: 'i-carbon-link'
         }
     ],
 }

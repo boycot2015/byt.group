@@ -49,12 +49,14 @@ a {
             :style="{width: collapse ? '100%': '120px'}"
             mode="vertical"
             :collapse="collapse"
-            :router="true"
             :default-active="activeMenu"
             @select="handleChange"
         >
             <el-menu-item v-for="item in config.menus.filter(el => !el.hideInMenu)" :index="item.path" :key="item.path">
-                <i class="text-xl mr-2" :class="`i-carbon-${item.icon}`"></i>
+                <i class="i-carbon-music hidden"></i>
+                <i class="i-carbon-book hidden"></i>
+                <i class="i-carbon-video-player hidden"></i>
+                <i class="text-xl mr-2" :class="`${item.icon}`"></i>
                 <span>{{item.title}}</span>
             </el-menu-item>
         </el-menu>

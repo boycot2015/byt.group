@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, defineOptions } from 'vue';
 import { ElImage, ElButton, ElRate } from 'element-plus';
 // import { baseApiUrl } from '@/api/index';
 const props = defineProps({
@@ -7,6 +7,9 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     }
+})
+defineOptions({
+    name: 'Header'
 })
 let state:any = ref({ ...props.data, stars: props.data.sc / 2 });
 </script>
