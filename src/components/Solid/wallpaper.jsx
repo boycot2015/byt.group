@@ -2,6 +2,8 @@ import { createSignal, createEffect, For, Show, splitProps } from 'solid-js';
 import { baseApiUrl } from '@/api';
 import { Dialog, useDialog } from '@ark-ui/solid/dialog'
 import { CustomEvent } from '@/utils';
+import './style.less'
+import config from '@/config'
 // import { Tabs, DatePicker, parseDate } from '@ark-ui/solid'
  const Wallpaper = (props) => {
      const [state, setState] = createSignal({
@@ -9,6 +11,7 @@ import { CustomEvent } from '@/utils';
         cateLoading: true,
         pageLoading: true,
         count: 50,
+        index: 0,
         currentPage: 1,
         type: props.type || 'birdpaper',
         id: '',
@@ -32,8 +35,14 @@ import { CustomEvent } from '@/utils';
         // , list: [...state.list, ...res.data.list].filter((el, index, self) => self.findIndex(val => val.id === el.id) === index)
         setState({ ...state(), ...res.data, loading: false, cateLoading: false });
     }
-    const setDialogOpen = (row, index, data) => {
+    const  setDialogOpen = (row, index, data) => {
         CustomEvent.emit('imageViewer', { row, index: index(), data })
+    }
+    const onSetPapper = (row, e) => {
+        e.stopPropagation()
+        config.bgUrl = row.url
+        document.body.style.background = `url(${row.url}) center/cover no-repeat`
+        window.localStorage.setItem('config', JSON.stringify(config))
     }
     return <div class="pb-[20px]">
         <Show when={!state().pageLoading} fallback={<div>加载中...</div>}>
@@ -54,7 +63,10 @@ import { CustomEvent } from '@/utils';
             <Show when={!state().loading && !state().cateLoading} fallback={<div>加载中...</div>}>
                 <div class="list flex flex-wrap my-2 mx-[-1%] mr-[-2%] pb-5">
                     <For each={state().list.slice(0, state().count || 20) || []}>
-                    {(item, index) => <div onClick={() => setDialogOpen(item, index, state().list.slice(0, state().count || 20))} class="rounded-md w-[48%] sm:w-[31%] cursor-pointer h-[200px] m-[1%] overflow-hidden"><img class={`w-[100%] h-[100%] object-cover transition-all ease-in-out duration-300 hover:scale-120`} title={item.img_title} src={item.img || item.url}alt="" /></div>}
+                    {(item, index) => <div onClick={(e) => setDialogOpen(item, index, state().list.slice(0, state().count || 20))} onMouseOver={() => setState({ ...state(), index: index()})} class="rounded-md w-[48%] sm:w-[31%] cursor-pointer list-item relative h-[200px] m-[1%] overflow-hidden">
+                        <img class={`w-[100%] h-[100%] object-cover transition-all ease-in-out duration-300 hover:scale-120`} title={item.img_title} src={item.img || item.url}alt="" />
+                        <div onClick={[onSetPapper, item]} className={`action absolute w-full leading-[30px] bg-[rgba(255,255,255,0.5)] text-[--color-primary] text-center z-1 ${state().index == index()?'active':''}`}>设置为壁纸</div>
+                        </div>}
                     </For>
                 </div>
                 <div class="page mb-[10px] text-center flex justify-around w-[100%] text-color-[var(--color-primary)]">

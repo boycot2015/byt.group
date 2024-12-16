@@ -1,22 +1,30 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { KImage, KPopover, KMsgBox, KMessage } from "@ikun-ui/core";
-    import { CustomEvent } from '@/utils';
+    import { KImage, KPopover, KMsgBox, KMessage, KSlider } from "@ikun-ui/core";
+    import { CustomEvent, debounce } from '@/utils';
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
     import { baseApiUrl } from '@/api/index';
     import type { PlayData } from "@/types";
+    import config from "@/config";
     import 'virtual:uno.css';
-    import lyric from "./lyric";
     let visible = false;
     let lyricVisible = true;
     let state:PlayData = {
         playIndex: 0,
+        isPlay: false,
+        progress: 0,
+        flag: false,
         songs: []
     };
-    let websiteName = ''
+    let websiteName = config.websiteName
     let requestTimes = 0;
-    let audioRef: HTMLAudioElement | {currentTime?: number} = {};
+    let audioRef: HTMLAudioElement | {
+        currentTime?: number,
+        duration?: number
+        pause?: any
+        play?: any
+    } = {};
     const getData = (playData?:PlayData, isNext?:boolean) => {
         try {
             state = JSON.parse(window.localStorage.getItem('playData') as string) || playData || {};
@@ -32,6 +40,7 @@
     }
     const onPlaying = (e:Event) => {
         CustomEvent.emit('playing', audioRef)
+        getValueData()
     }
     const playNext = (isNext:boolean, data?:PlayData) => {
         isNext ? state.playIndex += 1 : state.playIndex -= 1
@@ -50,6 +59,22 @@
         lyricVisible = !lyricVisible
         CustomEvent.emit('toggleLyric', lyricVisible)
     }
+    const togglePlay = () => {
+        state.isPlay = !state.isPlay
+        state.isPlay ? audioRef.play() : audioRef.pause()
+        getValueData()
+    }
+    const getValueData = () => {
+        state.progress = Math.floor(((audioRef.currentTime || 0) * 100 / (audioRef.duration || 100)))
+    }
+    const onSliderChange = (e:any) => {
+        audioRef.pause()
+        audioRef.currentTime = (((e.detail || 0) * (audioRef.duration || 0)) / 100)
+        state.progress = e.detail || state.progress
+        debounce(function () {
+            state.isPlay ? audioRef.play() : audioRef.pause()
+        }, 200, true)
+    }
     const onPlay = async (item?:any, index?:number) => {
 		if (!item) {
 			KMsgBox({
@@ -65,6 +90,7 @@
 		try {
 			let playData = {
 				...item,
+                isPlay: true,
 				type: item.type,
 				songs: (state.songs.length ? state.songs : item.songs) || [],
 				playIndex: index || 0
@@ -96,7 +122,7 @@
         CustomEvent.on('toggleCover', ({ visible: val }:any) => {
             visible = val
         })
-        websiteName = document.title
+        // websiteName = document.title
         CustomEvent.on('playNext', onPlay)
         CustomEvent.on('play', getData)
     })
@@ -104,21 +130,25 @@
 </script>
 <style>
     audio::-webkit-media-controls-panel {
-        background-color: #fff;
+        background-color: transparent !important;
     }
 </style>
-<div class="leading-60px w-[calc(100% - 220px)] px-3 items-center bg-white box-shadow flex justify-between md:justify-center h-[60px] overflow-hidden">
+<div class="leading-60px px-3 items-center box-shadow flex justify-between md:justify-center h-[60px] overflow-hidden">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
+    {#if state.lyric || state.img_url}
     <div class="image w-[40px] h-[40px] rounded-md overflow-hidden relative cursor-pointer" on:click={() => toggleCover()}>
         <KImage cls="w-[40px] h-[40px]" src={state.img_url || '/favicon.ico'}></KImage>
         <span class="absolute transition-all {visible?'!rotate-180':''} top-2 left-2 i-carbon-chevron-up text-2xl !text-color-[white]"></span>
     </div>
-    {#if state.lyric}
+    {/if}
+    {#if state.lyric || state.img_url}
     <div class="play-section flex flex-2 justify-around items-center px-2 w-[auto] md:w-[70%] lg:w-[50%]">
         <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg] !h-[18px] text-color-[#333] md:block" on:click={() => playNext(false)}></KIcon>
-        <audio bind:this={audioRef} class="flex-1 hidden md:block" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
+        <audio bind:this={audioRef} class="flex-1 hidden !bg-[transparent]" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
+        <KIcon icon={`i-carbon-${!state.isPlay?'play-filled':'pause-outline-filled'}`} on:click={() => togglePlay()} title="下一曲" cls="cursor-pointer !h-[24px] text-color-[#333] md:block mx-[10px]" ></KIcon>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer !h-[18px] text-color-[#333] md:block mr-[10px]" ></KIcon>
+        <KSlider cls="!leading-[20px] hidden md:flex" value={state.progress} on:input={onSliderChange}></KSlider>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <span class="lyric-text cursor-pointer hidden md:block {lyricVisible?'text-color-[var(--el-color-primary)]':''}" on:click={() => toggleLyric()}>词</span>
@@ -132,6 +162,6 @@
     </KPopover>
     <slot name="cover" data={state}></slot>
     {:else}
-    <p class="title flex-1 text-[20px]">{websiteName}</p>
+    <p class="title ml-[--gap] md:w-[700px] text-[14px]">{websiteName} {config.footer.copyright} {config.footer.beian} {config.footer.email}</p>
     {/if}
 </div>

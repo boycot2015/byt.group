@@ -78,7 +78,7 @@ onMounted(() => {
 							<h3 class="p-0 m-0">
 								{{ item.title }} · {{ item.subTitle }}
 								<ElTooltip content="查看更多" placement="top">
-									<ElIcon @click="onView(item)" class="float-right cursor-pointer"><span class="i-carbon-arrow-right"></span></ElIcon>
+									<ElIcon @click="onView(item)" class="float-right cursor-pointer"><span class="i-carbon-chevron-right"></span></ElIcon>
 								</ElTooltip>
 							</h3>
 						</template>

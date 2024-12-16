@@ -32,7 +32,7 @@ const MovieList = (props:any) => {
         setLoading(true);
         setOffset(offset + 1);
         setList(
-            data.concat([...new Array(6)].map(() => ({ loading: true }))),
+            data.concat([...new Array(12)].map(() => ({ loading: true }))),
           );
         const params = new URLSearchParams(window.location.search);
         fetch(baseApiUrl + '/movie/list?type=' + (params.get('type') || 'hot') + '&limit=12&offset=' + (offset + 1) + '&movieIds=' + ids.slice(offset * 12, 12 * (offset + 1)).join(',') + '&keyword=' + params.get('keyword'))
@@ -51,12 +51,11 @@ const MovieList = (props:any) => {
         <div
           style={{
             textAlign: 'center',
-            marginTop: 12,
-            height: 32,
+            paddingBottom: 12,
             lineHeight: '32px',
           }}
         >
-          <Button type='text' onClick={onLoadMore}>加载更多 <i className="i-carbon-arrow-down"></i></Button>
+          <Button type='text' onClick={onLoadMore}>加载更多 <i className="i-carbon-chevron-down"></i></Button>
         </div>
       ) : null;
     return (

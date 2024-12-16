@@ -1,6 +1,32 @@
-export default {
+type Menu = {
+    title:string
+    type?: string
+    micro?: boolean,
+    hideInMenu?: boolean,
+    active?: string
+    subTitle?: string
+    path: string
+    url?: string
+    icon: string
+}
+type Props = { 
+    websiteName: string
+    themeColor: string
+    bgUrl: string
+    lyricPosition: string
+    themeModel: string
+    menus: Menu[],
+    footer: {
+        copyright: string,
+        beian?: string,
+        url?: string,
+        email?: string
+    }
+}
+const config: Props = {
     websiteName: 'web-group',
     themeColor: '#1890ff',
+    bgUrl: '',
     lyricPosition: 'top', // top, bottom
     themeModel: 'light', // light, dark
     menus: [
@@ -57,4 +83,11 @@ export default {
             icon: 'i-carbon-link'
         }
     ],
+    footer: {
+        copyright: 'Copyright @2024 Designed by boycot',
+        beian: '粤IPC 202123123号',
+        url: 'https://beian.com',
+        email: 'boycot2017@163.com'
+    }
 }
+export default config

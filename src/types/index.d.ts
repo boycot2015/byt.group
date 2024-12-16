@@ -45,5 +45,8 @@ export type ArticleProp = {
 export interface PlayData extends InfoProp, SongProp, LyricProp {
     visible?: boolean
     type?: string
+    flag?: boolean
+    isPlay?: boolean
+    progress?:number
     songs: SongProp[]
 }

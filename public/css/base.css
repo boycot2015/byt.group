@@ -1,0 +1,10 @@
+.tc {
+    text-align: center;
+}
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+audio::-webkit-media-controls-panel {
+    background-color: transparent !important;
+}

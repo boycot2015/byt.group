@@ -33,7 +33,7 @@ a {
 }
 </style>
 <template>
-    <div style="background-color: var(--el-menu-bg-color);">
+    <div>
         <div class="logo absolute z-2 flex justify-center h-60px items-center w-[100%] border-b-1 border-[#eee] border-b-solid">
             <!-- <el-image src="/logo.svg" alt="logo" class="w-12 h-12 cursor-pointer" /> -->
             <a href="/" class="flex justify-center" :title="config.websiteName">
@@ -45,7 +45,7 @@ a {
             </ElButton> -->
         </div>
         <el-menu
-            style="width: 100%;padding-top: 60px;height: calc(100vh - 60px);"
+            style="width: 100%;padding-top: 60px;height: calc(100vh - 60px);background-color: transparent;"
             :style="{width: collapse ? '100%': '120px'}"
             mode="vertical"
             :collapse="collapse"

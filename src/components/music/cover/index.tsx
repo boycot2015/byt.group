@@ -65,11 +65,11 @@ const Cover = () => {
             <div className="mask absolute top-0 left-0 w-[100%] h-[100%] !backdrop-blur-xl bg-[rgba(255,255,255,.6)]"></div>
             <div className="cover-main relative z-index-99 md:flex md:h-[100%] justify-center md:items-center">
                 <div className="img !w-[20%] mr-20 hidden rounded-md overflow-hidden md:block">
-                    <Image src={state.img_url} className="rounded-md overflow-hidden" />
+                    <Image src={state.img_url} preview={false} className="rounded-md overflow-hidden" />
                 </div>
                 <div className="lyirc md:w-[40%] w-[100%] !h-[auto] mt-[15px] md:mt-0">
                     <div className="top flex items-center mb-5">
-                        <Image src={state.img_url} className="md:hidden rounded-md overflow-hidden !w-[70px] !h-[70px] mr-[15px]" />
+                        <Image src={state.img_url} preview={false} className="md:hidden rounded-md overflow-hidden !w-[70px] !h-[70px] mr-[15px]" />
                         <div className="text-xl flex flex-col justify-center text-left h-[100%]">
                             <p className="mr-4 line-clamp-1">歌名：{state.title}</p>
                             <p className="line-clamp-1">歌手：{state.artist}</p>

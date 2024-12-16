@@ -83,11 +83,17 @@ onMounted(() => {
 		cursor: pointer;
 	}
 }
+.el-tabs__header.is-top {
+	margin-bottom: 0;
+}
+.k-tabs__content {
+	padding: 0;
+}
 </style>
 <template>
 	<ElSkeleton :loading="pageLoading" animated>
 		<template #template>
-			<el-tabs>
+			<el-tabs class="mb-[--gap]">
 				<el-tab-pane v-for="item in 10" :key="item">
 					<template #label>
 						<el-skeleton-item variant="button" />
@@ -96,7 +102,7 @@ onMounted(() => {
 			</el-tabs>
 		</template>
 		<template #default>
-			<div class="relative">
+			<div class="relative mb-[--gap]" v-if="state.cateData.recommend && state.cateData.recommend.length">
 				<el-tabs v-model="state.cateId" :before-leave="onLeave" class="m-t[-15px]" @tab-change="onTabChange">
 					<el-tab-pane v-for="tab in state.cateData.recommend" :label="tab.name" :key="tab.id" :name="tab.id+''">
 						<template #label>
@@ -123,7 +129,7 @@ onMounted(() => {
 		</template>
 	</ElSkeleton>
 	<div class="px-0 h-[100%] playlist-scroll-wrap overflow-hidden overflow-y-auto" v-infinite-scroll="() => getData(++state.currentPage)">
-		<ElRow :gutter="16" class="pt-[5px] bg-[var(--bg-color-light)]">
+		<ElRow :gutter="16" class="pt-[5px]">
 			<ElCol :span="12" class="text-left" :xs="{span: 8}" :sm="{span: 6}" :md="{span: 4}" :lg="{span: 3}" :xl="{span: 2}" v-for="item in (pageLoading ? 24 : state.playList)" :key="item.id || item">
 				<ElSkeleton :loading="pageLoading" animated>
 				<template #template>

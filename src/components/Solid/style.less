@@ -1,0 +1,13 @@
+.list {
+    &:hover {
+        .list-item .action.active {
+            transform: translateY(-35px);
+        }
+    }
+    .action {
+        transition: all .3s ease-in-out;
+        transform: translateY(0);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+}

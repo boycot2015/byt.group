@@ -37,7 +37,7 @@ const playListDetail = (props:any) => {
 		hasMore: true
 	});
 	const columns:TableColumnType[] = [
-		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[40px]' onClick={(e) => e.stopPropagation()} />, align: 'left'},
+		{title:'封面', dataIndex: 'img_url', hidden: false, width: '70px', render: (text:string, record:any) => <Image src={text} className='!w-[40px] rounded-md' onClick={(e) => e.stopPropagation()} />, align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌曲':'歌单'}名({state.totalCount || state.songs?.length || 0})</span>, width: '180px', dataIndex: 'title', align: 'left'},
 		{title: () => <span>{searchType == '0' ?'歌手':'作者'}</span>, dataIndex: 'artist', width: '160px', render: (text:string, record:any) => record.artist || record.author, align: 'left'},
 		{title:'专辑', dataIndex: 'album', hidden: false, width: '220px', render: (text:string, record:any) => text || '--', align: 'left'},
@@ -171,7 +171,7 @@ const playListDetail = (props:any) => {
 					{!loading?<Flex justify="flex-start" align="flex-start">
 						<Image
 							alt="avatar"
-							className='avatar !w-[120px] !h-[120px] !md:w-[200px] !md:h-[200px]'
+							className='avatar rounded-md overflow-hidden !w-[120px] !h-[120px] !md:w-[200px] !md:h-[200px]'
 							src={state.info?.cover_img_url||''}
 						/>
 						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 32px' }}>

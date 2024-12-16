@@ -18,9 +18,10 @@ import Lyric from "@/components/music/player/lyric.tsx";
 import Player from "@/components/music/player/index.svelte";
 import Cover from "@/components/music/cover/index.tsx";
 import Nav from "@/components/Nav/index.vue";
+import config from "@/config";
 import "virtual:uno.css";
 import "element-plus/dist/index.css";
-import "@assets/less/index.less";
+import "@/assets/less/index.less";
 interface Props {
 	title: string;
 	activePath?: string;
@@ -30,7 +31,11 @@ type ScrollTarget = Window | Document | HTMLElement;
 const { title, className } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
-let lyircVisible = true;
+const getstyles = () => {
+	return url.pathname.split("/").includes("music") || url.pathname == "/"
+		? ""
+		: "md:right-[--gap]";
+};
 ---
 
 <!doctype html>
@@ -42,13 +47,14 @@ let lyircVisible = true;
 		<meta name="generator" content={Astro.generator} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link href="/css/base.css" />
 		<title>{title}</title>
 	</head>
 	<body>
 		<KContainer cls={"main"}>
-			<KContainer cls="relative !overflow-hidden h-full bg-gray-100">
+			<KContainer cls="relative !overflow-hidden h-full bg-[transparent]">
 				<KAside
-					cls="text-center bg-gray-200 hidden !md:flex leading-60px drop-shadow-[30px_0px_35px_rgba(0,0,0,0.15)] relative"
+					cls="text-center hidden !md:flex leading-60px !drop-shadow-[36px_0px_36px_rgba(0,0,0,0.5)] bg-[rgba(255,255,255,0.6)] backdrop-blur-md relative"
 				>
 					<Aside
 						client:visible
@@ -60,14 +66,14 @@ let lyircVisible = true;
 				<KContainer cls="relative">
 					<KHeader
 						slot="header"
-						cls="text-left flex items-center left-[auto] md:right-[16px] justify-start md:pl-[35px] !drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.55)] h-[60px] leading-40px w-[100%] backdrop-blur-md !md:overflow-auto !z-100 absolute"
+						cls=`text-left flex items-center left-[auto] ${getstyles()} 3xl:right-[auto] justify-start !drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] bg-[rgba(255,255,255,0.6)] h-[60px] leading-40px backdrop-blur-md !md:overflow-auto !z-100 md:pl-[32px] w-full md:absolute sticky`
 					>
 						<div
 							class="navgator justify-center mr-5 hidden md:flex"
 						>
 							<KButton
 								type="main"
-								cls="mr-2 go-back border-none bg-[transparent]"
+								cls="mr-2 go-back pl-0 border-none bg-[transparent]"
 								ghost
 							>
 								<KIcon
@@ -115,7 +121,7 @@ let lyircVisible = true;
 						/>
 					</KHeader>
 					<KMain
-						cls={"text-center main-scroll-wrap bg-gray-100 realtive overflow-hidden pt-[80px] mb-[60px] w-[100%] mx-0 overflow-y-auto " +
+						cls={"text-center main-scroll-wrap bg-[rgba(255,255,255,.5)] md:pt-[80px] realtive overflow-hidden mb-[60px] w-[100%] mx-0 overflow-y-auto " +
 							(className || "")}
 					>
 						<slot />
@@ -142,9 +148,9 @@ let lyircVisible = true;
 			</KContainer>
 			<KFooter
 				slot="footer"
-				cls="z-101 relative text-center p-0 bg-gray-100 drop-shadow-[0_-35px_35px_rgba(0,0,0,0.15)] leading-60px"
+				cls="z-101 relative text-center p-0 bg-[rgba(255,255,255,0.6)] drop-shadow-[0_-35px_35px_rgba(0,0,0,0.5)] backdrop-blur-md leading-60px"
 			>
-				<Player client:only="svelte">
+				<Player client:visible>
 					<Cover slot="cover" client:only="react" />
 					<PlayListDetail
 						slot="playlist"
@@ -163,6 +169,11 @@ let lyircVisible = true;
 		</KContainer>
 	</body>
 </html>
+<script define:vars={{ config }}>
+	let str = window.localStorage.getItem("config");
+	Object.assign(config, JSON.parse(str));
+	document.body.style.background = `url(${config.bgUrl}) center/cover no-repeat`;
+</script>
 <script is:inline>
 	window.addEventListener("load", () => {
 		document.querySelector(".go-back").onclick = () => {
