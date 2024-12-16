@@ -17,12 +17,12 @@ export const JSONfn = () => {
         JSONfn = {};
     }
     JSONfn.stringify = function(obj: any) {
-      return JSON.stringify(obj,function(key: any, value: { toString: () => any; }){
+      return JSON.stringify(obj,function(key: string, value: { toString: () => any; }){
               return (typeof value === 'function' ) ? value.toString() : value;
           });
     }
     JSONfn.parse = function(str: string) {
-      return JSON.parse(str,function(key: any, value: string){
+      return JSON.parse(str,function(key: string, value: string){
           if(typeof value != 'string') return value;
           return ( value.substring(0,8) == 'function') ? eval('('+value+')') : value;
       });
@@ -39,7 +39,7 @@ export const JSONFn = JSONfn();
  **/
 export const debounce = (func:any, wait:number, immediate?:boolean) => {
   let timer:any;
-  return function () {
+  return function fn () {
       let args = arguments;
       if (timer) clearTimeout(timer);
       if (immediate) {
@@ -47,10 +47,10 @@ export const debounce = (func:any, wait:number, immediate?:boolean) => {
           timer = setTimeout(() => {
               timer = null;
           }, wait)
-          if (callNow) func.apply(this, args)
+          if (callNow) func.apply(fn, args)
       } else {
           timer = setTimeout(function() {
-              func.apply(this, args)
+              func.apply(fn, args)
           }, wait);
       }
   }
