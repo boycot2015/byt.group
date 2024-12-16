@@ -147,6 +147,7 @@
         <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg] !h-[18px] text-color-[#333] md:block" on:click={() => playNext(false)}></KIcon>
         <audio bind:this={audioRef} class="flex-1 hidden !bg-[transparent]" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
         <KIcon icon={`i-carbon-${!state.isPlay?'play-filled':'pause-outline-filled'}`} on:click={() => togglePlay()} title="下一曲" cls="cursor-pointer !h-[24px] text-color-[#333] md:block mx-[10px]" ></KIcon>
+        <i class="i-carbon-pause-outline-filled hidden"></i>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer !h-[18px] text-color-[#333] md:block mr-[10px]" ></KIcon>
         <KSlider cls="!leading-[20px] hidden md:flex" value={state.progress} on:input={onSliderChange}></KSlider>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
