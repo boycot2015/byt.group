@@ -23,6 +23,7 @@ const playListDetail = (props:any) => {
 		type: string;
 		songs: SongProp[];
 		hasMore?: boolean;
+		isPlay?: boolean;
 		currentPage?: number;
 		playIndex: number;
 		pageSize?: number;
@@ -33,6 +34,7 @@ const playListDetail = (props:any) => {
         info: {},
 		type: '',
 		songs: [],
+		isPlay: true,
 		playIndex: 0,
 		hasMore: true
 	});
@@ -125,6 +127,7 @@ const playListDetail = (props:any) => {
 				title:'提示',
 				content:'此操作会替换播放列表, 确定继续?',
 				onOk: () => {
+					state.isPlay = true
 					onPlay(state.songs[0], 0);
 				}
 			})
@@ -135,6 +138,7 @@ const playListDetail = (props:any) => {
 			let playData = {
 				...item,
 				type,
+				isPlay: state.isPlay,
 				songs: (state.songs.length ? state.songs : item.songs) || [],
 				playIndex: index || 0
 			}

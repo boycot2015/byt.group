@@ -12,7 +12,7 @@
     let lyricVisible = true;
     let state:PlayData = {
         playIndex: 0,
-        isPlay: false,
+        isPlay: true,
         progress: 0,
         flag: false,
         songs: []
@@ -71,9 +71,7 @@
         audioRef.pause()
         audioRef.currentTime = (((e.detail || 0) * (audioRef.duration || 0)) / 100)
         state.progress = e.detail || state.progress
-        debounce(function () {
-            state.isPlay ? audioRef.play() : audioRef.pause()
-        }, 200, true)
+        state.isPlay ? audioRef.play() : audioRef.pause()
     }
     const onPlay = async (item?:any, index?:number) => {
 		if (!item) {
@@ -81,7 +79,9 @@
 				title:'提示',
 				content:'此操作会替换播放列表, 确定继续?',
 				onConfirm: () => {
+                    state = { ...state, isPlay: true }
 					onPlay(state.songs[0], 0);
+                    console.log(state, 'playData');
 				}
 			})
 			return
@@ -110,6 +110,7 @@
                     content: `<span style="font-size: 14px;font-weight:normal;color:var(--el-color-primary)">获取歌曲失败，无法播放此歌曲~</span>`,
                     close: false
                 });
+                state.isPlay = false
 			}
 			window.localStorage.setItem('playData', JSON.stringify(playData))
 			CustomEvent.emit('play', playData)
