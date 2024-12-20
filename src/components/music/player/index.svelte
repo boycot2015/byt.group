@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { KImage, KPopover, KMsgBox, KMessage, KSlider } from "@ikun-ui/core";
-    import { CustomEvent, debounce } from '@/utils';
+    import { CustomEvent } from '@/utils';
     import { onDestroy } from 'svelte';
     import { KIcon } from '@ikun-ui/icon';
     import { baseApiUrl } from '@/api/index';
@@ -65,11 +65,11 @@
         getValueData()
     }
     const getValueData = () => {
-        state.progress = Math.floor(((audioRef.currentTime || 0) * 100 / (audioRef.duration || 100)))
+        state.progress = audioRef.currentTime
     }
     const onSliderChange = (e:any) => {
         audioRef.pause()
-        audioRef.currentTime = (((e.detail || 0) * (audioRef.duration || 0)) / 100)
+        audioRef.currentTime = e.detail
         state.progress = e.detail || state.progress
         state.isPlay ? audioRef.play() : audioRef.pause()
     }
@@ -81,7 +81,6 @@
 				onConfirm: () => {
                     state = { ...state, isPlay: true }
 					onPlay(state.songs[0], 0);
-                    console.log(state, 'playData');
 				}
 			})
 			return
@@ -150,7 +149,7 @@
         <KIcon icon={`i-carbon-${!state.isPlay?'play-filled':'pause-outline-filled'}`} on:click={() => togglePlay()} title="下一曲" cls="cursor-pointer !h-[24px] text-color-[#333] md:block mx-[10px]" ></KIcon>
         <i class="i-carbon-pause-outline-filled hidden"></i>
         <KIcon icon="i-carbon-play-filled-alt" on:click={() => playNext(true)} title="下一曲" cls="cursor-pointer !h-[18px] text-color-[#333] md:block mr-[10px]" ></KIcon>
-        <KSlider cls="!leading-[20px] hidden md:flex" value={state.progress} on:input={onSliderChange}></KSlider>
+        <KSlider cls="!leading-[20px] hidden md:flex" min={0} max={audioRef.duration||100} value={state.progress} step={0.1} on:input={onSliderChange}></KSlider>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <span class="lyric-text cursor-pointer hidden md:block {lyricVisible?'text-color-[var(--el-color-primary)]':''}" on:click={() => toggleLyric()}>词</span>
