@@ -40,7 +40,7 @@
 
 <div class="mb-[--gap]">
     { #if loading}
-        <div class="flex leading-32px mt-2 mb-6 ml-4">
+        <div class="flex leading-32px mt-2 ml-4">
             { #each '1234' as item}
             <KSkeletonButton cls="mr-10" key={item} loading={true}></KSkeletonButton>
             {/each}

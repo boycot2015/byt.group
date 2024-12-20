@@ -75,20 +75,7 @@ onMounted(() => {
 	getData()
 })
 </script>
-<style lang="less">
-.el-row {
-    line-height: 22px;
-	.el-col {
-		margin-bottom: 16px;
-		cursor: pointer;
-	}
-}
-.el-tabs__header.is-top {
-	margin-bottom: 0;
-}
-.k-tabs__content {
-	padding: 0;
-}
+<style lang="less" scoped>
 </style>
 <template>
 	<ElSkeleton :loading="pageLoading" animated>

@@ -108,7 +108,7 @@ getData()
         </template>
         <template #default>
             <Category :disabled="pageLoading || loading" :cates="cates" :keyword="keywordRef" @change="getData" />
-            <div v-loading="loading" element-loading-background="rgba(255,255, 255, 0.5)" class="min-h-[100%] md:min-h-[84%]">
+            <div v-loading="loading" element-loading-background="rgba(255,255, 255, 0.5)" class="min-h-[100vh] md:min-h-[calc(100vh-210px)]">
                 <template v-if="keywordRef">
                     <SearchList :data="data" />
                 </template>
@@ -125,14 +125,14 @@ getData()
                         <div class="body flex flex-col md:flex-row" :class="{'flex-wrap': item.view_type === 'cells_auto_fill'}">
                             <template v-if="item.bg_imgs && item.bg_imgs.length">
                                 <a :href="item.bg_imgs[0].url" target="_blank" rel="noopener noreferrer" v-if="item.view_type && item.view_type === 'cells_auto_fill'" class="w-[100%]">
-                                    <el-image :src="item.bg_imgs[0].img" :style="{height: data.type === 'honor'&&isMobile?'110px':data.type === 'xiaomi'&&isMobile?'58px':item.bg_imgs[0].height ? item.bg_imgs[0].height + 'px' : ''}" alt="" :fit="data.type === 'honor'&&isMobile?'contain':item.bg_imgs[0].fit||'cover'" class="mb-[var(--gap)] h-[68px] md:h-[200px] w-[100%] rounded-md" />
+                                    <el-image :src="item.bg_imgs[0].img" :style="{height: data.type === 'honor'&&isMobile?'110px':data.type === 'xiaomi'&&isMobile?'58px':item.bg_imgs[0].height ? item.bg_imgs[0].height + 'px' : ''}" alt="" :fit="data.type === 'honor'&&isMobile?'contain':item.bg_imgs[0].fit||'cover'" class="mb-[var(--gap)] h-[68px] md:h-[200px] w-[100%] rounded-md backdrop-blur-md" />
                                 </a>
                                 <div class="imgs w-[100%] md:w-[auto] md:mr-5 hidden md:block" v-else-if="(item.view_type && item.view_type === 'list_eight_product') || (item.bg_imgs && item.bg_imgs.length === 1)">
-                                    <el-image :src="item.bg_imgs[0]?.img" alt="" fit="cover" class="mb-[var(--gap)] h-[585px] rounded-md fit-cover" ></el-image>
+                                    <el-image :src="item.bg_imgs[0]?.img" alt="" fit="cover" class="mb-[var(--gap)] h-[585px] rounded-md fit-cover backdrop-blur-md" ></el-image>
                                 </div>
                                 <div class="flex flex-row mx-[-10px] md:ml-0 md:mr-[var(--gap)] justify-between md:justify-start md:flex-col" v-else-if="item.bg_imgs">
                                     <a :href="item.url" v-for="item in item.bg_imgs" :key="item.img" target="_blank" rel="noopener noreferrer" class="px-[10px] md:px-0 w-[100%] mb-[var(--gap)]">
-                                        <el-image :src="item.img" alt="" fit="cover" class="w-[100%] h-[285px] rounded-md" ></el-image>
+                                        <el-image :src="item.img" alt="" fit="cover" class="w-[100%] h-[285px] rounded-md backdrop-blur-md" ></el-image>
                                     </a>
                                 </div>
                             </template>

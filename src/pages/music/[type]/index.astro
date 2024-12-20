@@ -33,14 +33,27 @@ const { type = 'qq' } = Astro.params;
 
 ---
 <Layout title={`音乐-${title?title+'-':''}${typeName[type]}`} activePath="/music">
-  <KContainer cls='flex-col overflow-hidden h-[100%] mx-auto max-w-[1920px]'>
+  <KContainer cls='flex-col music-content overflow-hidden h-[100%] mx-auto max-w-[1920px]'>
     <CateList value={type} client:only="svelte" />
     <PlayList client:only="vue" {type}>
     </PlayList>
   </KContainer>
 </Layout>
-<style>
-  .k-tabs__content {
-		padding: 0;
+<style lang="less" scoped>
+:global(.music-content  .el-row) {
+  line-height: 22px;
+	.el-col {
+		margin-bottom: 16px;
+		cursor: pointer;
 	}
+}
+:global(.music-content .el-tabs__header.is-top) {
+	margin-bottom: 0;
+}
+:global(.music-content  .k-tabs__content) {
+	padding: 0;
+}
+:global(.music-content .k-tabs__content) {
+	padding: 0;
+}
 </style>

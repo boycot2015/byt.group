@@ -32,8 +32,8 @@ const { title, className } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
 const getstyles = () => {
-	return url.pathname.split("/").includes("music") || url.pathname == "/"
-		? ""
+	return url.pathname.split("/").includes("music") || url.pathname == "/" || url.pathname.split("/").includes("micro")
+		? "!w-full"
 		: "md:right-[--gap]";
 };
 ---
@@ -66,7 +66,7 @@ const getstyles = () => {
 				<KContainer cls="relative">
 					<KHeader
 						slot="header"
-						cls=`text-left flex items-center left-[auto] ${getstyles()} 3xl:right-[auto] justify-start !drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] bg-[rgba(255,255,255,0.6)] h-[60px] leading-40px backdrop-blur-md !md:overflow-auto !z-100 md:pl-[32px] w-full md:absolute sticky`
+						cls=`text-left flex items-center left-[auto] ${getstyles()} 3xl:right-[auto] justify-start !drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] bg-[rgba(255,255,255,0.6)] h-[60px] leading-40px backdrop-blur-md lg:w-[calc(100vw-80px)] xl:w-[calc(100vw-135px)] !z-100 md:pl-[32px] w-full lg:absolute sticky`
 					>
 						<div
 							class="navgator justify-center mr-5 hidden md:flex"

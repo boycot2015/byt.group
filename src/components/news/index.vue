@@ -57,13 +57,13 @@ onMounted(() => {
 <template>
 	<div class="px-0 h-[100%]">
 		<ElRow :gutter="16">
-			<ElCol :span="24" class="text-left" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 8}" :lg="{span: 6}" :xl="{span: 4}" :xxl="{span: 3}" v-for="(item, index) in (pageLoading ? 24 : state.dataList)" :key="index">
+			<ElCol :span="24" class="text-left" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 8}" :lg="{span: 6}" :xl="{span: 4}" :xxl="{span: 3}" v-for="(item, index) in (pageLoading ? 6 : state.dataList)" :key="index">
 				<el-skeleton :loading="pageLoading" animated>
 				<template #template>
 					<el-skeleton-item variant="button" style="width: 80%;margin-bottom: 10px;margin-right: 5%;" />
 					<el-skeleton-item variant="button" style="width: 15%;margin-bottom: 10px;" />
 					<div class="flex" v-for="item in 5" :key="item">
-						<el-skeleton-item variant="image" style="width: 60px;height: 40px;margin-right: 20px;margin-bottom: 10px;" />
+						<el-skeleton-item variant="image" style="width: 80px;height: 40px;margin-right: 20px;margin-bottom: 10px;" />
 						<el-skeleton animated>
 							<template #template>
 								<el-skeleton-item variant="text" style="width: 100%" />
@@ -85,7 +85,7 @@ onMounted(() => {
 						<div class="overflow-hidden overflow-y-auto h-[240px]">
 							<a :href="list.url" class="flex items-center no-underline mb-1" v-for="(list, index) in item.list" :key="list.url" target="_blank">
 								<ElIcon class="icon" size="24" color="var(--el-color-primary)" v-if="index < 3 && !(list.pic||list.img_ur)"><span :class="{'i-carbon-fire text-color-[red]': index === 0, 'i-carbon-badge text-color-[orange]': index === 1, 'i-carbon-bookmark-filled': index === 2}"></span></ElIcon>
-								<ElImage v-if="(list.pic||list.img_url)" :src="list.pic||list.img_url" class="w-[60px] h-[42px]" :alt="item.title" lazy></ElImage>
+								<ElImage v-if="(list.pic||list.img_url)" :src="list.pic||list.img_url" class="w-[60px] h-[42px]" :alt="item.title" fit="cover" lazy></ElImage>
 								<span v-else-if="index >= 3">{{ index + 1 }}.</span>
 								<ElText line-clamp="2" :title="list.title" class="flex-1 hover:text-color-[var(--el-color-primary)]" :class="{'w-[100%]': index >= 3 && !(list.pic||list.img_url), 'w-[80%]': index < 3 && !(list.pic||list.img_url), 'w-[62%]': (list.pic||list.img_url)}"  style="padding: 0 10px;">{{ list.title }}</ElText>
 							</a>
