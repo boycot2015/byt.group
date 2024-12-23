@@ -13,6 +13,7 @@ import config from '@/config'
         count: 50,
         index: 0,
         currentPage: 1,
+        pageSize: 12,
         type: props.type || 'birdpaper',
         id: '',
         cates: [],
@@ -25,14 +26,13 @@ import config from '@/config'
             let keyword = new URLSearchParams(location.search).get('keyword') || '';
             let res = await fetch(`${baseApiUrl}/wallpaper?source=${props.type}${keyword?('&keyword='+keyword):''}&size=12`).then((res) => res.json()).catch(console.log);
             setState({ ...state(), ...res.data, cateLoading: false, pageLoading: false, loading: false });
-            // console.log(state(), res, 'state');
         }
         getSource();
     }, 0)
     const getData = async ({ type, id, page = 1 } = {}) => {
+        let keyword = new URLSearchParams(location.search).get('keyword') || '';
         setState({ ...state(), loading: !!id, cateLoading: !id, type, id, currentPage: page });
-        let res = await fetch(`${baseApiUrl}/wallpaper?source=${type||state().type||props.type}${id?('&id='+id):''}&size=12&page=${page || 1}`).then((res) => res.json()).catch(console.log);
-        // , list: [...state.list, ...res.data.list].filter((el, index, self) => self.findIndex(val => val.id === el.id) === index)
+        let res = await fetch(`${baseApiUrl}/wallpaper?source=${type||state().type||props.type}${id?('&id='+id):''}${keyword&&!id?('&keyword='+keyword):''}&size=${state().pageSize}&page=${page || 1}`).then((res) => res.json()).catch(console.log);
         setState({ ...state(), ...res.data, loading: false, cateLoading: false });
     }
     const  setDialogOpen = (row, index, data) => {
@@ -48,7 +48,7 @@ import config from '@/config'
         <Show when={!state().pageLoading} fallback={<div>加载中...</div>}>
             <div class="nav flex flex-wrap">
                 <For each={state().source.sort((a, b) => a.sort - b.sort ) || []}>
-                {(item) => <div onClick={() => getData({type: item.value})}
+                {(item) => <div onClick={() => getData({type: item.value, id: ''})}
                 class={`my-2 mr-5 cursor-pointer ${item.value == state().type?'text-color-[var(--color-primary)]':''}`}>{item.label}</div>}
                 </For>
             </div>
@@ -70,8 +70,8 @@ import config from '@/config'
                     </For>
                 </div>
                 <div class="page mb-[10px] text-center flex justify-around w-[100%] text-color-[var(--color-primary)]">
-                    {state().currentPage ?<div class="prev flex cursor-pointer justify-between" onClick={() => getData({id: state().id, type: state().type,page: --state().currentPage})}><div class="i-carbon-arrow-left text-[24px] mr-[10px]"></div>上一页</div>:null}
-                    <div class="next flex cursor-pointer justify-between"  onClick={() => getData({id: state().id, type: state().type,page: ++state().currentPage})}>下一页<div class="i-carbon-arrow-right text-[24px] ml-[10px]"></div></div>
+                    {state().currentPage ?<div class="prev flex cursor-pointer justify-between" onClick={() => state().currentPage > 1 && getData({id: state().id, type: state().type,page: --state().currentPage})}><div class="i-carbon-arrow-left text-[24px] mr-[10px]"></div>上一页</div>:null}
+                    <div class="next flex cursor-pointer justify-between"  onClick={() => state().pageSize == state().list.length && getData({id: state().id, type: state().type,page: ++state().currentPage})}>下一页<div class="i-carbon-arrow-right text-[24px] ml-[10px]"></div></div>
                 </div>
             </Show>
         </Show>

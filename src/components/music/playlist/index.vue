@@ -117,7 +117,7 @@ onMounted(() => {
 	</ElSkeleton>
 	<div class="px-0 h-[100%] playlist-scroll-wrap overflow-hidden overflow-y-auto" v-infinite-scroll="() => getData(++state.currentPage)">
 		<ElRow :gutter="16" class="pt-[5px]">
-			<ElCol :span="12" class="text-left" :xs="{span: 8}" :sm="{span: 6}" :md="{span: 4}" :lg="{span: 3}" :xl="{span: 2}" v-for="item in (pageLoading ? 24 : state.playList)" :key="item.id || item">
+			<ElCol :span="12" class="text-left mb-[--gap]" :xs="{span: 8}" :sm="{span: 6}" :md="{span: 4}" :lg="{span: 3}" :xl="{span: 2}" v-for="item in (pageLoading ? 24 : state.playList)" :key="item.id || item">
 				<ElSkeleton :loading="pageLoading" animated>
 				<template #template>
 					<ElSkeletonItem variant="image" style="width: 100%; height: 130px;margin-bottom: 10px;" />
