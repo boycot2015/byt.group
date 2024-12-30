@@ -178,7 +178,7 @@ const playListDetail = (props:any) => {
 							className='avatar rounded-md overflow-hidden !w-[120px] !h-[120px] !md:w-[200px] !md:h-[200px]'
 							src={state.info?.cover_img_url||''}
 						/>
-						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 32px' }}>
+						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 16px' }}>
 							<Typography.Title level={2} className='text-left !text-xl lg:text-xxl'>
 							{state.info?.title || '歌单'}
 							</Typography.Title>
@@ -189,7 +189,7 @@ const playListDetail = (props:any) => {
 						</Flex>
 					</Flex>:<Flex justify="flex-start" align="flex-start">
 						<Skeleton.Image active={true} className='!w-[120px] !h-[120px] !md:w-[200px] !md:h-[200px]'></Skeleton.Image>
-						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 32px' }}>
+						<Flex vertical align="flex-start" justify="flex-start" style={{ padding: '0 16px' }}>
 							<Skeleton paragraph={false} />
 							<Flex justify="space-around" className='mt-[10px]'>
 								<Skeleton.Button style={{marginRight: 10}} /><Skeleton.Button style={{marginRight: 10}} /><Skeleton.Button />
