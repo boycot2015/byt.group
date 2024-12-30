@@ -57,7 +57,7 @@ onMounted(() => {
 <template>
 	<div class="px-0 h-[100%]">
 		<ElRow :gutter="16">
-			<ElCol :span="24" class="text-left" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 8}" :lg="{span: 6}" :xl="{span: 4}" :xxl="{span: 3}" v-for="(item, index) in (pageLoading ? 6 : state.dataList)" :key="index">
+			<ElCol :span="24" class="text-left" :xs="{span: 24}" :sm="{span: 12}" :md="{span: 8}" :lg="{span: 6}" :xl="{span: 4}" :xxl="{span: 3}" v-for="(item, index) in (pageLoading ? 8 : state.dataList)" :key="index">
 				<el-skeleton :loading="pageLoading" animated>
 				<template #template>
 					<el-skeleton-item variant="button" style="width: 80%;margin-bottom: 10px;margin-right: 5%;" />
