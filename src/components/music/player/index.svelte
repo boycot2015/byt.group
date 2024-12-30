@@ -133,7 +133,7 @@
         background-color: transparent !important;
     }
 </style>
-<div class="leading-60px px-3 items-center box-shadow flex justify-between md:justify-center h-[60px] overflow-hidden">
+<div class="px-3 items-center box-shadow flex justify-between md:justify-center overflow-hidden">
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     {#if state.lyric || state.img_url}
@@ -143,7 +143,7 @@
     </div>
     {/if}
     {#if state.lyric || state.img_url}
-    <div class="play-section flex flex-2 justify-around items-center px-2 w-[auto] md:w-[70%] lg:w-[50%]">
+    <div class="play-section leading-60px h-[60px] flex flex-2 justify-around items-center px-2 w-[auto] md:w-[70%] lg:w-[50%]">
         <KIcon icon="i-carbon-play-filled-alt" title="上一曲" cls="cursor-pointer transform-rotate-z-[180deg] !h-[18px] text-color-[#333] md:block" on:click={() => playNext(false)}></KIcon>
         <audio bind:this={audioRef} class="flex-1 hidden !bg-[transparent]" autoplay volume={20} controls src={state.url} on:ended={() => playNext(true)} on:timeupdate={onPlaying}></audio>
         <KIcon icon={`i-carbon-${!state.isPlay?'play-filled':'pause-outline-filled'}`} on:click={() => togglePlay()} title="下一曲" cls="cursor-pointer !h-[24px] text-color-[#333] md:block mx-[10px]" ></KIcon>
