@@ -163,6 +163,6 @@
     </KPopover>
     <slot name="cover" data={state}></slot>
     {:else}
-    <p class="title ml-[--gap] md:w-[700px] text-[14px]">{websiteName} {config.footer.copyright} {config.footer.beian} {config.footer.email}</p>
+    <p class="title h-[60px] w-full leading-20px justify-center flex items-center text-[14px]">{websiteName} {config.footer.copyright} <br class="md:hidden">{config.footer.beian} {config.footer.email}</p>
     {/if}
 </div>

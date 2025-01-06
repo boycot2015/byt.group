@@ -81,7 +81,7 @@ onMounted(() => {
 	<ElSkeleton :loading="pageLoading" animated>
 		<template #template>
 			<el-tabs class="mb-[--gap]">
-				<el-tab-pane v-for="item in 10" :key="item">
+				<el-tab-pane v-for="item in 10" :key="item" disabled>
 					<template #label>
 						<el-skeleton-item variant="button" />
 					</template>
@@ -134,7 +134,7 @@ onMounted(() => {
 			</ElCol>
 		</ElRow>
 		<p v-if="loading">加载中...</p>
-		<p v-if="!state.hasMore">{{state.playList?.length ? '-------------我是有底线的-------------':'暂无数据~'}}</p>
+		<p v-if="!state.hasMore">{{state.playList?.length>10 ? '-------------我是有底线的-------------': !state.playList?.length ? '暂无数据~':''}}</p>
 		<ElBacktop style="right: 20px;bottom: 90px;" class="!md:right-[50px]" target=".playlist-scroll-wrap" />
 	</div>
 </template>

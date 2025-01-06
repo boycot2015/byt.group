@@ -15,14 +15,22 @@ const MovieList = (props:any) => {
     const [initLoading, setInitLoading] = useState(true);
     const [data, setData] = useState([]) as any;
     const [list, setList] = useState([]) as any;
+    const [query, setQuery] = useState({}) as any;
     useEffect(() => {
         const getData = async () => {
-            const params = new URLSearchParams(window.location.search);
-            let res = await fetch(baseApiUrl + '/movie/list?limit=12&type=' + (params.get('type') || 'hot') + '&keyword=' + params.get('keyword') + '&offset=' + offset);
-            let data = await res.json();
-            setIds(data?.data?.movieIds || []);
-            setData(data?.data?.movieList || {});
-            setList(data?.data?.movieList || {});
+          const params = new URLSearchParams(window.location.search);
+          setQuery({
+            type: params.get('type')||undefined,
+            keyword: params.get('keyword')
+          })
+          !params.get('type') && setList(
+            data.concat([...new Array(12)].map(() => ({ loading: true }))),
+          );
+            let result = await fetch(baseApiUrl + '/movie/list?limit=12&type=' + (params.get('type') || 'hot') + '&keyword=' + params.get('keyword') + '&offset=' + offset);
+            let res = await result.json();
+            setIds(res?.data?.movieIds || []);
+            setData(res?.data?.movieList || {});
+            setList(res?.data?.movieList || {});
             setInitLoading(false);
             setLoading(false);
         };
@@ -62,8 +70,8 @@ const MovieList = (props:any) => {
         <ConfigProvider locale={zhCN}>
                 <List
                 className='flex flex-col justify-between w-[100%] h-[100%]'
-                loading={initLoading}
                 dataSource={list}
+                loading={initLoading&&!!query.type}  
                 grid={{
                     gutter: 16,
                     xs: 2,
@@ -75,8 +83,8 @@ const MovieList = (props:any) => {
                 }}
                 loadMore={loadMore}
                 renderItem={(item:any) => (
-                    <div className='mb-[16px] px-[8px]'><a href={'/movie/detail?id=' +item.id}>
-                        {item.loading || initLoading ? <Skeleton.Image style={{marginBottom: 10, width: '190px', height: '260px'}} active /> : null}
+                    <div className='mb-[16px] px-[8px] w-[100%]'><a className='w-[100%] flex flex-col' href={'/movie/detail?id=' +item.id}>
+                        {item.loading || initLoading ? <Skeleton.Image style={{marginBottom: 10, width: '100%', height: '260px'}} active /> : null}
                         <Skeleton title={{className:'!mx-[auto] !mb-2'}} paragraph={{rows: 1, width: '100%', className: '!mt-2'}} loading={item.loading || initLoading} active>
                             <Card className='relative !rounded-[10px] overflow-hidden shadow-lg hover:translate-y-[-3px] transition-all duration-400' cover={<Image preview={false} style={{height: 260, fill: 'cover'}} alt={item.nm} src={item.img} />}>
                                 {<Meta title={item.nm} description={item.star?<Text ellipsis={{ tooltip: item.star }}>主演：{item.star}</Text>:null} />}

@@ -96,7 +96,7 @@ getData()
                             :xxl="{span:3}"
                             class="mb-[var(--gap)]"
                         >
-                            <el-skeleton-item variant="image" style="width: 100%; width: 170px; height: 170px;margin-bottom: 20px;" />
+                            <el-skeleton-item variant="image" style="width: 170px; height: 170px;margin: 0 auto 20px auto;" />
                             <div class="flex flex-col items-center">
                                 <el-skeleton-item variant="h3" style="width: 80%" />
                                 <el-skeleton-item variant="p" style="width: 30%;margin-top: 10px;" />

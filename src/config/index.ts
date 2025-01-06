@@ -85,7 +85,7 @@ const config: Props = {
     ],
     footer: {
         copyright: 'Copyright @2024 Designed by boycot',
-        beian: '粤IPC 202123123号',
+        beian: '粤ICP备18002072号',
         url: 'https://beian.com',
         email: 'boycot2017@163.com'
     }

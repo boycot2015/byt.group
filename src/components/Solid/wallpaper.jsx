@@ -65,7 +65,7 @@ import config from '@/config'
                     <For each={state().list.slice(0, state().count || 20) || []}>
                     {(item, index) => <div onClick={(e) => setDialogOpen(item, index, state().list.slice(0, state().count || 20))} onMouseOver={() => setState({ ...state(), index: index()})} class="rounded-md w-[48%] sm:w-[31%] cursor-pointer list-item relative h-[200px] m-[1%] overflow-hidden">
                         <img class={`w-[100%] h-[100%] object-cover transition-all ease-in-out duration-300 hover:scale-120`} title={item.img_title} src={item.img || item.url}alt="" />
-                        <div onClick={[onSetPapper, item]} className={`action absolute w-full leading-[30px] bg-[rgba(255,255,255,0.5)] text-[--color-primary] text-center z-1 ${state().index == index()?'active':''}`}>设置为壁纸</div>
+                        <div onClick={[onSetPapper, item]} className={`action absolute w-full leading-[30px] bg-[rgba(255,255,255,0.5)] text-[--color-primary] text-center z-1 ${state().index == index()?'active':''}`}>设置为背景</div>
                         </div>}
                     </For>
                 </div>
