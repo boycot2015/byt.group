@@ -13,7 +13,7 @@ import { presetIkun, getCSSPreflights, getSafeList } from '@ikun-ui/preset';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://web-group.boycot.top/',
+  site: 'https://group.boycot.top/',
   server: {
     port: 8000
     // host: '192.168.5.105',
