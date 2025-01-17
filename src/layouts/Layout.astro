@@ -32,7 +32,9 @@ const { title, className } = Astro.props;
 const { type } = Astro.params;
 const { url } = Astro;
 const getstyles = () => {
-	return url.pathname.split("/").includes("music") || url.pathname == "/" || url.pathname.split("/").includes("micro")
+	return url.pathname.split("/").includes("music") ||
+		url.pathname == "/" ||
+		url.pathname.split("/").includes("micro")
 		? "!w-full"
 		: "md:right-[--gap]";
 };
@@ -49,7 +51,6 @@ const getstyles = () => {
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link href="/css/base.css" />
 		<title>{title}</title>
-		<script src="https://hm.baidu.com/hm.js?a8df6f60267843325042be0c69d2f328"></script>
 	</head>
 	<body>
 		<KContainer cls={"main"}>
@@ -170,6 +171,15 @@ const getstyles = () => {
 		</KContainer>
 	</body>
 </html>
+<script>
+	var _hmt: any = _hmt || [];
+	(function () {
+		var hm = document.createElement("script");
+		hm.src = "https://hm.baidu.com/hm.js?a8df6f60267843325042be0c69d2f328";
+		var s: any = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
 <script define:vars={{ config }}>
 	let str = window.localStorage.getItem("config");
 	Object.assign(config, JSON.parse(str));

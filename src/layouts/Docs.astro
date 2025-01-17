@@ -1,6 +1,6 @@
 ---
-import 'element-plus/dist/index.css';
-import '@assets/less/index.less';
+import "element-plus/dist/index.css";
+import "@assets/less/index.less";
 
 interface Props {
 	title: string;
@@ -14,17 +14,26 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{title}</title>
-		<script src="https://hm.baidu.com/hm.js?a8df6f60267843325042be0c69d2f328"></script>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
+<script>
+	var _hmt:any = _hmt || [];
+	(function () {
+		var hm = document.createElement("script");
+		hm.src = "https://hm.baidu.com/hm.js?a8df6f60267843325042be0c69d2f328";
+		var s:any = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
 <style is:global>
 	html {
 		font-family: system-ui, sans-serif;
