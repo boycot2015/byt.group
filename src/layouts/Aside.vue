@@ -14,7 +14,14 @@ let activeMenu = ref(props.props.activePath || '')
 const handleChange = (key) => {
     if (activeMenu.value === key) return
     activeMenu.value = key
-    window.location.href = key
+    // window.location.href = key
+    let link = document.createElement('a')
+    link.href = key
+    document.body.appendChild(link)
+    link.click()
+    setTimeout(() => {
+        document.body.removeChild(link)
+    }, 100);
 }
 let collapse = ref(false)
 onMounted(() => {

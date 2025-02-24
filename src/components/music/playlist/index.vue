@@ -56,7 +56,14 @@ const getCateData = async () => {
 	pageLoading.value = false
 }
 const onView = (row) => {
-    window.location.href = `/music/${type}/playlist?id=${row.id}`;
+    // window.location.href = `/music/${type}/playlist?id=${row.id}`;
+	let link = document.createElement('a')
+	link.href = `/music/${type}/playlist?id=${row.id}`;
+	document.body.appendChild(link)
+	link.click()
+	setTimeout(() => {
+		document.body.removeChild(link)
+	}, 1000);
 }
 const onTabChange = (val) => {
 	if (val == '-1') return

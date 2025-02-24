@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { KTabs, KSkeletonButton } from '@ikun-ui/core';
-    import { onMount } from 'svelte';
+    // import { onMount } from 'svelte';
     import { baseApiUrl } from '@/api/index';
 	export let value: string | number = '';
     interface KTabsNavItem {
@@ -24,9 +24,7 @@
         if (!value) cateList[0].uid;
         loading = false;
 	}
-    onMount(() => {
-        getMusicData()
-    })
+    getMusicData()
 	const handleClick = (e:any) => {
 		value = e.detail.uid;
         // console.log(value, 'value');
@@ -34,7 +32,14 @@
         let keyword = getParams.get('keyword');
         let url = `/music/${e.detail.uid}`
         if (keyword) url = `/music/${e.detail.uid}/search?keyword=${keyword}`
-        window.location.href = url
+        // window.location.href = url
+        let link = document.createElement('a')
+        link.href = url
+        document.body.appendChild(link)
+        link.click()
+        setTimeout(() => {
+            document.body.removeChild(link)
+        }, 100);
 	};
 </script>
 

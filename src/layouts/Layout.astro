@@ -18,6 +18,7 @@ import Lyric from "@/components/music/player/lyric.tsx";
 import Player from "@/components/music/player/index.svelte";
 import Cover from "@/components/music/cover/index.tsx";
 import Nav from "@/components/Nav/index.vue";
+import { ClientRouter } from 'astro:transitions';
 import config from "@/config";
 import "virtual:uno.css";
 import "element-plus/dist/index.css";
@@ -51,6 +52,7 @@ const getstyles = () => {
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link href="/css/base.css" />
 		<title>{title}</title>
+		<ClientRouter />
 	</head>
 	<body>
 		<KContainer cls={"main"}>
@@ -123,6 +125,7 @@ const getstyles = () => {
 						/>
 					</KHeader>
 					<KMain
+						transition:name={'fade'}
 						cls={"text-center main-scroll-wrap bg-[rgba(255,255,255,.5)] lg:pt-[80px] realtive overflow-hidden mb-[60px] w-[100%] mx-0 overflow-y-auto " +
 							(className || "")}
 					>

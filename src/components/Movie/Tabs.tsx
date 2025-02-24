@@ -31,8 +31,14 @@ export default () => {
         setActive(params.get('type') || 'hot')
     }, [])
     const onChange = (key:string) => {
-        window.location.replace(`/movie?type=${key}`)
-        // setActive(key)
+        // window.location.replace(`/movie?type=${key}`)
+        let link = document.createElement('a')
+        link.href = `/movie?type=${key}`
+        document.body.appendChild(link)
+        link.click()
+        setTimeout(() => {
+            document.body.removeChild(link)
+        }, 100);
     }
     return (
         <Tabs activeKey={active} defaultActiveKey="hot" items={cates} onChange={onChange}>
