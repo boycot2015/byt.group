@@ -1,17 +1,17 @@
 ---
-import Tabs from '@/components/Movie/Tabs';
-import List from '@/components/Movie/List.tsx';
+import Movie from '@/components/Movie/List.vue';
 import Layout from '@/layouts/Layout.astro';
-import { baseApiUrl } from '@/api/index.ts';
-let indexData:any = {};
-// const getData = async () => {
-//     let res = await fetch(baseApiUrl + '/movie');
-//     let data = await res.json();
-//     indexData = data.data;
-// };
-// await getData();
+import { KContainer } from '@ikun-ui/core';
+// import ImageViewer from '@/components/ImageViewer/index.vue';
+interface Props {
+	title?: string
+}
 ---
-<Layout title='电影' className="!mx-auto max-w-[1920px] bg-[var(--bg-color-light)]">
-    <Tabs client:only="react"></Tabs>
-    <List client:only="react" data={indexData}></List>
+<Layout title={`影视`}>
+  <KContainer cls='flex-col h-[100%] max-w-[1300px] m-[auto]'>
+    <Movie client:only="vue"></Movie>
+    <!-- <ImageViewer client:load></ImageViewer> -->
+  </KContainer>
 </Layout>
+<style>
+</style>

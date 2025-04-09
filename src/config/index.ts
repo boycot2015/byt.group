@@ -44,7 +44,7 @@ const config: Props = {
             icon: 'i-carbon-book'
         },
         {
-            title: '电影',
+            title: '影视',
             path: '/movie',
             url: '',
             icon: 'i-carbon-video-player'

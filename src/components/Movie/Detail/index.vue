@@ -16,7 +16,7 @@ defineOptions({
 const getData = async () => {
     const getParams = new URLSearchParams(window.location.search.split('?')[1]);
     try {
-        let res = await fetch(baseApiUrl + '/movie/detail?id=' + (getParams.get('id') || 1));
+        let res = await fetch(`${baseApiUrl}/movie/detail?id=${getParams.get('id') || 1}&type=${getParams.get('type') || 1}`);
         let data = await res.json();
         state = data.data;
     } catch (error) {
@@ -59,8 +59,9 @@ onMounted(() => {
             </template>
             <template #default>
                 <div class="hidden md:flex mt-[20px]">
-                    <ElLink href="/movie" class="mr-[10]" type="primary" replace>&nbsp;电影&nbsp;&nbsp;> &nbsp;&nbsp;</ElLink>
+                    
                     <ElBreadcrumb separator=">" class="my-[10px]">
+                        <ElBreadcrumbItem to="/movie" replace><ElLink href="/movie" class="mr-[10]" type="primary">影视</ElLink></ElBreadcrumbItem>
                         <ElBreadcrumbItem >{{state.typeDesc}}</ElBreadcrumbItem>
                         <ElBreadcrumbItem>{{state.nm}}</ElBreadcrumbItem>
                     </ElBreadcrumb>

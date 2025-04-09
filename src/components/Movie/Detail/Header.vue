@@ -19,9 +19,9 @@ let state:any = ref({ ...props.data, stars: props.data.sc / 2 });
     } */
 </style>
 <template>
-    <div class="movie-detail-header flex flex-wrap md:flex-[auto] justify-center lg:items-center text-center lg:text-left py-[30px]" :style="{background: state.backgroundColor}">
+    <div class="movie-detail-header flex flex-wrap md:flex-[auto] justify-center lg:items-center text-center lg:text-left py-[30px]" :style="{background: state.backgroundColor || '#ccc'}">
         <div class="img relative">
-            <ElImage class="md:mr-[30px] h-[420px] md:h-[320px]" fit="cover" :src="state.img"></ElImage>
+            <ElImage class="md:mr-[30px] h-[420px] md:h-[320px] min-w-[240px]" fit="cover" :src="state.img"></ElImage>
             <i className="score text-white text-xl absolute  top-[0] text-left bg-[var(--color-primary)] w-[100px] pl-[10px] left-[-6px] z-[10]">{{state.version.slice(1,).toUpperCase()}}</i>
         </div>
         <div class="info w-[100%] md:w-[auto] md:mr-[30px] flex flex-col h-[320px] relative justify-around md:justify-between">
@@ -32,7 +32,7 @@ let state:any = ref({ ...props.data, stars: props.data.sc / 2 });
                 <p class="text-[14px] text-white mt-[15px]">{{ state.src }}/{{ state.dur }}分钟</p>
                 <p class="text-[14px] text-white mt-[15px]">{{ state.pubDesc }}</p>
             </div>
-            <div class="btns md:mt-[50px]">
+            <div class="btns md:mt-[50px]" v-if="state.globalReleased">
                 <ElButton><i class="i-cardon-star"></i>想看</ElButton>
                 <ElButton><i class="i-cardon-rate"></i>评分</ElButton>
                 <ElButton class="w-[80%] md:w-[100%] mt-[10px] !mx-[0px]" type="primary" v-if="state.globalReleased">特惠购票</ElButton>
@@ -50,12 +50,14 @@ let state:any = ref({ ...props.data, stars: props.data.sc / 2 });
                     </div>
                 </div>
             </template>
-            <template v-else>
+            <template v-else-if="state.wish">
                 <p class="text-[14px] text-white mt-[20px]">想看数</p>
                 <p class="text-[14px] text-white">{{ state.wish }}人</p>
             </template>
-            <p class="text-[14px] mt[10px] text-white">累计票房</p>
-            <p class="text-[26px] mt-[15px] text-white">{{ ((state.watched * state.pn) / 10000000).toFixed(2) }}<span class="ml-[5px] text-[14px] text-white">亿</span></p>
+            <template v-if="state.watched && state.pn">
+                <p class="text-[14px] mt[10px] text-white">累计票房</p>
+                <p class="text-[26px] mt-[15px] text-white">{{ ((state.watched * state.pn) / 10000000).toFixed(2) }}<span class="ml-[5px] text-[14px] text-white">亿</span></p>
+            </template>
         </div>
     </div>
 </template>
