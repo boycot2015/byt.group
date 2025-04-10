@@ -229,7 +229,7 @@ const playListDetail = (props:any) => {
 					onMouseLeave: (event) => {},
 				};
 			}}
-			scroll={keyword?{ x: 800, y: 'calc(100vh - 400px)' }:{ x: 800, y: simple ? 400 : '' }}
+			scroll={keyword?{ x: 800, y: 'calc(100vh - 400px)' }:{ x: 800, y: simple ? 400 : 'auto' }}
 			pagination={{
 				total: state.totalCount,
 				pageSizeOptions: ['10', '20'],

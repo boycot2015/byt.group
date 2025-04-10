@@ -1,11 +1,12 @@
 <template>
   <div>
+      <Banner />
       <Cate :cates="state.cates" @change="onTabClick"/>
       <div v-loading="state.loading">
         <ElRow :gutter="20">
             <ElCol class="mb-4" v-for="item in state.data" :key="item.id" :xs="12" :sm="8" :md="6" :lg="4">
               <ElCard shadow="hover" class="card" body-style="padding: 0 0 10px 0">
-                <ElSkeleton animation :loading="item.loading" class="skeleton">
+                <ElSkeleton animated :loading="item.loading" class="skeleton">
                   <template #template>
                     <el-skeleton-item variant="image" style="width: 100%; height: 180px" />
                     <div style="padding: 14px">
@@ -26,13 +27,13 @@
                   </template>
                   <template #default>
                     <a :href="`/movie/detail?id=${item.id}&type=${state.type}`" class="w-full" style="text-decoration:none">
-                        <ElImage :src="item.img" style="width: 100%;" class="sm:h-[280px] md:h-[320px] lg:h-[270px]" />
+                        <ElImage :src="item.img" style="width: 100%;min-height:240px;" class="xs:h-[280px] md:h-[320px] lg:h-[270px]" />
                         <div class="mt-2 px-2 w-full relative">
                           <ElText truncated>{{ item.nm }}</ElText>
-                          <ElText class="absolute w-full bg-[rgba(0,0,0,.5)] !text-color-white !text-[18px] !p-1 left-0 top-[-45px] text-right">{{item.sc}}</ElText>
+                          <ElText class="absolute w-full bg-[rgba(0,0,0,.5)] !text-color-white !text-[18px] !p-1 left-0 top-[-47px] text-right">{{item.sc}}</ElText>
                           <div class="flex w-full">
-                            <ElText truncated>导演：{{ item.dir || '--' }}</ElText>
-                            <ElText truncated>演员：{{item.star || '--'}}</ElText>
+                            <ElText class="flex-1 mr-2" truncated>导演：{{ item.dir || '--' }}&nbsp;&nbsp;</ElText>
+                            <ElText class="flex-1" truncated>演员：{{item.star || '--'}}</ElText>
                           </div>
                         </div>
                     </a>
@@ -48,7 +49,7 @@
         </ElRow>
         <div class="flex justify-between mb-2">
           <span></span>
-          <ElPagination layout="total, prev, pager, next" :page-size="12" :total="state.total" @current-change="(val) => {
+          <ElPagination layout="prev, pager, next" :page-size="12" :total="state.total" @current-change="(val) => {
             state.loading = true
             getData(val)
           }"/>
@@ -63,6 +64,7 @@ import { ElRow, ElCol, ElCard,
     ElSkeletonItem, ElLink, ElLoading, ElText, ElPagination } from 'element-plus';
 import { baseApiUrl } from '@/api/index.ts';
 import Cate from './cate.vue';
+import Banner from './Banner.vue';
 
 const vLoading = ElLoading.directive;
 const state = reactive({

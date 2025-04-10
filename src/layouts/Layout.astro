@@ -68,7 +68,7 @@ const getstyles = () => {
 				<KContainer cls="relative">
 					<KHeader
 						slot="header"
-						cls=`text-left flex items-center left-[auto] ${getstyles()} 3xl:right-[auto] justify-start !drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] bg-[rgba(255,255,255,0.6)] h-[60px] leading-40px backdrop-blur-md lg:w-[calc(100vw-80px)] xl:w-[calc(100vw-135px)] !z-100 md:pl-[32px] w-full lg:absolute sticky`
+						cls=`text-left flex items-center left-[auto] ${getstyles()} 3xl:right-[auto] justify-start md:!drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)] bg-[rgba(255,255,255,0.6)] h-[60px] leading-40px backdrop-blur-md lg:w-[calc(100vw-80px)] xl:w-[calc(100vw-135px)] !z-100 md:pl-[32px] w-full lg:absolute sticky`
 					>
 						<div
 							class="navgator justify-center mr-5 hidden md:flex"
@@ -123,7 +123,7 @@ const getstyles = () => {
 						/>
 					</KHeader>
 					<KMain
-						cls={"text-center main-scroll-wrap bg-[rgba(255,255,255,.5)] lg:pt-[80px] realtive overflow-hidden mb-[60px] w-[100%] mx-0 overflow-y-auto " +
+						cls={"text-center main-scroll-wrap pt-0 md:pt-[1rem] bg-[rgba(255,255,255,.5)] lg:pt-[80px] realtive overflow-hidden md:mb-[60px] w-[100%] mx-0 overflow-y-auto " +
 							(className || "")}
 					>
 						<slot />
@@ -136,7 +136,7 @@ const getstyles = () => {
 						/>
 					</KMain>
 					<KAffix
-						class="k-affix k-affix--affixed md:hidden z-999 bottom-[140px] right-[20px]"
+						class="k-affix k-affix--affixed md:hidden z-999 bottom-[45px] right-[20px]"
 						client:visible
 						triggerBottom={0}
 					>
@@ -150,7 +150,7 @@ const getstyles = () => {
 			</KContainer>
 			<KFooter
 				slot="footer"
-				cls="z-101 relative text-center p-0 bg-[rgba(255,255,255,0.6)] drop-shadow-[0_-35px_35px_rgba(0,0,0,0.5)] backdrop-blur-md leading-24px md:leading-60px"
+				cls="z-101 hidden md:block relative text-center p-0 bg-[rgba(255,255,255,0.6)] drop-shadow-[0_-35px_35px_rgba(0,0,0,0.5)] backdrop-blur-md leading-24px md:leading-60px"
 			>
 				<Player client:visible>
 					<Cover slot="cover" client:only="react" />
