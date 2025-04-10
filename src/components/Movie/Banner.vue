@@ -36,13 +36,13 @@ getData()
 <div class="relative">
     <ElSkeleton animated :loading="state.loading" class="skeleton">
         <template #template>
-        <el-skeleton-item variant="image" class="h-[200px] md:h-[300px] " />
+        <el-skeleton-item variant="image" class="h-[200px] rounded-md md:h-[300px] " />
         </template>
         <template #default>
         <ElCarousel ref="ElCarouselRef" :height="isMobile?'160px':'400px'" :activeIndex="state.active" @change="(val) => state.active = val">
             <ElCarouselItem v-for="item in state.data" :key="item.nm" :label="isMobile?'':item.nm">
                 <a :href="`/movie/detail?type=cms&id=${item.id}`">
-                    <ElImage :src="item.videoImg" alt="" fit="fill" class="w-full" />
+                    <ElImage :src="item.videoImg" alt="" fit="fill" class="w-full rounded-md" />
                 </a>
             </ElCarouselItem>
         </ElCarousel>

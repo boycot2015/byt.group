@@ -30,7 +30,7 @@ const videoUrl = ref(props.data.videourl?.split(','));
                 </div>
             </ElSpace>
         </el-link>
-        <div class="serises mt-2 max-h-[300px] inline-flex flex-wrap overflow-y-auto" v-if="videoUrl.length > 1">
+        <div class="serises w-full mt-2 max-h-[300px] inline-flex flex-wrap overflow-y-auto" v-if="videoUrl.length > 1">
             <el-tag class="mr-2 mb-2" v-for="(item, index) in videoUrl" :key="item">
                 <el-link :href="item" target="_blank" >第{{index + 1}}集</el-link>
             </el-tag>
