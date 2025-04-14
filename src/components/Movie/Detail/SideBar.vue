@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { ElImage, ElText, ElSpace, ElLink, ElTag } from 'element-plus';
+import { ElTabs, ElTabPane, ElImage, ElText, ElSpace, ElLink, ElTag } from 'element-plus';
 const props = defineProps({
     data: {
         type: Object,
@@ -8,7 +8,9 @@ const props = defineProps({
     }
 })
 let state:any = ref({ ...props.data });
-const videoUrl = ref(props.data.videourl?.split(','));
+const videoUrl = ref(props.data.videourl?.split(',') || [props.data.videos[0]?.list[0]?.url]);
+const videos = ref(props.data.videos || []);
+const activePlay = ref(videos.value[0]?.playFrom);
 </script>
 <style>
     /* audio::-webkit-media-controls-panel {
@@ -30,10 +32,14 @@ const videoUrl = ref(props.data.videourl?.split(','));
                 </div>
             </ElSpace>
         </el-link>
-        <div class="serises w-full mt-2 max-h-[300px] inline-flex flex-wrap overflow-y-auto" v-if="videoUrl.length > 1">
-            <el-tag class="mr-2 mb-2" v-for="(item, index) in videoUrl" :key="item">
-                <el-link :href="item" target="_blank" >第{{index + 1}}集</el-link>
-            </el-tag>
+        <div class="serises w-full mt-2 max-h-[300px] inline-flex flex-wrap overflow-y-auto" v-if="videos && videos.length">
+            <el-tabs v-model="activePlay" >
+                <el-tab-pane v-for="item in videos" :key="item.playFrom" :name="item.playFrom" :label="item.playFrom">
+                    <el-tag class="mr-2 mb-2" v-for="list in item.list" :key="list.name">
+                        <el-link :href="list.url" target="_blank" >{{ list.name }}</el-link>
+                    </el-tag>
+                </el-tab-pane>
+            </el-tabs>
         </div>
     </div>
 </template>

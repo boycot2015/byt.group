@@ -58,7 +58,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { ElRow, ElCol, ElCard,
     ElImage, ElSkeleton, ElEmpty, ElInfiniteScroll,
     ElSkeletonItem, ElLink, ElLoading, ElText, ElPagination } from 'element-plus';
@@ -70,12 +70,12 @@ const vLoading = ElLoading.directive;
 const state = reactive({
   keyword: '',
   offset: 0,
-  cate: '0',
-  type: 'maoyan',
+  cate: '13',
+  type: 'cms',
   data: [...new Array(12)].map(() => ({ loading: true })),
   ids: [],
   total: 0,
-  cates: [{ id: '0', title: '热门' }],
+  cates: [],
   loading: false,
   hasMore: false,
 });
@@ -99,19 +99,6 @@ const getData = (page = 1) => {
       window.dispatchEvent(new Event('resize'));
     });
 };
-const getCateData = () => {
-  const covert = (item) => {
-    return {
-      title: item.name,
-      id: item.id,
-    };
-  }
-  fetch(`${baseApiUrl}/movie/cate?type=cms`)
-    .then((res) => res.json())
-    .then((res) => {
-      state.cates = state.cates.concat(res.data?.filter(_ =>!_.pId).map(el => ({...covert(el), children: res.data?.filter(val => val.pId === el.id).map(covert)})).sort((a, b) => b.sort - a.sort) || []);
-    });
-};
 const onTabClick = ({ id }) => {
   state.cate = id;
   state.type = id == '0' ? 'maoyan' : 'cms';
@@ -119,6 +106,7 @@ const onTabClick = ({ id }) => {
   state.loading = true;
   getData();
 };
-getCateData();
-getData();
+onMounted(() => {
+  getData();
+})
 </script>
