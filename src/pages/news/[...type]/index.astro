@@ -1,0 +1,33 @@
+---
+import PlayListDetail from "@/components/news/detail.tsx";
+import Layout from "@/layouts/Layout.astro";
+import { baseApiUrl } from '@/api';
+export async function getStaticPaths() {
+	let res = await fetch(baseApiUrl + '/hots/cate', {});
+	let data = await res.json();
+	return data.data.map((el:any) => ({
+		params: {
+			type: el.name,
+			title: el.title
+		},
+		props: { title: el.title, url: el.url }
+	}));
+}
+interface Props {
+	title: string;
+}
+interface Params {
+	[key: string]: string;
+}
+const { title } = Astro.props;
+const { type } = Astro.params;
+
+---
+
+<Layout
+	title={`新闻-${title}`}
+	activePath="/news"
+>
+	<PlayListDetail client:only="react" {type} />
+</Layout>
+<style></style>

@@ -21,9 +21,6 @@ const state = ref({
 	hasMore: true
 });
 const getData = async (currentPage = state.value.currentPage) => {
-	// tieba、36kr、baidu、toutiao、juejin、netease、lol、weibo、zhihu
-	// let names = ['tieba', '36kr', 'baidu', 'toutiao', 'juejin', 'netease', 'lol', 'weibo', 'zhihu']
-	// let names = ['贴吧', '36kr', '百度', '头条', '掘金', '网易', '英雄联盟', '微博', '知乎']
 	loading.value = true
 	let cateRes = await fetch(`${baseApiUrl}/hots/cate`)
 	let { data: names } = await cateRes.json()	
@@ -31,7 +28,7 @@ const getData = async (currentPage = state.value.currentPage) => {
 	let data = await Promise.all(res.map(el => el.json()))
 	state.value = {
 		...state.value,
-		dataList: data.map((el, index) => ({list: el.data ? el.data.slice(0, 5) : null, ...names[index]})).filter((el) => el.list) || [],
+		dataList: data.map((el, index) => ({list: el.data ? el.data : null, ...names[index]})).filter((el) => el.list) || [],
 		currentPage,
 		hasMore: !!data?.hasNextPage || !!data.result?.length,
 	}
@@ -84,10 +81,13 @@ onMounted(() => {
 						</template>
 						<div class="overflow-hidden overflow-y-auto h-[240px]">
 							<a :href="list.url" class="flex items-center no-underline mb-1" v-for="(list, index) in item.list" :key="list.url" target="_blank">
-								<ElIcon class="icon" size="24" color="var(--el-color-primary)" v-if="index < 3 && !(list.pic||list.img_ur)"><span :class="{'i-carbon-fire text-color-[red]': index === 0, 'i-carbon-badge text-color-[orange]': index === 1, 'i-carbon-bookmark-filled': index === 2}"></span></ElIcon>
+								<!-- <ElIcon class="icon" size="24" color="var(--el-color-primary)" v-if="index < 3 && !(list.pic||list.img_ur)"><span :class="{'i-carbon-fire text-color-[red]': index === 0, 'i-carbon-badge text-color-[orange]': index === 1, 'i-carbon-bookmark-filled': index === 2}"></span></ElIcon> -->
 								<ElImage v-if="(list.pic||list.img_url)" :src="list.pic||list.img_url" class="w-[60px] h-[42px]" :alt="item.title" fit="cover" lazy></ElImage>
-								<span v-else-if="index >= 3">{{ index + 1 }}.</span>
-								<ElText line-clamp="2" :title="list.title" class="flex-1 hover:text-color-[var(--el-color-primary)]" :class="{'w-[100%]': index >= 3 && !(list.pic||list.img_url), 'w-[80%]': index < 3 && !(list.pic||list.img_url), 'w-[62%]': (list.pic||list.img_url)}"  style="padding: 0 10px;">{{ list.title }}</ElText>
+								<span v-else>{{ index + 1 }}.</span>
+								<span class="flex flex-1 justify-between">
+									<ElText line-clamp="2" :title="list.title" class="flex-3 hover:text-color-[var(--el-color-primary)]" style="padding-left: 10px;"><span>{{ list.title }}</span></ElText>
+									<ElText line-clamp="2" :title="list.title" class="flex-2 text-right hover:text-color-[var(--el-color-primary)]" style="padding: 0 10px;"><span></span><span v-if="list.url?.includes('xueqiu')">{{ list.desc }}</span></ElText>
+								</span>
 							</a>
 						</div>
 					</ElCard>
