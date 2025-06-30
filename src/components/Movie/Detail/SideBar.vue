@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { ElTabs, ElTabPane, ElImage, ElText, ElSpace, ElLink, ElTag } from 'element-plus';
+import { ElTabs, ElTabPane, ElImage, ElText, ElSpace, ElLink, ElTag, ElScrollbar } from 'element-plus';
 const props = defineProps({
     data: {
         type: Object,
@@ -32,12 +32,14 @@ const activePlay = ref(videos.value[0]?.playFrom);
                 </div>
             </ElSpace>
         </el-link>
-        <div class="serises w-full mt-2 max-h-[300px] inline-flex flex-wrap overflow-y-auto" v-if="videos && videos.length">
+        <div class="serises w-full mt-2 inline-flex flex-wrap" v-if="videos && videos.length">
             <el-tabs v-model="activePlay" >
                 <el-tab-pane v-for="item in videos" :key="item.playFrom" :name="item.playFrom" :label="item.playFrom">
-                    <el-tag class="mr-2 mb-2" v-for="list in item.list" :key="list.name">
-                        <el-link :href="list.url" target="_blank" >{{ list.name }}</el-link>
-                    </el-tag>
+                    <el-scrollbar style="height:300px">
+                        <el-tag class="mr-2 mb-2" v-for="list in item.list" :key="list.name">
+                            <el-link :href="list.url" target="_blank" >{{ list.name }}</el-link>
+                        </el-tag>
+                    </el-scrollbar>
                 </el-tab-pane>
             </el-tabs>
         </div>

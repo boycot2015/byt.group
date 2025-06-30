@@ -14,8 +14,8 @@ const props = defineProps({
         default: '',
     }
 })
-const activeCate = ref(2);
-const activeSecondCate = ref(13);
+const activeCate = ref('2');
+const activeSecondCate = ref('13');
 const getCateData = () => {
   const covert = (item) => {
     return {
@@ -27,17 +27,13 @@ const getCateData = () => {
     .then((res) => res.json())
     .then((res) => {
         state.cates = state.cates.concat(res.data?.filter(_ =>!_.pId).map(el => ({...covert(el), children: res.data?.filter(val => val.pId === el.id).map(covert)})).sort((a, b) => b.sort - a.sort) || []).concat([{ id: '0', title: '猫眼电影' }]);
-        let params = new URLSearchParams(location.search);
-        if (params.get('type')) {
-            activeCate.value = params.get('type');
-        }
-        if (params.get('cate')) {
-            activeSecondCate.value = params.get('cate');
-        }
-        onTabClick({paneName: val.id || 0})
+        onTabClick({paneName: activeCate.value || 0, refresh: true })
     });
 };
 onMounted(() => {
+    let params = new URLSearchParams(location.search);
+    activeCate.value = params.get('pcate') || '2';
+    activeSecondCate.value = params.get('cate') || '13';
     getCateData();
 })
 /**
@@ -46,7 +42,7 @@ onMounted(() => {
 const onTabClick = (val) => {
     let child = state.cates.find(v => v.id == val.paneName) || {};
     child = child.children ? child.children[0] || val : val;
-    onChildTabClick({ ...child, paneName: child.id || val.paneName || 0, pId: val.paneName });
+    onChildTabClick({ ...child, paneName: (val.refresh ? activeSecondCate.value : (child.id || val.paneName || 0)).toString(), pId: activeCate.value });
 }
 const onChildTabClick = (val) => {
     // if (val.paneName == activeSecondCate.value) return;
@@ -56,7 +52,7 @@ const onChildTabClick = (val) => {
         // if (!!val.paneName)
         //     window.location.href = '/movie?cate=' + val.paneName + '&type=' + (val.pId || activeCate.value)
         // else window.location.href = '/movie'
-        emits('change', {id: val.paneName || '', type: activeCate.value});
+        emits('change', {id: val.paneName || '', type: activeCate.value, pId: activeCate.value});
         // window.location.replace('/movie?cate=' + val.paneName + '&type=' + (val.pId || activeCate.value))
     })
 }
@@ -75,9 +71,9 @@ const onChildTabClick = (val) => {
 <template>
     <div>
         <ElTabs v-model="activeCate" @tab-click="onTabClick">
-            <ElTabPane v-for="item in state.cates" :disabled="attrs.disabled || !!(props.keyword && item.type == 'apple')" :label="item.title" :name="item.id" :key="item.id">
+            <ElTabPane v-for="item in state.cates" :disabled="attrs.disabled || !!(props.keyword && item.type == 'apple')" :label="item.title" :name="item.id+''" :key="item.id">
                 <ElTabs class="flex-1" v-model="activeSecondCate" v-if="item.children" @tab-click="onChildTabClick">
-                    <ElTabPane v-for="child in item.children" :key="child.id" :label="child.title" :name="child.id">
+                    <ElTabPane v-for="child in item.children" :key="child.id" :label="child.title" :name="child.id+''">
                     </ElTabPane>
                 </ElTabs>
             </ElTabPane>

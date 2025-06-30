@@ -26,7 +26,7 @@
                     </div>
                   </template>
                   <template #default>
-                    <a :href="`/movie/detail?id=${item.id}&type=${state.type}`" class="w-full" style="text-decoration:none">
+                    <a :href="`/movie/detail?id=${item.id}&type=${state.type}&offset=${state.offset}&pcate=${state.pcate}&cate=${state.cate}`" class="w-full" style="text-decoration:none">
                         <ElImage :src="item.img" style="width: 100%;min-height:240px;" class="xs:h-[280px] md:h-[320px] lg:h-[270px]" />
                         <div class="mt-2 px-2 w-full relative">
                           <ElText truncated>{{ item.nm }}</ElText>
@@ -49,7 +49,7 @@
         </ElRow>
         <div class="flex justify-between mb-2">
           <span></span>
-          <ElPagination layout="prev, pager, next" :page-size="12" :total="state.total" @current-change="(val) => {
+          <ElPagination layout="prev, pager, next" :page-size="12" :current-page="Number(state.offset)" :total="state.total" @current-change="(val) => {
             state.loading = true
             getData(val)
           }"/>
@@ -71,6 +71,7 @@ const state = reactive({
   keyword: '',
   offset: 0,
   cate: '13',
+  pcate: '2',
   type: 'cms',
   data: [...new Array(12)].map(() => ({ loading: true })),
   ids: [],
@@ -82,7 +83,6 @@ const state = reactive({
 const params = new URLSearchParams(window.location.search);
 const getData = (page = 1) => {
   state.offset = page;
-  state.keyword = params.get('keyword') || ''
   if (state.keyword) {
     state.type = 'cms'
     state.cate = ''
@@ -99,14 +99,20 @@ const getData = (page = 1) => {
       window.dispatchEvent(new Event('resize'));
     });
 };
-const onTabClick = ({ id }) => {
+const onTabClick = ({ id, pId }) => {
+  state.pcate = pId;
   state.cate = id;
   state.type = id == '0' ? 'maoyan' : 'cms';
-  state.offset = 1;
   state.loading = true;
-  getData();
+  getData(state.offset);
+  // state.offset = 1;
 };
 onMounted(() => {
-  getData();
+  state.keyword = params.get('keyword') || ''
+  state.offset = params.get('offset') || state.offset || 1
+  state.type = params.get('type') || state.type || 'cms'
+  state.pcate = params.get('pcate') || state.pcate || '2'
+  state.cate = params.get('cate') || state.cate || '13'
+  // getData(state.offset);
 })
 </script>

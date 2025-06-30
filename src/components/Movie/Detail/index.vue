@@ -13,6 +13,7 @@ let loading = ref(true);
 defineOptions({
     name: 'MovieDetail'
 })
+const url = ref(`/movie?cate=${state.cate}&type=${state.type}&pcate=${state.pcate}&offset=${state.offset}`);
 const getData = async () => {
     const getParams = new URLSearchParams(window.location.search.split('?')[1]);
     try {
@@ -22,9 +23,10 @@ const getData = async () => {
     } catch (error) {
         console.log(error, 'error');
     } finally {
-        state = {...state || {} }
+        state = {...state || {}, cate: getParams.get('cate') || '', type: getParams.get('type') || '', pcate: getParams.get('pcate') || '', offset: getParams.get('offset') || '' }
+        url.value = `/movie?cate=${state.cate}&type=${state.type}&pcate=${state.pcate}&offset=${state.offset}`;
     }
-    loading.value = false;    
+    loading.value = false;
     return state
 }
 onMounted(() => {
@@ -61,8 +63,8 @@ onMounted(() => {
                 <div class="hidden md:flex mt-[20px]">
                     
                     <ElBreadcrumb separator=">" class="my-[10px]">
-                        <ElBreadcrumbItem to="/movie" replace><ElLink href="/movie" class="mr-[10]" type="primary">影视</ElLink></ElBreadcrumbItem>
-                        <ElBreadcrumbItem >{{state.typeDesc}}</ElBreadcrumbItem>
+                        <ElBreadcrumbItem to="/movie" replace><ElLink :href="`/movie`" class="mr-[10]" type="primary">影视</ElLink></ElBreadcrumbItem>
+                        <ElBreadcrumbItem :to="url"><ElLink :href="url" class="mr-[10]" type="primary">{{state.typeDesc}}</ElLink></ElBreadcrumbItem>
                         <ElBreadcrumbItem>{{state.nm}}</ElBreadcrumbItem>
                     </ElBreadcrumb>
                 </div>
