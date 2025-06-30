@@ -163,6 +163,10 @@
     </KPopover>
     <slot name="cover" data={state}></slot>
     {:else}
-    <p class="title h-[60px] w-full leading-20px justify-center flex items-center text-[14px]">{websiteName} {config.footer.copyright} <br class="md:hidden">{config.footer.beian} {config.footer.email}</p>
+    <p class="title h-[60px] w-full leading-20px justify-around flex items-center text-[14px]">
+        {websiteName} {config.footer.copyright} <br class="md:hidden">{config.footer.beian} {config.footer.email}
+        <span class="text-right">每日诗词：<span id="jinrishici-sentence" class="ml-2 tsxt-right">正在加载今日诗词....</span></span>
+        <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    </p>
     {/if}
 </div>
