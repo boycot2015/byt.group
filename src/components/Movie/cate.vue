@@ -42,7 +42,7 @@ onMounted(() => {
 const onTabClick = (val) => {
     let child = state.cates.find(v => v.id == val.paneName) || {};
     child = child.children ? child.children[0] || val : val;
-    onChildTabClick({ ...child, paneName: (val.refresh ? activeSecondCate.value : (child.id || val.paneName || 0)).toString(), pId: activeCate.value });
+    onChildTabClick({ ...child, refresh: val.refresh, paneName: (val.refresh ? activeSecondCate.value : (child.id || val.paneName || 0)).toString(), pId: activeCate.value });
 }
 const onChildTabClick = (val) => {
     // if (val.paneName == activeSecondCate.value) return;
@@ -52,7 +52,7 @@ const onChildTabClick = (val) => {
         // if (!!val.paneName)
         //     window.location.href = '/movie?cate=' + val.paneName + '&type=' + (val.pId || activeCate.value)
         // else window.location.href = '/movie'
-        emits('change', {id: val.paneName || '', type: activeCate.value, pId: activeCate.value});
+        emits('change', {id: val.paneName || '', type: activeCate.value, pId: activeCate.value, offset: val.refresh ? null : 1});
         // window.location.replace('/movie?cate=' + val.paneName + '&type=' + (val.pId || activeCate.value))
     })
 }

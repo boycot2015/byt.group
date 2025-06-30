@@ -99,13 +99,13 @@ const getData = (page = 1) => {
       window.dispatchEvent(new Event('resize'));
     });
 };
-const onTabClick = ({ id, pId }) => {
+const onTabClick = ({ id, pId, offset }) => {
   state.pcate = pId;
   state.cate = id;
   state.type = id == '0' ? 'maoyan' : 'cms';
   state.loading = true;
+  state.offset = offset || state.offset || 1;
   getData(state.offset);
-  // state.offset = 1;
 };
 onMounted(() => {
   state.keyword = params.get('keyword') || ''

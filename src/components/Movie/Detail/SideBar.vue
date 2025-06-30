@@ -32,7 +32,7 @@ const activePlay = ref(videos.value[0]?.playFrom);
                 </div>
             </ElSpace>
         </el-link>
-        <div class="serises w-full mt-2 inline-flex flex-wrap" v-if="videos && videos.length">
+        <div class="serises mt-2" v-if="videos && videos.length">
             <el-tabs v-model="activePlay" >
                 <el-tab-pane v-for="item in videos" :key="item.playFrom" :name="item.playFrom" :label="item.playFrom">
                     <el-scrollbar style="height:300px">
