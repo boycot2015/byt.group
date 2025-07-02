@@ -26,7 +26,7 @@ const getCateData = () => {
   fetch(`${baseApiUrl}/movie/cate?type=cms`)
     .then((res) => res.json())
     .then((res) => {
-        state.cates = state.cates.concat(res.data?.filter(_ =>!_.pId).map(el => ({...covert(el), children: res.data?.filter(val => val.pId === el.id).map(covert)})).sort((a, b) => b.sort - a.sort) || []).concat([{ id: '0', title: '猫眼电影' }]);
+        state.cates = state.cates.concat(res.data?.filter(_ =>!_.pId).map(el => ({...covert(el), children: res.data?.filter(val => val.pId === el.id).map(covert)})).sort((a, b) => b.sort - a.sort) || []);
         onTabClick({paneName: activeCate.value || 0, refresh: true })
     });
 };

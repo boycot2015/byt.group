@@ -49,8 +49,8 @@
         </ElRow>
         <div class="flex justify-between mb-2">
           <span></span>
-          <ElPagination layout="prev, pager, next" :page-size="12" :current-page="Number(state.offset)" :total="state.total" @current-change="(val) => {
-            state.loading = true
+          <ElPagination layout="prev, pager, next" :page-size="12" :current-page="state.offset" :total="state.total" @current-change="(val) => {
+            state.loading = true;
             getData(val)
           }"/>
         </div>
@@ -87,8 +87,12 @@ const getData = (page = 1) => {
     state.type = 'cms'
     state.cate = ''
   }
+  let url = `${baseApiUrl}/movie/list?type=${state.type}&cate=${state.cate}&limit=12&offset=${state.offset}&keyword=${params.get('keyword') || ''}&movieIds=${state.ids.slice(state.offset * 12, 12 * state.offset).join(',')}`;
+  if (state.type == 'maoyan') {
+    url = `${baseApiUrl}/movie?cate=${state.cate}&limit=12&offset=${state.offset}&keyword=${params.get('keyword') || ''}&movieIds=${state.ids.slice(state.offset * 12, 12 * (state.offset + 1)).join(',')}`;
+  }
   // &movieIds=${state.ids.slice(offset * 12, 12 * offset).join(',')}&keyword=${params.get('keyword')}
-  fetch(`${baseApiUrl}/movie/list?type=${state.type}&cate=${state.cate}&limit=12&offset=${state.offset}&keyword=${params.get('keyword') || ''}&movieIds=${state.ids.slice(state.offset * 12, 12 * state.offset).join(',')}`)
+  fetch(url)
     .then((res) => res.json())
     .then((res) => {
       state.data = res.data?.movieList.map(el => ({...el, loading: false})) || [];
@@ -96,7 +100,7 @@ const getData = (page = 1) => {
       state.total = res.data.paging?.total || res.data?.total || 0;
       state.loading = false;
       state.hasMore = (res.data?.total > 12 * state.offset) || (res.data?.paging?.total > 12 * state.offset) || state.ids.slice(state.offset * 12, 12 * state.offset).length === 12 || false;
-      window.dispatchEvent(new Event('resize'));
+      // window.dispatchEvent(new Event('resize'));
     });
 };
 const onTabClick = ({ id, pId, offset }) => {
@@ -109,10 +113,9 @@ const onTabClick = ({ id, pId, offset }) => {
 };
 onMounted(() => {
   state.keyword = params.get('keyword') || ''
-  state.offset = params.get('offset') || state.offset || 1
+  state.offset = Number(params.get('offset') || 0) || state.offset || 1
   state.type = params.get('type') || state.type || 'cms'
   state.pcate = params.get('pcate') || state.pcate || '2'
   state.cate = params.get('cate') || state.cate || '13'
-  // getData(state.offset);
 })
 </script>
