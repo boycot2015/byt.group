@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { ElRow, ElCol, ElCard, 
 	ElImage, ElText, ElIcon, ElSkeleton, ElTooltip,
-	ElSkeletonItem, ElInfiniteScroll, ElBacktop } from 'element-plus'
+	ElSkeletonItem, ElInfiniteScroll, ElBacktop, ElScrollbar } from 'element-plus'
 import { baseApiUrl } from '@/api/index'
 defineOptions({
 	directives: {
@@ -70,7 +70,7 @@ onMounted(() => {
 					</div>
 				</template>
 				<template #default>
-					<ElCard class="text-left hover:translate-y-[-3px] transition-all duration-400" :header="item.title" :body-style="{padding: 5}" style="width: 100%;">
+					<ElCard class="text-left hover:translate-y-[-3px] transition-all duration-400" :header="item.title" :body-style="{padding: '10px 0 10px 10px'}" style="width: 100%;">
 						<template #header>
 							<h3 class="p-0 m-0">
 								{{ item.title }} · {{ item.subTitle }}
@@ -79,7 +79,7 @@ onMounted(() => {
 								</ElTooltip>
 							</h3>
 						</template>
-						<div class="overflow-hidden overflow-y-auto h-[240px]">
+						<el-scrollbar style="height:240px" class="overflow-hidden overflow-y-auto">
 							<a :href="list.url" class="flex items-center no-underline mb-1" v-for="(list, index) in item.list" :key="list.url" target="_blank">
 								<!-- <ElIcon class="icon" size="24" color="var(--el-color-primary)" v-if="index < 3 && !(list.pic||list.img_ur)"><span :class="{'i-carbon-fire text-color-[red]': index === 0, 'i-carbon-badge text-color-[orange]': index === 1, 'i-carbon-bookmark-filled': index === 2}"></span></ElIcon> -->
 								<ElImage v-if="(list.pic||list.img_url)" :src="list.pic||list.img_url" class="w-[60px] h-[42px]" :alt="item.title" fit="cover" lazy></ElImage>
@@ -89,7 +89,7 @@ onMounted(() => {
 									<ElText line-clamp="2" :title="list.title" class="flex-2 text-right hover:text-color-[var(--el-color-primary)]" style="padding: 0 10px;"><span></span><span v-if="list.url?.includes('xueqiu')">{{ list.desc }}</span></ElText>
 								</span>
 							</a>
-						</div>
+						</el-scrollbar>
 					</ElCard>
 				</template>
 				</el-skeleton>
